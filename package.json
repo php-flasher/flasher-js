@@ -43,6 +43,7 @@
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
-    "typescript": "^3.9.9"
+    "typescript": "^3.9.9",
+    "node-notifier": ">=8.0.1"
   }
 }
