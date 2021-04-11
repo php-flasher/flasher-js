@@ -19,7 +19,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "pretest": "npm run build",
-    "lint": "eslint . --ext .ts --fix"
+    "lint": "eslint . --ext .ts --fix",
+    "test": "echo \"No test specified\""
   },
   "bugs": {
     "url": "https://github.com/php-flasher/flasher-js/issues"
