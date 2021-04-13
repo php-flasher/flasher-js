@@ -1,5 +1,5 @@
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import notify from 'rollup-plugin-notify';
 import { terser } from 'rollup-plugin-terser';
@@ -45,7 +45,7 @@ export default [
       typescript(),
     ],
     output: [
-      { file: pkg.main.replace('.js', '.cjs.js'), format: 'cjs' },
+      { file: pkg.main.replace('.js', '.cjs.js'), format: 'cjs', exports: 'auto' },
       { file: pkg.main.replace('.js', '.es.js'), format: 'es' },
     ],
   },
