@@ -3,6 +3,7 @@ import {
   FlasherResponse,
   Envelope,
   FlasherResponseOptions,
+  QueueableInterface,
 } from './interfaces';
 
 export default class Flasher {
@@ -86,11 +87,22 @@ export default class Flasher {
   }
 
   public renderEnvelopes(envelopes: Envelope[]): void {
+    const queues = new Map<string, QueueableInterface>();
+
     envelopes.forEach((envelope) => {
       const factory = this.create(envelope.handler);
       if (undefined !== factory) {
-        factory.render(envelope);
+        if (Flasher.isQueueable(factory)) {
+          factory.addEnvelope(envelope);
+          queues.set(envelope.handler, factory);
+        } else {
+          factory.render(envelope);
+        }
       }
+    });
+
+    queues.forEach((factory) => {
+      factory.renderQueue();
     });
   }
 
@@ -100,5 +112,10 @@ export default class Flasher {
 
   public addFactory(name: string, driver: FlasherInterface): void {
     this.factories.set(name, driver);
+  }
+
+  private static isQueueable(object: any): object is QueueableInterface {
+    return typeof object.addEnvelope === 'function'
+      && typeof object.renderQueue === 'function';
   }
 }
