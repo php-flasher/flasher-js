@@ -37,6 +37,7 @@ export default class TemplateFactory implements FlasherInterface {
       container.style.position = 'fixed';
       container.style.maxWidth = '304px';
       container.style.width = '100%';
+      container.style.zIndex = '999999';
 
       switch (this.options.position) {
         case 'top-left':
