@@ -7,6 +7,9 @@ module.exports = {
     ignorePatterns: ['.eslintrc.js'],
     plugins: [
         '@typescript-eslint',
+        'import',
+        'jsx-a11y',
+        'react',
     ],
     extends: [
         'airbnb-typescript',

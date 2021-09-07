@@ -4,6 +4,7 @@ import {
   Envelope,
   FlasherResponseOptions,
   QueueableInterface,
+  ResponseContext,
 } from './interfaces';
 
 export default class Flasher {
@@ -27,7 +28,7 @@ export default class Flasher {
     this.addStyles(response.styles, () => {
       this.addScripts(response.scripts, () => {
         this.renderOptions(response.options);
-        this.renderEnvelopes(response.envelopes);
+        this.renderEnvelopes(response.envelopes, response.context);
       });
     });
   }
@@ -86,10 +87,11 @@ export default class Flasher {
     });
   }
 
-  public renderEnvelopes(envelopes: Envelope[]): void {
+  public renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {
     const queues = new Map<string, QueueableInterface>();
 
     envelopes.forEach((envelope) => {
+      envelope.context = context;
       const factory = this.create(envelope.handler);
       if (undefined !== factory) {
         if (Flasher.isQueueable(factory)) {
@@ -106,7 +108,7 @@ export default class Flasher {
     });
   }
 
-  public create(alias: string): FlasherInterface|undefined {
+  public create(alias: string): FlasherInterface | undefined {
     return this.factories.get(alias);
   }
 

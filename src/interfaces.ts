@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export interface Notification {
   type: string,
   title: string,
@@ -13,6 +14,7 @@ export interface Envelope {
   priority: number,
   styles?: string[],
   scripts?: string[],
+  context: ResponseContext,
 }
 
 export interface FlasherResponseOptions {
@@ -23,11 +25,16 @@ export interface FlasherOptions {
   [index: string]: any[]
 }
 
+export interface ResponseContext {
+  [index: string]: any[]
+}
+
 export interface FlasherResponse {
   envelopes: Envelope[],
   options: FlasherResponseOptions,
   scripts: string[],
   styles: string[],
+  context: ResponseContext,
 }
 
 export interface FlasherInterface {
