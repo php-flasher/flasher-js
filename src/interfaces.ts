@@ -45,4 +45,5 @@ export interface FlasherInterface {
 export interface QueueableInterface {
   addEnvelope(envelope: Envelope): void;
   renderQueue(): void;
+  resetQueue(): void;
 }

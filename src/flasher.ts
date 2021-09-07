@@ -95,6 +95,9 @@ export default class Flasher {
       const factory = this.create(envelope.handler);
       if (undefined !== factory) {
         if (Flasher.isQueueable(factory)) {
+          if (!queues.get(envelope.handler)) {
+            factory.resetQueue();
+          }
           factory.addEnvelope(envelope);
           queues.set(envelope.handler, factory);
         } else {
