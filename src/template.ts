@@ -6,6 +6,8 @@ interface Options {
   fps: number,
   position: string,
   direction: string,
+  x_offset: string,
+  y_offset: string,
 }
 
 export default class TemplateFactory implements FlasherInterface {
@@ -14,6 +16,8 @@ export default class TemplateFactory implements FlasherInterface {
     fps: 30,
     position: 'top-right',
     direction: 'top',
+    x_offset: '0.5em',
+    y_offset: '0',
   };
 
   render(envelope: Envelope): void {
@@ -41,21 +45,21 @@ export default class TemplateFactory implements FlasherInterface {
 
       switch (this.options.position) {
         case 'top-left':
-          container.style.top = '0';
-          container.style.left = '0.5em';
+          container.style.top = this.options.y_offset;
+          container.style.left = this.options.x_offset;
           break;
         case 'top-right':
-          container.style.top = '0';
-          container.style.right = '0.5em';
+          container.style.top = this.options.y_offset;
+          container.style.right = this.options.x_offset;
           break;
         case 'bottom-left':
-          container.style.bottom = '0';
-          container.style.left = '0.5em';
+          container.style.bottom = this.options.y_offset;
+          container.style.left = this.options.x_offset;
           break;
         case 'bottom-right':
         default:
-          container.style.bottom = '0';
-          container.style.right = '0.5em';
+          container.style.bottom = this.options.y_offset;
+          container.style.right = this.options.x_offset;
           break;
       }
       document.getElementsByTagName('body')[0].appendChild(container);
