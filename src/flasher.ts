@@ -112,6 +112,10 @@ export default class Flasher {
   }
 
   public create(alias: string): FlasherInterface | undefined {
+    if (0 === alias.indexOf('template.')) {
+      return this.factories.get('template');
+    }
+
     return this.factories.get(alias);
   }
 
