@@ -6,6 +6,7 @@ import {
   QueueableInterface,
   ResponseContext,
 } from './interfaces';
+import TemplateFactory from './template';
 
 export default class Flasher {
   private static instance: Flasher;
@@ -89,7 +90,6 @@ export default class Flasher {
 
   public renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {
     const queues = new Map<string, QueueableInterface>();
-
     envelopes.forEach((envelope) => {
       envelope.context = context;
       const factory = this.create(envelope.handler);
@@ -112,8 +112,8 @@ export default class Flasher {
   }
 
   public create(alias: string): FlasherInterface | undefined {
-    if (0 === alias.indexOf('template.')) {
-      return this.factories.get('template');
+    if (0 === alias.indexOf('template.') && !this.factories.has(alias)) {
+      this.addFactory(alias, new TemplateFactory());
     }
 
     return this.factories.get(alias);

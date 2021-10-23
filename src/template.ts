@@ -1,13 +1,13 @@
 import { Envelope, FlasherInterface, FlasherOptions } from './interfaces';
-import Flasher from './flasher';
+import { Properties } from 'csstype';
+import deepmerge from 'deepmerge';
 
 interface Options {
   timeout: number,
   fps: number,
   position: string,
   direction: string,
-  x_offset: string,
-  y_offset: string,
+  style: Properties<string>
 }
 
 export default class TemplateFactory implements FlasherInterface {
@@ -16,8 +16,13 @@ export default class TemplateFactory implements FlasherInterface {
     fps: 30,
     position: 'top-right',
     direction: 'top',
-    x_offset: '0.5em',
-    y_offset: '0',
+    style: {
+      position: 'fixed',
+      maxWidth: '304px',
+      width: '100%',
+      zIndex: 999999,
+      transition: '0.8s',
+    },
   };
 
   render(envelope: Envelope): void {
@@ -28,7 +33,7 @@ export default class TemplateFactory implements FlasherInterface {
       return;
     }
 
-    template.style.transition = '0.8s';
+    template.style.transition = this.options.style.transition as string;
 
     if (undefined !== notification.options && undefined !== notification.options.position) {
       this.options.position = notification.options.position as unknown as string;
@@ -37,29 +42,32 @@ export default class TemplateFactory implements FlasherInterface {
     let container = document.getElementById(`flasher-container-${this.options.position}`);
     if (container === null) {
       container = document.createElement('div');
+
       container.id = `flasher-container-${this.options.position}`;
-      container.style.position = 'fixed';
-      container.style.maxWidth = '304px';
-      container.style.width = '100%';
-      container.style.zIndex = '999999';
+
+      Object.keys(this.options.style).forEach((key: string) => {
+        container!.style.setProperty(key, this.options.style[key as keyof Properties] as string);
+      });
+
+      container.style.maxWidth = this.options.style.maxWidth as string;
 
       switch (this.options.position) {
         case 'top-left':
-          container.style.top = this.options.y_offset;
-          container.style.left = this.options.x_offset;
+          container.style.top = this.options.style.top as string || '0';
+          container.style.left = this.options.style.left as string || '0.5em';
           break;
         case 'top-right':
-          container.style.top = this.options.y_offset;
-          container.style.right = this.options.x_offset;
+          container.style.top = this.options.style.top as string || '0';
+          container.style.right = this.options.style.right as string || '0.5em';
           break;
         case 'bottom-left':
-          container.style.bottom = this.options.y_offset;
-          container.style.left = this.options.x_offset;
+          container.style.bottom = this.options.style.bottom as string || '0';
+          container.style.left = this.options.style.left as string || '0.5em';
           break;
         case 'bottom-right':
         default:
-          container.style.bottom = this.options.y_offset;
-          container.style.right = this.options.x_offset;
+          container.style.bottom = this.options.style.bottom as string || '0';
+          container.style.right = this.options.style.right as string || '0.5em';
           break;
       }
       document.getElementsByTagName('body')[0].appendChild(container);
@@ -109,7 +117,7 @@ export default class TemplateFactory implements FlasherInterface {
   }
 
   renderOptions(options: FlasherOptions): void {
-    this.options = { ...this.options, ...options };
+    this.options = deepmerge(this.options, options);
   }
 
   private static stringToHTML(str: string) {
@@ -137,6 +145,3 @@ export default class TemplateFactory implements FlasherInterface {
     return dom.firstElementChild;
   }
 }
-
-const flasher = Flasher.getInstance();
-flasher.addFactory('template', new TemplateFactory());
