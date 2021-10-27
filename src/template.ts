@@ -33,47 +33,52 @@ export default class TemplateFactory implements FlasherInterface {
       return;
     }
 
-    template.style.transition = this.options.style.transition as string;
-
-    if (undefined !== notification.options && undefined !== notification.options.position) {
-      this.options.position = notification.options.position as unknown as string;
+    let options = JSON.parse(JSON.stringify(this.options));
+    if (!Array.isArray(notification.options)) {
+      options = deepmerge(options, notification.options);
     }
 
-    let container = document.getElementById(`flasher-container-${this.options.position}`);
+    template.style.transition = options.style.transition as string;
+
+    if (undefined !== notification.options && undefined !== notification.options.position) {
+      options.position = notification.options.position as unknown as string;
+    }
+
+    let container = document.getElementById(`flasher-container-${options.position}`);
     if (container === null) {
       container = document.createElement('div');
 
-      container.id = `flasher-container-${this.options.position}`;
+      container.id = `flasher-container-${options.position}`;
 
-      Object.keys(this.options.style).forEach((key: string) => {
-        container!.style.setProperty(key, this.options.style[key as keyof Properties] as string);
+      Object.keys(options.style).forEach((key: string) => {
+        container!.style.setProperty(key, options.style[key as keyof Properties] as string);
       });
 
-      container.style.maxWidth = this.options.style.maxWidth as string;
+      container.style.maxWidth = options.style.maxWidth as string;
 
-      switch (this.options.position) {
+      switch (options.position) {
         case 'top-left':
-          container.style.top = this.options.style.top as string || '0';
-          container.style.left = this.options.style.left as string || '0.5em';
+          container.style.top = options.style.top as string || '0';
+          container.style.left = options.style.left as string || '0.5em';
           break;
         case 'top-right':
-          container.style.top = this.options.style.top as string || '0';
-          container.style.right = this.options.style.right as string || '0.5em';
+          container.style.top = options.style.top as string || '0';
+          container.style.right = options.style.right as string || '0.5em';
           break;
         case 'bottom-left':
-          container.style.bottom = this.options.style.bottom as string || '0';
-          container.style.left = this.options.style.left as string || '0.5em';
+          container.style.bottom = options.style.bottom as string || '0';
+          container.style.left = options.style.left as string || '0.5em';
           break;
         case 'bottom-right':
         default:
-          container.style.bottom = this.options.style.bottom as string || '0';
-          container.style.right = this.options.style.right as string || '0.5em';
+          container.style.bottom = options.style.bottom as string || '0';
+          container.style.right = options.style.right as string || '0.5em';
           break;
       }
       document.getElementsByTagName('body')[0].appendChild(container);
     }
 
-    switch (this.options.direction) {
+    switch (options.direction) {
       case 'top':
         container.insertBefore(template, container.firstChild);
         break;
@@ -91,14 +96,14 @@ export default class TemplateFactory implements FlasherInterface {
     });
 
     const progressBar = template.querySelector('.flasher-progress');
-    if (progressBar instanceof HTMLElement && this.options.timeout > 0) {
+    if (progressBar instanceof HTMLElement && options.timeout > 0) {
       let width = 0;
       let progress: NodeJS.Timeout;
-      const lapse = 1000 / this.options.fps;
+      const lapse = 1000 / options.fps;
 
       const showProgress = () => {
         width += 1;
-        const percent = (1 - lapse * (width / this.options.timeout)) * 100;
+        const percent = (1 - lapse * (width / options.timeout)) * 100;
         progressBar.style.width = `${percent}%`;
 
         if (percent <= 0) {
