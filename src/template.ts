@@ -83,8 +83,15 @@ export default class TemplateFactory implements FlasherInterface {
         break;
     }
 
+    template.addEventListener('click', () => {
+      template.style.transform = 'scale(1.05)';
+      setTimeout(() => {
+        template.remove();
+      }, 200);
+    });
+
     const progressBar = template.querySelector('.flasher-progress');
-    if (progressBar instanceof HTMLElement) {
+    if (progressBar instanceof HTMLElement && this.options.timeout > 0) {
       let width = 0;
       let progress: NodeJS.Timeout;
       const lapse = 1000 / this.options.fps;
