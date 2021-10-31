@@ -95,8 +95,14 @@ export default class TemplateFactory implements FlasherInterface {
       }, 200);
     });
 
-    const progressBar = template.querySelector('.flasher-progress');
-    if (progressBar instanceof HTMLElement && options.timeout > 0) {
+    const progressBarContainer = template.querySelector('.fl-progress-bar');
+
+    if (progressBarContainer instanceof HTMLElement && options.timeout > 0) {
+      const progressBar = document.createElement('div');
+      progressBar.classList.add('fl-progress');
+
+      progressBarContainer.appendChild(progressBar);
+
       let width = 0;
       let progress: NodeJS.Timeout;
       const lapse = 1000 / options.fps;

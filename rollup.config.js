@@ -4,11 +4,33 @@ import typescript from 'rollup-plugin-typescript2';
 import notify from 'rollup-plugin-notify';
 import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
+import multiInput from 'rollup-plugin-multi-input';
+import styles from 'rollup-plugin-styles';
+import clear from 'rollup-plugin-clear';
 
 const moduleName = 'Flasher';
 const inputFileName = 'src/index.ts';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 export default [
+  {
+    input: ['src/*.scss'],
+    output: {
+      dir: 'dist',
+      assetFileNames: '[name].min.css',
+    },
+    plugins: [
+      clear({
+        targets: ['dist'],
+      }),
+      multiInput(),
+      styles({
+        minify: isProduction,
+        mode: 'extract',
+      }),
+    ],
+  },
   {
     input: inputFileName,
     output: [
