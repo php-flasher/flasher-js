@@ -51,7 +51,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
     "node-notifier": ">=10.0.0",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "postcss": "^8.3.11",
     "rollup": "^2.58.3",
     "rollup-plugin-clear": "^2.0.7",
