@@ -4,9 +4,10 @@ import {
   Envelope,
   FlasherResponseOptions,
   QueueableInterface,
-  ResponseContext,
+  ResponseContext, FlasherOptions,
 } from './interfaces';
 import TemplateFactory from './template';
+import { parseFunction } from './functions';
 
 export default class Flasher {
   private static instance: Flasher;
@@ -26,6 +27,7 @@ export default class Flasher {
   }
 
   public render(response: FlasherResponse): void {
+    response = this.parseResponse(response);
     this.addStyles(response.styles, () => {
       this.addScripts(response.scripts, () => {
         this.renderOptions(response.options);
@@ -126,5 +128,25 @@ export default class Flasher {
   private static isQueueable(object: any): object is QueueableInterface {
     return typeof object.addEnvelope === 'function'
       && typeof object.renderQueue === 'function';
+  }
+
+  private parseResponse(response: FlasherResponse): FlasherResponse {
+    Object.entries(response.options).forEach(([handler, options]) => {
+      response.options[handler] = this.parseOptions(options);
+    });
+
+    response.envelopes.forEach(envelope => {
+      envelope.notification.options = this.parseOptions(envelope.notification.options);
+    });
+
+    return response;
+  }
+
+  private parseOptions(options: FlasherOptions): FlasherOptions {
+    Object.entries(options).forEach(([key, value]) => {
+      options[key] = parseFunction(value);
+    });
+
+    return options;
   }
 }
