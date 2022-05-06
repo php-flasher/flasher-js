@@ -1,4 +1,9 @@
-import { Envelope, FlasherInterface, FlasherOptions } from './interfaces';
+import {
+  Envelope,
+  NotificationFactoryInterface,
+  FlasherOptions,
+  Theme, FlasherNotification,
+} from './interfaces';
 import { Properties } from 'csstype';
 import deepmerge from 'deepmerge';
 
@@ -7,11 +12,17 @@ interface Options {
   fps: number,
   position: string,
   direction: string,
-  style: Properties<string>
+  style: Properties<string>,
 }
 
-export default class TemplateFactory implements FlasherInterface {
-  options: Options = {
+export default class TemplateFactory implements NotificationFactoryInterface {
+  viewFactory: Theme;
+
+  constructor(viewFactory: Theme) {
+    this.viewFactory = viewFactory;
+  }
+
+  static options: Options = {
     timeout: 5000,
     fps: 30,
     position: 'top-right',
@@ -25,17 +36,45 @@ export default class TemplateFactory implements FlasherInterface {
     },
   };
 
+  success(message: string, title?: string, options?: FlasherOptions): void {
+    this.flash({ type: 'success', message, title, options });
+  }
+
+  info(message: string, title?: string, options?: FlasherOptions): void {
+    this.flash({ type: 'info', message, title, options });
+  }
+
+  warning(message: string, title?: string, options?: FlasherOptions): void {
+    this.flash({ type: 'warning', message, title, options });
+  }
+
+  error(message: string, title?: string, options?: FlasherOptions): void {
+    this.flash({ type: 'error', message, title, options });
+  }
+
+  flash(notification: FlasherNotification): void {
+    notification.type = notification.type || 'info';
+
+    this.renderOptions({});
+    this.render({ notification });
+  }
+
   render(envelope: Envelope): void {
     const { notification } = envelope;
+
+    if (!envelope.template) {
+      envelope.template = this.viewFactory.render(envelope);
+    }
+
     const template = TemplateFactory.stringToHTML(envelope.template || '') as HTMLElement;
 
     if (!template) {
       return;
     }
 
-    let options = JSON.parse(JSON.stringify(this.options));
+    let options = JSON.parse(JSON.stringify(TemplateFactory.options));
     if (!Array.isArray(notification.options)) {
-      options = deepmerge(options, notification.options);
+      options = deepmerge(options, notification.options || {});
     }
 
     template.style.transition = options.style.transition as string;
@@ -104,7 +143,7 @@ export default class TemplateFactory implements FlasherInterface {
       progressBarContainer.appendChild(progressBar);
 
       let width = 0;
-      let progress: NodeJS.Timeout;
+      let progress: number;
       const lapse = 1000 / options.fps;
 
       const showProgress = () => {
@@ -122,23 +161,23 @@ export default class TemplateFactory implements FlasherInterface {
         }
       };
 
-      progress = setInterval(showProgress, lapse) as NodeJS.Timeout;
+      progress = window.setInterval(showProgress, lapse);
 
       template.addEventListener('mouseover', () => {
         clearInterval(progress);
       });
 
       template.addEventListener('mouseout', () => {
-        progress = setInterval(showProgress, lapse) as NodeJS.Timeout;
+        progress = window.setInterval(showProgress, lapse);
       });
     }
   }
 
   renderOptions(options: FlasherOptions): void {
-    this.options = deepmerge(this.options, options);
+    TemplateFactory.options = deepmerge(TemplateFactory.options, options);
   }
 
-  private static stringToHTML(str: string) {
+  static stringToHTML(str: string) {
     const support = (() => {
       if (!DOMParser) {
         return false;

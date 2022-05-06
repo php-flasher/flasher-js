@@ -1,20 +1,19 @@
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export interface Notification {
+export interface FlasherNotification {
   type: string,
-  title: string,
   message: string,
-  options: FlasherOptions,
+  title?: string,
+  options?: FlasherOptions,
 }
 
 export interface Envelope {
-  created_at: string,
-  handler: string,
-  notification: Notification,
+  notification: FlasherNotification,
+  handler?: string,
+  created_at?: string,
   template?: string,
-  priority: number,
+  priority?: number,
   styles?: string[],
   scripts?: string[],
-  context: ResponseContext,
+  context?: ResponseContext,
 }
 
 export interface FlasherResponseOptions {
@@ -37,7 +36,12 @@ export interface FlasherResponse {
   context: ResponseContext,
 }
 
-export interface FlasherInterface {
+export interface NotificationFactoryInterface {
+  success(message: string, title?: string, options?: FlasherOptions): void;
+  info(message: string, title?: string, options?: FlasherOptions): void;
+  warning(message: string, title?: string, options?: FlasherOptions): void;
+  error(message: string, title?: string, options?: FlasherOptions): void;
+  flash(notification: FlasherNotification): void;
   render(envelope: Envelope): void;
   renderOptions(options: FlasherOptions): void;
 }
@@ -46,4 +50,9 @@ export interface QueueableInterface {
   addEnvelope(envelope: Envelope): void;
   renderQueue(): void;
   resetQueue(): void;
+}
+
+export interface Theme {
+  styles?: string | string[],
+  render: (envelope: Envelope) => string,
 }

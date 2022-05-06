@@ -13,10 +13,5 @@ module.exports = {
     ],
     extends: [
         'airbnb-typescript',
-    ],
-    settings: {
-        react: {
-            version: "latest"
-        }
-    }
+    ]
 };
