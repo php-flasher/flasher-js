@@ -20,7 +20,9 @@
   "license": "MIT",
   "main": "dist/index",
   "types": "dist/index",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "bugs": {
     "url": "https://github.com/php-flasher/flasher-js/issues"
   },
