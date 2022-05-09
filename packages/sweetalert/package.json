@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-sweetalert",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "javascript integration for php flasher",
   "keywords": [
     "javascript",
@@ -32,7 +32,7 @@
     "url": "https://github.com/php-flasher/flasher-js.git"
   },
   "dependencies": {
-    "@flasher/flasher": "^1.0.0",
+    "@flasher/flasher": "^1.0.1",
     "sweetalert2": "^11.4.10"
   }
 }
