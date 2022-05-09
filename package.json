@@ -27,6 +27,7 @@
     "dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",
     "clean": "lerna run clean",
     "publish": "lerna publish",
+    "version": "lerna version",
     "lint": "eslint . --ext .ts --fix"
   },
   "bugs": {
