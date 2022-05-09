@@ -1,0 +1,37 @@
+{
+  "name": "@flasher/flasher-pnotify",
+  "version": "1.0.0",
+  "description": "javascript integration for php flasher",
+  "keywords": [
+    "javascript",
+    "plugin",
+    "notification",
+    "toast",
+    "pnotify",
+    "sweetalert",
+    "noty",
+    "notyf",
+    "notify",
+    "php flasher",
+    "PHPFlasher",
+    "yoeunes"
+  ],
+  "author": "younes KHOUBZA <younes.khoubza@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index",
+  "types": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "bugs": {
+    "url": "https://github.com/php-flasher/flasher-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/php-flasher/flasher-js.git"
+  },
+  "dependencies": {
+    "@flasher/flasher": "^1.0.0",
+    "@pnotify/core": "^5.2.0"
+  }
+}

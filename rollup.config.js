@@ -1,74 +1,80 @@
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from 'rollup-plugin-typescript2';
-import notify from 'rollup-plugin-notify';
+import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
-import pkg from './package.json';
-import multiInput from 'rollup-plugin-multi-input';
 import styles from 'rollup-plugin-styles';
+import commonjs from '@rollup/plugin-commonjs';
 import clear from 'rollup-plugin-clear';
 
-const moduleName = 'Flasher';
-const inputFileName = 'src/index.ts';
+const modules = {
+  '@flasher/flasher': { name: 'flasher', output: 'dist/flasher.js' },
+  '@flasher/flasher-noty': { name: 'flasher.noty', output: 'dist/flasher-noty.js' },
+  '@flasher/flasher-notyf': { name: 'flasher.notyf', output: 'dist/flasher-notyf.js' },
+  '@flasher/flasher-pnotify': { name: 'flasher.pnotify', output: 'dist/flasher-pnotify.js' },
+  '@flasher/flasher-sweetalert': { name: 'flasher.sweetalert', output: 'dist/flasher-sweetalert.js' },
+  '@flasher/flasher-toastr': { name: 'flasher.toastr', output: 'dist/flasher-toastr.js' },
+};
 
-const isProduction = process.env.NODE_ENV === 'production';
+const packageName = process.env.LERNA_PACKAGE_NAME;
+const module = modules[packageName];
 
-export default [
-  {
-    input: ['src/*.scss'],
-    output: {
+if ('@flasher/flasher' !== packageName) {
+  module.globals = { '@flasher/flasher': 'flasher' };
+  module.external = ['@flasher/flasher'];
+
+  if (-1 !== ['@flasher/flasher-notyf', '@flasher/flasher-noty'].indexOf(packageName)) {
+    module.external.push('jquery');
+    module.globals.jquery = 'jQuery';
+  }
+}
+
+const isProduction = 'production' === process.env.NODE_ENV;
+
+export default {
+  input: 'src/index.ts',
+  plugins: [
+    clear({
+      targets: ['dist'],
+    }),
+    styles(),
+    resolve(),
+    commonjs(),
+    typescript({
+      tsconfig: 'tsconfig.build.json',
+    }),
+  ],
+  external: module.external || [],
+  output: [
+    {
       dir: 'dist',
-      assetFileNames: '[name].min.css',
+      format: 'cjs',
+      exports: 'auto',
+      sourcemap: true,
     },
-    plugins: [
-      clear({
-        targets: ['dist'],
-      }),
-      multiInput(),
-      styles({
-        minify: isProduction,
-        mode: 'extract',
-      }),
-    ],
+    {
+      file: module.output,
+      format: 'umd',
+      exports: 'auto',
+      sourcemap: true,
+      name: module.name,
+      globals: module.globals || {},
+    },
+    {
+      file: module.output.replace('.js', '.min.js'),
+      format: 'umd',
+      exports: 'auto',
+      sourcemap: true,
+      name: module.name,
+      globals: module.globals || {},
+      plugins: [
+        isProduction && terser(),
+      ],
+    },
+  ],
+  onwarn(warning, warn) {
+    const filename = warning.importer || warning.loc?.file;
+    if (filename && /node_modules/.test(filename)) {
+      return;
+    }
+    warn(warning);
   },
-  {
-    input: inputFileName,
-    output: [
-      {
-        name: moduleName,
-        file: pkg.main,
-        format: 'umd',
-      },
-      {
-        name: moduleName,
-        file: pkg.main.replace('.js', '.min.js'),
-        format: 'umd',
-        plugins: [
-          terser({
-            format: {
-              comments: false,
-            },
-          }),
-        ],
-      },
-    ],
-    plugins: [
-      notify(),
-      resolve(),
-      commonjs(),
-      typescript(),
-    ],
-  },
-  {
-    input: inputFileName,
-    plugins: [
-      resolve(),
-      commonjs(),
-      typescript(),
-    ],
-    output: [
-      { file: pkg.main.replace('.js', '.cjs.js'), format: 'cjs', exports: 'auto' },
-      { file: pkg.main.replace('.js', '.es.js'), format: 'es' },
-    ],
-  },
-];
+};
