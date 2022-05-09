@@ -19,6 +19,9 @@
   ],
   "author": "younes KHOUBZA <younes.khoubza@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index",
   "types": "dist/index",
   "files": [
