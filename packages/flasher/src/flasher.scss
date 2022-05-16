@@ -37,7 +37,7 @@ $types: (
 
 .fl-main-container {
   position: fixed;
-  max-width: 304px;
+  max-width: 350px;
   width: 100%;
   z-index: 99999;
 
@@ -103,6 +103,7 @@ $types: (
     display: flex;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+    padding-right: 0.75rem;
     align-items: center;
   }
 
