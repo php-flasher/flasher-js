@@ -37,11 +37,11 @@ export interface FlasherResponse {
 }
 
 export interface NotificationFactoryInterface {
-  success(message: string, title?: string, options?: FlasherOptions): void;
-  info(message: string, title?: string, options?: FlasherOptions): void;
-  warning(message: string, title?: string, options?: FlasherOptions): void;
-  error(message: string, title?: string, options?: FlasherOptions): void;
-  flash(notification: FlasherNotification): void;
+  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void;
+  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void;
+  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void;
+  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void;
+  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void;
   render(envelope: Envelope): void;
   renderOptions(options: FlasherOptions): void;
 }

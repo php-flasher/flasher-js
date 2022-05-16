@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "@flasher/flasher": "^1.0.4",
-    "sweetalert2": "^11.4.10"
+    "sweetalert2": "^11.4.14"
   }
 }
