@@ -85,7 +85,6 @@ export default class PnotifyFactory implements NotificationFactoryInterface {
         success(options as Options);
         break;
       case 'alert':
-      case 'warning':
         alert(options as Options);
         break;
       case 'info':
