@@ -128,7 +128,9 @@ export default class FlasherFactory implements NotificationFactoryInterface {
       container.prepend(template);
     }
 
-    requestAnimationFrame(() => template.classList.add('fl-show'));
+    setTimeout(() => {
+      template.classList.add('fl-show');
+    }, 100);
   }
 
   removeNotification(template: HTMLElement) {
