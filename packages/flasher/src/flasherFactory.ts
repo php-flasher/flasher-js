@@ -84,9 +84,16 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     const nOptions = notification.options || {};
     const options = Array.isArray(nOptions) ? this.options : deepmerge(this.options, nOptions);
 
-    const container = this.createContainer(options);
+    const onContainerReady = () => {
+      const container = this.createContainer(options);
+      this.addToContainer(container, envelope, options);
+    };
 
-    this.addToContainer(container, envelope, options);
+    if ('loading' !== document.readyState) {
+      onContainerReady();
+    }
+
+    document.addEventListener('DOMContentLoaded', onContainerReady);
   }
 
   renderOptions(options: FlasherOptions): void {
