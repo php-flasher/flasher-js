@@ -1,10 +1,11 @@
+import clear from 'rollup-plugin-clear';
+import commonjs from '@rollup/plugin-commonjs';
+import cssnano from 'cssnano';
+import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
+import styles from 'rollup-plugin-styles';
 import typescript from '@rollup/plugin-typescript';
 import { terser } from 'rollup-plugin-terser';
-import styles from 'rollup-plugin-styles';
-import commonjs from '@rollup/plugin-commonjs';
-import clear from 'rollup-plugin-clear';
-import cssnano from 'cssnano';
 
 const modules = {
   '@flasher/flasher': { name: 'flasher', output: 'dist/flasher.js' },
@@ -49,6 +50,7 @@ export default {
     typescript({
       tsconfig: 'tsconfig.build.json',
     }),
+    filesize(),
   ],
   external: module.external || [],
   output: [
