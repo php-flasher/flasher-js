@@ -1,4 +1,7 @@
 import flasher from '@flasher/flasher';
 import SweetAlertFactory from './sweetalert';
 
-flasher.addFactory('sweetalert', new SweetAlertFactory());
+const sweetalert = new SweetAlertFactory();
+flasher.addFactory('sweetalert', sweetalert);
+
+export default sweetalert;

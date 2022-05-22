@@ -1,4 +1,7 @@
 import flasher from '@flasher/flasher';
 import ToastrFactory from './toastr';
 
-flasher.addFactory('toastr', new ToastrFactory());
+const toastr = new ToastrFactory();
+flasher.addFactory('toastr', toastr);
+
+export default toastr;

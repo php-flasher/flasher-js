@@ -1,4 +1,7 @@
 import flasher from '@flasher/flasher';
 import NotyFactory from './noty';
 
-flasher.addFactory('noty', new NotyFactory());
+const noty = new NotyFactory();
+flasher.addFactory('noty', noty);
+
+export default noty;

@@ -1,4 +1,7 @@
 import flasher from '@flasher/flasher';
 import PnotifyFactory from './pnotify';
 
-flasher.addFactory('pnotify', new PnotifyFactory());
+const pnotify = new PnotifyFactory();
+flasher.addFactory('pnotify', pnotify);
+
+export default pnotify;

@@ -3,4 +3,7 @@ import './notyf.scss';
 import flasher from '@flasher/flasher';
 import NotyfFactory from './notyf';
 
-flasher.addFactory('notyf', new NotyfFactory());
+const notyf = new NotyfFactory();
+flasher.addFactory('notyf', notyf);
+
+export default notyf;
