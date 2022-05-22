@@ -230,6 +230,8 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
   }
 }
 
+// dark mode
+
 @mixin dark-mode {
   background-color: rgb(15, 23, 42);
   color: rgb(255, 255, 255);
