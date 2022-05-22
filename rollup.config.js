@@ -35,7 +35,7 @@ export default {
     clear({
       targets: ['dist'],
     }),
-    styles(),
+    styles({
       plugins: {
         "postcss-discard-comments": {
           removeAll: true,
