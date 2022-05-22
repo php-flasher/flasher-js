@@ -22,6 +22,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "browser": "dist/flasher-noty.min.js",
   "main": "dist/index",
   "types": "dist/index",
   "files": [
