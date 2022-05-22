@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",
