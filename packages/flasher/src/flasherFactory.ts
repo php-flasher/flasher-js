@@ -6,7 +6,6 @@ import {
   Theme,
 } from './common';
 import { Properties } from 'csstype';
-import deepmerge from 'deepmerge';
 
 export default class FlasherFactory implements NotificationFactoryInterface {
   private viewFactory: Theme;
@@ -82,7 +81,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     const { notification } = envelope;
 
     const nOptions = notification.options || {};
-    const options = Array.isArray(nOptions) ? this.options : deepmerge(this.options, nOptions);
+    const options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
 
     const onContainerReady = () => {
       const container = this.createContainer(options);
@@ -98,7 +97,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
   }
 
   renderOptions(options: FlasherOptions): void {
-    this.options = deepmerge(this.options, options);
+    this.options = Object.assign({}, this.options, options);
   }
 
   createContainer(options: { position: string; style: Properties}): HTMLDivElement {
