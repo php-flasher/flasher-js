@@ -36,6 +36,12 @@ export default {
       targets: ['dist'],
     }),
     styles(),
+      plugins: {
+        "postcss-discard-comments": {
+          removeAll: true,
+        },
+      },
+    }),
     resolve(),
     commonjs(),
     typescript({
@@ -66,7 +72,12 @@ export default {
       name: module.name,
       globals: module.globals || {},
       plugins: [
-        isProduction && terser(),
+        isProduction &&
+          terser({
+            format: {
+              comments: false,
+            },
+          }),
       ],
     },
   ],
