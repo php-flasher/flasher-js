@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-pnotify",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",
@@ -35,7 +35,7 @@
     "url": "https://github.com/php-flasher/flasher-js.git"
   },
   "dependencies": {
-    "@flasher/flasher": "^1.0.8",
+    "@flasher/flasher": "^1.0.9",
     "@pnotify/core": "^5.2.0"
   }
 }
