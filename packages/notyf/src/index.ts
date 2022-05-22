@@ -1,3 +1,5 @@
+import './notyf.scss';
+
 import flasher from '@flasher/flasher';
 import NotyfFactory from './notyf';
 

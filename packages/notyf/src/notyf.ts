@@ -73,7 +73,8 @@ export default class NotyfFactory implements NotificationFactoryInterface {
 
     const options = { ...notification, ...notification.options };
 
-    this.notyf?.open(options);
+    this.notyf = this.notyf || new Notyf();
+    this.notyf.open(options);
   }
 
   renderOptions(options: FlasherOptions): void {
@@ -89,7 +90,7 @@ export default class NotyfFactory implements NotificationFactoryInterface {
       className: 'notyf__toast--info',
       backgroundColor: '#5784E5',
       icon: {
-        className: 'notyf__icon--warning',
+        className: 'notyf__icon--info',
         tagName: 'i',
       },
     });
