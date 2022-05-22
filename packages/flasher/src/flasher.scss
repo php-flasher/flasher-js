@@ -4,8 +4,7 @@
 
 .fl-main-container {
   position: fixed;
-  max-width: 350px;
-  width: 100%;
+  width: 24rem;
   z-index: 99999;
   transition: all 1s ease-in-out;
 
@@ -49,7 +48,6 @@
 
 .fl-main-container .fl-container {
   transition: transform 0.3s ease-in-out;
-  overflow: hidden;
 
   &.fl-show {
     transform: translate(0, 0);
@@ -227,10 +225,9 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
   .fl-progress-bar {
     display: flex;
     height: 0.125rem;
+    margin-left: -1px;
   }
 }
-
-// dark mode
 
 @mixin dark-mode {
   background-color: rgb(15, 23, 42);
