@@ -4,6 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 import styles from 'rollup-plugin-styles';
 import commonjs from '@rollup/plugin-commonjs';
 import clear from 'rollup-plugin-clear';
+import cssnano from 'cssnano';
 
 const modules = {
   '@flasher/flasher': { name: 'flasher', output: 'dist/flasher.js' },
@@ -37,6 +38,7 @@ export default {
     }),
     styles({
       plugins: {
+        cssnano,
         "postcss-discard-comments": {
           removeAll: true,
         },
