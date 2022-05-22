@@ -91,6 +91,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
 
     if ('loading' !== document.readyState) {
       onContainerReady();
+      return;
     }
 
     document.addEventListener('DOMContentLoaded', onContainerReady);
