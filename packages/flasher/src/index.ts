@@ -17,7 +17,7 @@ flasher.addTheme('flasher', {
           '<span class="fl-message">'+notification.message+'</span>' +
         '</div>' +
       '</div>' +
-      '<div class="fl-progress-bar"></div>' +
+      '<span class="fl-progress-bar"></span>' +
     '</div>';
   },
 });

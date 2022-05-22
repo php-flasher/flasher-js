@@ -164,7 +164,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
       return;
     }
 
-    const progressBar = document.createElement('div');
+    const progressBar = document.createElement('span');
     progressBar.classList.add('fl-progress');
 
     const progressBarContainer = template.querySelector('.fl-progress-bar');
