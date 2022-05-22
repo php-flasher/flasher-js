@@ -1,45 +1,13 @@
-@function svg-uri($svg) {
-  $encoded: '';
-  $slice: 2000;
-  $index: 0;
-  $loops: ceil(str-length($svg) / $slice);
-
-  @for $i from 1 through $loops {
-    $chunk: str-slice($svg, $index, $index + $slice - 1);
-    $chunk: str-replace($chunk, '"', "'");
-    $chunk: str-replace($chunk, '<', '%3C');
-    $chunk: str-replace($chunk, '>', '%3E');
-    $chunk: str-replace($chunk, '&', '%26');
-    $chunk: str-replace($chunk, '#', '%23');
-    $encoded: #{$encoded}#{$chunk};
-    $index: $index + $slice;
-  }
-
-  @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
-}
-
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
-  }
-
-  @return $string;
-}
-
-$types: (
-  success: (color: #059669FF, icon: 'M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'),
-  info: (color: #2563EBFF, icon: 'M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v3a1 1 0 102 0V6a1 1 0 00-1-1z'),
-  warning: (color: #D97706FF, icon: 'M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 102 0V6a1 1 0 00-1-1z'),
-  error: (color: #DC2626FF, icon: 'M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'),
-);
+/*******************************************************************************
+ * General Style
+ *******************************************************************************/
 
 .fl-main-container {
   position: fixed;
   max-width: 350px;
   width: 100%;
   z-index: 99999;
+  transition: all 1s ease-in-out;
 
   &[data-position^="top-"] {
     top: 0.5rem;
@@ -77,100 +45,24 @@ $types: (
   &[data-position="bottom-center"] .fl-container {
     transform: translateY(100vh);
   }
+}
 
-  .fl-container {
-    transition: transform 0.3s ease-in-out;
-    overflow: hidden;
+.fl-main-container .fl-container {
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
 
-    &.fl-show {
-      transform: translate(0, 0);
-    }
+  &.fl-show {
+    transform: translate(0, 0);
   }
 }
 
-.fl-flasher.fl-container {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  line-height: 1.5;
-
-  margin-top: 0.5rem;
-
-  border-radius: 0.375rem 0 0 0.375rem;
-  cursor: pointer;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  word-break: break-word;
-
-  .fl-content {
-    display: flex;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-right: 0.75rem;
-    align-items: center;
-  }
-
-  .fl-icon {
-    display: inline-block;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    flex-shrink: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-  }
-
-  .fl-title {
-    display: block;
-    margin-left: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.25rem;
-    text-transform: capitalize;
-  }
-
-  .fl-message {
-    display: block;
-    margin-top: 0.25rem;
-    margin-left: 0.5rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    text-transform: capitalize;
-  }
-
-  .fl-progress-bar {
-    display: flex;
-    height: 0.125rem;
-  }
-}
-
-.fl-flasher.fl-container {
-  background-color: rgb(255, 255, 255);
-  color: rgb(75, 85, 99);
-}
-
-.dark .fl-flasher.fl-container {
-  background-color: rgb(15, 23, 42);
-  color: rgb(255, 255, 255);
-}
-
-@media (prefers-color-scheme: dark) {
-  .fl-flasher.fl-container {
-    background-color: rgb(15, 23, 42);
-    color: rgb(255, 255, 255);
-  }
-}
-
-@each $type, $map in $types {
-  .fl-flasher.fl-#{$type} {
-    $color: map-get($map, 'color');
-    $icon: map-get($map, 'icon');
-    border-left: 8px solid $color;
+$types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626FF);
+@each $type, $color in $types {
+  .fl-main-container .fl-container.fl-#{$type} {
+    border-left: 0.8rem solid $color;
 
     .fl-icon {
-      background-image: svg-uri('<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#{$color}"><path fill-rule="evenodd" d="#{$icon}" clip-rule="evenodd" /></svg>');
+      background-color: $color;
     }
 
     .fl-title {
@@ -187,5 +79,168 @@ $types: (
   }
 }
 
+.fl-main-container .fl-container {
+  .fl-icon {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    margin: 0;
+    border-radius: 50%;
+    transition: all 1s;
+    box-sizing: border-box;
+    display: inline-block;
+    color: white;
 
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      transition: all 1s;
+      border-width: 0;
+      box-sizing: border-box;
+    }
+  }
 
+  &.fl-success .fl-icon {
+    &:before,
+    &:after {
+      width: 0.16em;
+      height: 0.6em;
+      background-color: currentColor;
+      border-radius: 0.1em;
+      top: 0.6em;
+      left: 0.35em;
+      transform: rotate(-135deg);
+      transform-origin: 0.08em 0.08em;
+    }
+
+    &:after {
+      width: 0.4em;
+      height: 0.16em;
+    }
+  }
+
+  &.fl-info .fl-icon {
+    &:before,
+    &:after {
+      width: 0.15em;
+      background-color: currentColor;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0.03em;
+    }
+
+    &:before {
+      height: 0.38em;
+      top: 0.4em;
+    }
+
+    &:after {
+      height: 0.13em;
+      box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
+      top: 0.21em;
+    }
+  }
+
+  &.fl-warning .fl-icon {
+    &:before,
+    &:after {
+      width: 0.15em;
+      background-color: currentColor;
+      border-radius: 0.03em;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &:before {
+      height: 0.38em;
+      top: 0.21em;
+    }
+
+    &:after {
+      height: 0.13em;
+      top: 0.65em;
+    }
+  }
+
+  &.fl-error .fl-icon {
+    &:before,
+    &:after {
+      width: 0.16em;
+      height: 0.7em;
+      background-color: currentColor;
+      border-radius: 0.1em;
+      transform: translate(-50%, -50%) rotate(-135deg);
+      top: 50%;
+      left: 50%;
+    }
+
+    &:after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
+
+/*******************************************************************************
+ * Flasher Theme
+ *******************************************************************************/
+
+.fl-main-container .fl-container.fl-flasher {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.5;
+  background-color: rgb(255, 255, 255);
+  color: rgb(75, 85, 99);
+  margin-top: 0.5rem;
+
+  border-radius: 0.375rem 0 0 0.375rem;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  word-break: break-word;
+
+  .fl-content {
+    display: flex;
+    padding: 0.75rem;
+    align-items: center;
+  }
+
+  .fl-icon {
+    font-size: 2.5rem;
+  }
+
+  .fl-title, .fl-message {
+    display: block;
+    margin-left: 1rem;
+    line-height: 1.25rem;
+    text-transform: capitalize;
+  }
+
+  .fl-title {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .fl-message {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .fl-progress-bar {
+    display: flex;
+    height: 0.125rem;
+  }
+}
+
+@mixin dark-mode {
+  background-color: rgb(15, 23, 42);
+  color: rgb(255, 255, 255);
+}
+
+.dark .fl-main-container .fl-flasher.fl-container {
+  @include dark-mode;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fl-main-container .fl-flasher.fl-container {
+    @include dark-mode;
+  }
+}

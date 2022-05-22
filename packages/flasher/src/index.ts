@@ -1,5 +1,6 @@
-import Flasher from './flasher';
 import './flasher.scss';
+
+import Flasher from './flasher';
 import { Envelope } from './common';
 
 const flasher = new Flasher();
