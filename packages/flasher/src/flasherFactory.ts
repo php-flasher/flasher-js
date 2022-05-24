@@ -15,6 +15,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     fps: 30,
     position: 'top-right',
     direction: 'top',
+    rtl: false,
     style: {} as Properties,
   };
 
@@ -120,19 +121,23 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     return container;
   }
 
-  addToContainer(container: HTMLDivElement, envelope: Envelope, options: { direction: string, timeout: number; fps: number }): void {
+  addToContainer(container: HTMLDivElement, envelope: Envelope, options: { direction: string, timeout: number, fps: number, rtl: boolean }): void {
     const template = this.stringToHTML(envelope.template || this.viewFactory.render(envelope));
 
-    this.appendNotification(container, template, options.direction);
+    this.appendNotification(container, template, options);
     this.renderProgressBar(template, options);
     this.handleClick(template);
   }
 
-  appendNotification(container: HTMLElement, template: HTMLElement, direction: string): void {
-    if (direction === 'bottom') {
+  appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string, rtl: boolean }): void {
+    if (options.direction === 'bottom') {
       container.append(template);
     } else {
       container.prepend(template);
+    }
+
+    if (options.rtl) {
+      template.classList.add('fl-rtl');
     }
 
     setTimeout(() => {
