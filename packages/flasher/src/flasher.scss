@@ -229,7 +229,10 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
     margin-left: 1rem;
     margin-right: 1rem;
     line-height: 1.25rem;
-    text-transform: capitalize;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 
   .fl-title {
