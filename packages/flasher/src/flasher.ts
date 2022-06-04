@@ -258,6 +258,11 @@ export default class Flasher {
   }
 
   resolveThemeHandler(alias: string): void {
+    const factory = this.factories.get(alias);
+    if (factory) {
+      return;
+    }
+
     if (0 !== alias.indexOf('theme.')) {
       return;
     }
