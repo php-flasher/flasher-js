@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.17](https://github.com/php-flasher/flasher-js/compare/v1.0.16...v1.0.17) (2022-06-04)
+
+### Bug Fixes
+
+* dont create theme factory if it already exists ([3aa29be](https://github.com/php-flasher/flasher-js/commit/3aa29be85efe4f352ae2be94bbbecc7d03c3d866))
+
 ## [1.0.16](https://github.com/php-flasher/flasher-js/compare/v1.0.15...v1.0.16) (2022-05-25)
 
 **Note:** Version bump only for package @flasher/flasher
