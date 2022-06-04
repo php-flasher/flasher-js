@@ -19,23 +19,23 @@ export default class Flasher {
 
   private themes: Map<string, Theme> = new Map<string, Theme>();
 
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     const notification = this.createNotification(type, message, title, options);
     const factory = this.create(this.defaultHandler);
 
@@ -44,10 +44,10 @@ export default class Flasher {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string | FlasherOptions,
+    message?: string | FlasherOptions,
+    title?: string | FlasherOptions,
+    options?: FlasherOptions,
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -71,7 +71,7 @@ export default class Flasher {
       type: type || 'info',
       message,
       title,
-      options
+      options,
     };
   }
 
@@ -79,7 +79,7 @@ export default class Flasher {
     alias = this.resolveHandler(alias);
     this.resolveThemeHandler(alias);
 
-    let factory = this.factories.get(alias);
+    const factory = this.factories.get(alias);
     if (!factory) {
       throw new Error(`Unable to resolve "${alias}" notification factory, did you forget to register it?`);
     }
