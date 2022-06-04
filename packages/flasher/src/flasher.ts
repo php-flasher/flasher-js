@@ -176,7 +176,10 @@ export default class Flasher {
         return;
       }
 
-      queues.get(envelope.handler) || factory.resetQueue();
+      if (!queues.get(envelope.handler)) {
+        factory.resetQueue();
+      }
+
       factory.addEnvelope(envelope);
       queues.set(envelope.handler, factory);
     });
