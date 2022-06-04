@@ -23,23 +23,23 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.viewFactory = viewFactory;
   }
 
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -47,10 +47,10 @@ export default class FlasherFactory implements NotificationFactoryInterface {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string | FlasherOptions,
+    message?: string | FlasherOptions,
+    title?: string | FlasherOptions,
+    options?: FlasherOptions,
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -74,7 +74,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
       type: type || 'info',
       message,
       title,
-      options
+      options,
     };
   }
 
@@ -101,7 +101,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.options = Object.assign({}, this.options, options);
   }
 
-  createContainer(options: { position: string; style: Properties}): HTMLDivElement {
+  createContainer(options: { position: string; style: Properties }): HTMLDivElement {
     const containerSelector = `.fl-main-container[data-position="${options.position}"]`;
     let container = document.querySelector(containerSelector) as HTMLDivElement;
     if (container) {
@@ -165,7 +165,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     template.addEventListener('click', () => this.removeNotification(template));
   }
 
-  renderProgressBar(template: HTMLElement, options: {timeout: number; fps: number}) {
+  renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
     if (!options.timeout || options.timeout <= 0) {
       return;
     }
