@@ -123,6 +123,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
 
   addToContainer(container: HTMLDivElement, envelope: Envelope, options: { direction: string, timeout: number, fps: number, rtl: boolean }): void {
     const template = this.stringToHTML(envelope.template || this.viewFactory.render(envelope));
+    template.classList.add('fl-container');
 
     this.appendNotification(container, template, options);
     this.renderProgressBar(template, options);

@@ -9,7 +9,7 @@ flasher.addTheme('flasher', {
   render: (envelope: Envelope): string => {
     const notification = envelope.notification;
 
-    return '<div class="fl-flasher fl-container fl-'+notification.type+'">' +
+    return '<div class="fl-flasher fl-'+notification.type+'">' +
       '<div class="fl-content">' +
         '<div class="fl-icon"></div>' +
         '<div>' +
