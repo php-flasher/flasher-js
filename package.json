@@ -25,6 +25,7 @@
   "scripts": {
     "build": "NODE_ENV=production lerna exec -- rollup -c ../../rollup.config.js",
     "dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",
+    "watch": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js --watch",
     "clean": "lerna run clean",
     "publish": "lerna publish from-package",
     "version": "lerna version --no-private --conventional-commits --create-release github --yes",
