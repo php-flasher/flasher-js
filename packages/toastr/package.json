@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-toastr",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",
@@ -36,7 +36,7 @@
     "url": "https://github.com/php-flasher/flasher-js.git"
   },
   "dependencies": {
-    "@flasher/flasher": "^1.0.17",
+    "@flasher/flasher": "^1.0.18",
     "toastr": "^2.1.4"
   },
   "devDependencies": {
