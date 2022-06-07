@@ -217,7 +217,6 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
  *******************************************************************************/
 
 .fl-main-container .fl-container.fl-flasher {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   line-height: 1.5;
   background-color: rgb(255, 255, 255);
   color: rgb(75, 85, 99);
@@ -259,7 +258,7 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
 
   .fl-title {
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: bold;
   }
 
   .fl-message {
