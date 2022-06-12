@@ -266,18 +266,3 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
     font-size: 0.875rem;
   }
 }
-
-@mixin dark-mode {
-  background-color: rgb(15, 23, 42);
-  color: rgb(255, 255, 255);
-}
-
-.dark .fl-main-container .fl-flasher.fl-container {
-  @include dark-mode;
-}
-
-@media (prefers-color-scheme: dark) {
-  .fl-main-container .fl-flasher.fl-container {
-    @include dark-mode;
-  }
-}

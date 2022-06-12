@@ -17,6 +17,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     direction: 'top',
     rtl: false,
     style: {} as Properties,
+    darkMode: 'media',
   };
 
   constructor(viewFactory: Theme) {
@@ -83,6 +84,8 @@ export default class FlasherFactory implements NotificationFactoryInterface {
 
     const nOptions = notification.options || {};
     const options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
+
+    this.applyDarkMode();
 
     const onContainerReady = () => {
       const container = this.createContainer(options);
@@ -174,7 +177,9 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     progressBar.classList.add('fl-progress');
 
     const progressBarContainer = template.querySelector('.fl-progress-bar');
-    progressBarContainer && progressBarContainer.append(progressBar);
+    if (progressBarContainer) {
+      progressBarContainer.append(progressBar);
+    }
 
     const lapse = 1000 / options.fps;
     let width = 0;
@@ -184,7 +189,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
       progressBar.style.width = `${percent}%`;
 
       if (percent <= 0) {
-        clearInterval(progressInterval);
+        clearInterval(progressInterval); // eslint-disable-line @typescript-eslint/no-use-before-define
         this.removeNotification(template);
       }
     };
@@ -192,6 +197,20 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     let progressInterval = window.setInterval(showProgress, lapse);
     template.addEventListener('mouseout', () => progressInterval = window.setInterval(showProgress, lapse));
     template.addEventListener('mouseover', () => clearInterval(progressInterval));
+  }
+
+  applyDarkMode(): void {
+    let [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
+    let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
+
+    css = 'media' === mode
+      ? `@media (prefers-color-scheme: dark) {${css}}`
+      : `${className} ${css}`;
+
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
   }
 
   stringToHTML(str: string): HTMLElement {

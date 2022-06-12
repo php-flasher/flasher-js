@@ -32,6 +32,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
         timeout: number;
         fps: number;
     }): void;
+    applyDarkMode(): void;
     stringToHTML(str: string): HTMLElement;
 }
 //# sourceMappingURL=flasherFactory.d.ts.map
