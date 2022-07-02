@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/php-flasher/flasher-js/compare/v1.1.0...v1.1.1) (2022-07-02)
+
+**Note:** Version bump only for package @flasher/flasher-noty
+
 # [1.1.0](https://github.com/php-flasher/flasher-js/compare/v1.0.18...v1.1.0) (2022-06-12)
 
 **Note:** Version bump only for package @flasher/flasher-noty

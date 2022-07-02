@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-noty",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",
@@ -36,7 +36,7 @@
     "url": "https://github.com/php-flasher/flasher-js.git"
   },
   "dependencies": {
-    "@flasher/flasher": "^1.1.0",
+    "@flasher/flasher": "^1.1.1",
     "noty": "^3.2.0-beta-deprecated"
   }
 }
