@@ -95,7 +95,6 @@
           var notification = envelope.notification;
           var nOptions = notification.options || {};
           var options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
-          this.applyDarkMode();
           var onContainerReady = function () {
               var container = _this.createContainer(options);
               _this.addToContainer(container, envelope, options);
@@ -108,6 +107,7 @@
       };
       FlasherFactory.prototype.renderOptions = function (options) {
           this.options = Object.assign({}, this.options, options);
+          this.applyDarkMode();
       };
       FlasherFactory.prototype.createContainer = function (options) {
           var containerSelector = ".fl-main-container[data-position=\"".concat(options.position, "\"]");
@@ -187,6 +187,9 @@
           template.addEventListener('mouseover', function () { return clearInterval(progressInterval); });
       };
       FlasherFactory.prototype.applyDarkMode = function () {
+          if (document.body.classList.contains('fl-dark-mode')) {
+              return;
+          }
           var _a = [].concat(this.options.darkMode), mode = _a[0], _b = _a[1], className = _b === void 0 ? '.dark' : _b;
           var css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
           css = 'media' === mode
@@ -196,6 +199,7 @@
           style.type = 'text/css';
           style.appendChild(document.createTextNode(css));
           document.head.appendChild(style);
+          document.body.classList.add('fl-dark-mode');
       };
       FlasherFactory.prototype.stringToHTML = function (str) {
           var support = (function () {
