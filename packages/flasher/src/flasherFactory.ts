@@ -85,8 +85,6 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     const nOptions = notification.options || {};
     const options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
 
-    this.applyDarkMode();
-
     const onContainerReady = () => {
       const container = this.createContainer(options);
       this.addToContainer(container, envelope, options);
@@ -102,6 +100,8 @@ export default class FlasherFactory implements NotificationFactoryInterface {
 
   renderOptions(options: FlasherOptions): void {
     this.options = Object.assign({}, this.options, options);
+
+    this.applyDarkMode();
   }
 
   createContainer(options: { position: string; style: Properties }): HTMLDivElement {
@@ -200,6 +200,10 @@ export default class FlasherFactory implements NotificationFactoryInterface {
   }
 
   applyDarkMode(): void {
+    if (document.body.classList.contains('fl-dark-mode')) {
+      return;
+    }
+
     let [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
     let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
 
@@ -211,6 +215,8 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
+
+    document.body.classList.add('fl-dark-mode');
   }
 
   stringToHTML(str: string): HTMLElement {
