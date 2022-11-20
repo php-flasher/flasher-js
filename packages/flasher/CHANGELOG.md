@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/php-flasher/flasher-js/compare/v1.1.1...v1.2.0) (2022-11-20)
+
+### Features
+
+* add data-turbo-cache="false" to prevent snapshot ([607c82c](https://github.com/php-flasher/flasher-js/commit/607c82cdfdabef7abf35522981e551cf84298d4e))
+* build assets ([75d9e9d](https://github.com/php-flasher/flasher-js/commit/75d9e9d50652e937531d4e72163ddf2aca0cb479))
+* upgrade dependencies ([c809d9a](https://github.com/php-flasher/flasher-js/commit/c809d9aa586ccf972333164350f899c08ee9f762))
+
 ## [1.1.1](https://github.com/php-flasher/flasher-js/compare/v1.1.0...v1.1.1) (2022-07-02)
 
 ### Bug Fixes
