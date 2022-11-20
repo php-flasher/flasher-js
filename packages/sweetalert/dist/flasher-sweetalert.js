@@ -73,7 +73,7 @@
     var sweetalert2_all = {exports: {}};
 
     /*!
-    * sweetalert2 v11.6.9
+    * sweetalert2 v11.6.10
     * Released under the MIT License.
     */
 
@@ -3999,7 +3999,7 @@
     	    };
     	  });
     	  SweetAlert.DismissReason = DismissReason;
-    	  SweetAlert.version = '11.6.9';
+    	  SweetAlert.version = '11.6.10';
 
     	  const Swal = SweetAlert;
     	  // @ts-ignore
