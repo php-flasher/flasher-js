@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-toastr",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/php-flasher/flasher-js/compare/v1.2.0...v1.2.1) (2022-11-20)
+
+### Bug Fixes
+
+* use JQuery  as an external dependency ([492588a](https://github.com/php-flasher/flasher-js/commit/492588a723a27006d139c0d8049eb4591f013faa))
+
 # [1.2.0](https://github.com/php-flasher/flasher-js/compare/v1.1.1...v1.2.0) (2022-11-20)
 
 ### Features
