@@ -23,7 +23,7 @@ if ('@flasher/flasher' !== packageName) {
   module.globals = { '@flasher/flasher': 'flasher' };
   module.external = ['@flasher/flasher'];
 
-  if (-1 !== ['@flasher/flasher-notyf', '@flasher/flasher-noty'].indexOf(packageName)) {
+  if (-1 === ['@flasher/flasher-notyf', '@flasher/flasher-noty'].indexOf(packageName)) {
     module.external.push('jquery');
     module.globals.jquery = 'jQuery';
   }
@@ -50,7 +50,6 @@ export default {
     typescript({
       tsconfig: 'tsconfig.build.json',
     }),
-    filesize(),
   ],
   external: module.external || [],
   output: [
@@ -82,6 +81,7 @@ export default {
               comments: false,
             },
           }),
+        filesize(),
       ],
     },
   ],
