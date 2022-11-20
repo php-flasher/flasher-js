@@ -99,10 +99,10 @@ importers:
   packages/sweetalert:
     specifiers:
       '@flasher/flasher': ^1.1.1
-      sweetalert2: ^11.6.9
+      sweetalert2: ^11.6.10
     dependencies:
       '@flasher/flasher': link:../flasher
-      sweetalert2: 11.6.9
+      sweetalert2: 11.6.10
 
   packages/toastr:
     specifiers:
@@ -6987,8 +6987,8 @@ packages:
       stable: 0.1.8
     dev: true
 
-  /sweetalert2/11.6.9:
-    resolution: {integrity: sha512-zx0vdToB2Ququk+0qbXruca5KJuScyno77cqPfuwSiRwlMS5CwwnZDWiLqcRlIAZzDEbZHz9g/T7BDqAGqsQlA==}
+  /sweetalert2/11.6.10:
+    resolution: {integrity: sha512-/tzEmEYqqHVkO6iMfvCFcmaO78un93CdZIhB+DGj9BLMkcuXS8jo2bmYoxjEAryhxsKPqXiWmZNo3gw/qw/ZwQ==}
     dev: false
 
   /tar/6.1.12:
