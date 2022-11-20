@@ -2,10 +2,6 @@
 
 var flasher = require('@flasher/flasher');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var flasher__default = /*#__PURE__*/_interopDefaultLegacy(flasher);
-
 var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
 var css$1 = ".notyf__icon--info,.notyf__icon--warning{background:#fff;border-radius:50%;box-sizing:border-box;display:block;height:1em;margin:0 auto;position:relative;width:1em}.notyf__icon--info:after,.notyf__icon--info:before,.notyf__icon--warning:after,.notyf__icon--warning:before{border-width:0;box-sizing:border-box;content:\"\";position:absolute;transition:all 1s}.notyf__icon--info:after,.notyf__icon--info:before{background-color:currentColor;border-radius:.03em;left:50%;transform:translateX(-50%);width:.15em}.notyf__icon--info:before{height:.38em;top:.4em}.notyf__icon--info:after{box-shadow:-.06em .19em,-.06em .44em,.06em .44em;height:.13em;top:.21em}.notyf__icon--warning:after,.notyf__icon--warning:before{background-color:currentColor;border-radius:.03em;left:50%;transform:translateX(-50%);width:.15em}.notyf__icon--warning:before{height:.38em;top:.21em}.notyf__icon--warning:after{height:.13em;top:.65em}";
@@ -532,6 +528,8 @@ var NotyfFactory = (function () {
         var options = __assign$1(__assign$1({}, notification), notification.options);
         this.notyf = this.notyf || new Notyf();
         this.notyf.open(options);
+        this.notyf.view.container.dataset.turboCache = 'false';
+        this.notyf.view.a11yContainer.dataset.turboCache = 'false';
     };
     NotyfFactory.prototype.renderOptions = function (options) {
         var nOptions = __assign$1({ duration: options.duration || 5000 }, options);
@@ -539,7 +537,7 @@ var NotyfFactory = (function () {
         nOptions.types.push({
             type: 'info',
             className: 'notyf__toast--info',
-            backgroundColor: '#5784E5',
+            background: '#5784E5',
             icon: {
                 className: 'notyf__icon--info',
                 tagName: 'i'
@@ -548,7 +546,7 @@ var NotyfFactory = (function () {
         nOptions.types.push({
             type: 'warning',
             className: 'notyf__toast--warning',
-            backgroundColor: '#E3A008',
+            background: '#E3A008',
             icon: {
                 className: 'notyf__icon--warning',
                 tagName: 'i'
@@ -560,6 +558,6 @@ var NotyfFactory = (function () {
 }());
 
 var notyf = new NotyfFactory();
-flasher__default["default"].addFactory('notyf', notyf);
+flasher.addFactory('notyf', notyf);
 
 module.exports = notyf;

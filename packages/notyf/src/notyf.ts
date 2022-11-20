@@ -75,6 +75,11 @@ export default class NotyfFactory implements NotificationFactoryInterface {
 
     this.notyf = this.notyf || new Notyf();
     this.notyf.open(options);
+
+    // @ts-ignore
+    this.notyf.view.container.dataset.turboCache = 'false';
+    // @ts-ignore
+    this.notyf.view.a11yContainer.dataset.turboCache = 'false';
   }
 
   renderOptions(options: FlasherOptions): void {
@@ -88,7 +93,7 @@ export default class NotyfFactory implements NotificationFactoryInterface {
     nOptions.types.push({
       type: 'info',
       className: 'notyf__toast--info',
-      backgroundColor: '#5784E5',
+      background: '#5784E5',
       icon: {
         className: 'notyf__icon--info',
         tagName: 'i',
@@ -98,7 +103,7 @@ export default class NotyfFactory implements NotificationFactoryInterface {
     nOptions.types.push({
       type: 'warning',
       className: 'notyf__toast--warning',
-      backgroundColor: '#E3A008',
+      background: '#E3A008',
       icon: {
         className: 'notyf__icon--warning',
         tagName: 'i',

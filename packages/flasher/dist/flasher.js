@@ -113,11 +113,13 @@
           var containerSelector = ".fl-main-container[data-position=\"".concat(options.position, "\"]");
           var container = document.querySelector(containerSelector);
           if (container) {
+              container.dataset.turboCache = 'false';
               return container;
           }
           container = document.createElement('div');
           container.classList.add('fl-main-container');
           container.dataset.position = options.position;
+          container.dataset.turboCache = 'false';
           Object.keys(options.style).forEach(function (key) {
               container === null || container === void 0 ? void 0 : container.style.setProperty(key, options.style[key]);
           });
@@ -187,7 +189,7 @@
           template.addEventListener('mouseover', function () { return clearInterval(progressInterval); });
       };
       FlasherFactory.prototype.applyDarkMode = function () {
-          if (document.body.classList.contains('fl-dark-mode')) {
+          if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
               return;
           }
           var _a = [].concat(this.options.darkMode), mode = _a[0], _b = _a[1], className = _b === void 0 ? '.dark' : _b;
@@ -197,6 +199,7 @@
               : "".concat(className, " ").concat(css);
           var style = document.createElement('style');
           style.type = 'text/css';
+          style.classList.add('flasher-js');
           style.appendChild(document.createTextNode(css));
           document.head.appendChild(style);
           document.body.classList.add('fl-dark-mode');
@@ -348,7 +351,7 @@
           tag.setAttribute('src', urls[0]);
           tag.setAttribute('type', 'text/javascript');
           tag.onload = function () { return _this.addScripts(urls.slice(1), callback); };
-          document.body.appendChild(tag);
+          document.head.appendChild(tag);
       };
       Flasher.prototype.renderEnvelopes = function (envelopes, context) {
           var _this = this;
