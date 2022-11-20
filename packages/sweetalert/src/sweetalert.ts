@@ -99,6 +99,13 @@ export default class SweetAlertFactory implements NotificationFactoryInterface, 
       timerProgressBar: (options.timerProgressBar || true) as any,
       ...options,
     } as SweetAlertOptions);
+
+    document.addEventListener('turbo:before-cache', function () {
+      if (Swal.isVisible()) {
+        Swal.getPopup()?.style.setProperty('animation-duration', '0ms');
+        Swal.close();
+      }
+    });
   }
 
   addEnvelope(envelope: Envelope): void {

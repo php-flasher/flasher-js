@@ -5,7 +5,16 @@ import {
   NotificationFactoryInterface,
 } from '@flasher/flasher';
 
-import { notice, alert, info, success, error, Options, defaults } from '@pnotify/core';
+import {
+  notice,
+  alert,
+  info,
+  success,
+  error,
+  Options,
+  defaults,
+  Notice
+} from '@pnotify/core';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
@@ -80,21 +89,26 @@ export default class PnotifyFactory implements NotificationFactoryInterface {
       text: (options?.text || notification.message) as string,
     };
 
+    let pnotify: Notice;
     switch (notification.type) {
       case 'success':
-        success(options as Options);
+        pnotify = success(options as Options);
         break;
       case 'alert':
-        alert(options as Options);
+        pnotify = alert(options as Options);
         break;
       case 'info':
-        info(options as Options);
+        pnotify = info(options as Options);
         break;
       case 'error':
-        error(options as Options);
+        pnotify = error(options as Options);
         break;
       default:
-        notice(options as Options);
+        pnotify = notice(options as Options);
+    }
+
+    if (pnotify.refs.container) {
+        pnotify.refs.container.dataset.turboCache = 'false';
     }
   }
 

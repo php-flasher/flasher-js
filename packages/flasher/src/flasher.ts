@@ -160,7 +160,7 @@ export default class Flasher {
     tag.setAttribute('type', 'text/javascript');
     tag.onload = () => this.addScripts(urls.slice(1), callback);
 
-    document.body.appendChild(tag);
+    document.head.appendChild(tag);
   }
 
   renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {

@@ -43,7 +43,10 @@ export default class NotyFactory implements NotificationFactoryInterface {
       ...notification.options,
     } as Noty.Options;
 
-    new Noty(options).show();
+    const noty = new Noty(options);
+    noty.show();
+    // @ts-ignore
+    noty.layoutDom.dataset.turboCache = 'false';
   }
 
   createNotification(

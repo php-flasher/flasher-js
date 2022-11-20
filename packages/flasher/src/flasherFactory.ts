@@ -108,12 +108,14 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     const containerSelector = `.fl-main-container[data-position="${options.position}"]`;
     let container = document.querySelector(containerSelector) as HTMLDivElement;
     if (container) {
+      container.dataset.turboCache = 'false';
       return container;
     }
 
     container = document.createElement('div');
     container.classList.add('fl-main-container');
     container.dataset.position = options.position;
+    container.dataset.turboCache = 'false';
 
     Object.keys(options.style).forEach((key: string) => {
       container?.style.setProperty(key, options.style[key as keyof Properties] as string);
@@ -200,7 +202,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
   }
 
   applyDarkMode(): void {
-    if (document.body.classList.contains('fl-dark-mode')) {
+    if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
       return;
     }
 
@@ -213,6 +215,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
 
     const style = document.createElement('style');
     style.type = 'text/css';
+    style.classList.add('flasher-js');
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
 
