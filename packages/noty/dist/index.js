@@ -2,10 +2,6 @@
 
 var flasher = require('@flasher/flasher');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var flasher__default = /*#__PURE__*/_interopDefaultLegacy(flasher);
-
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -40,12 +36,12 @@ function getDefaultExportFromCjs (x) {
 
 var noty$1 = {exports: {}};
 
-/* 
-  @package NOTY - Dependency-free notification library 
-  @version version: 3.2.0-beta 
-  @contributors https://github.com/needim/noty/graphs/contributors 
-  @documentation Examples and Documentation - https://ned.im/noty 
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
+/*
+  @package NOTY - Dependency-free notification library
+  @version version: 3.2.0-beta
+  @contributors https://github.com/needim/noty/graphs/contributors
+  @documentation Examples and Documentation - https://ned.im/noty
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
 */
 
 (function (module, exports) {
@@ -2059,7 +2055,7 @@ var noty$1 = {exports: {}};
 	    The primary way of interacting with a promise is through its `then` method,
 	    which registers callbacks to receive either a promise's eventual value or the
 	    reason why the promise cannot be fulfilled.
-	  
+
 	    ```js
 	    findUser().then(function(user){
 	      // user is available
@@ -2067,14 +2063,14 @@ var noty$1 = {exports: {}};
 	      // user is unavailable, and you are given the reason why
 	    });
 	    ```
-	  
+
 	    Chaining
 	    --------
-	  
+
 	    The return value of `then` is itself a promise.  This second, 'downstream'
 	    promise is resolved with the return value of the first promise's fulfillment
 	    or rejection handler, or rejected if the handler throws an exception.
-	  
+
 	    ```js
 	    findUser().then(function (user) {
 	      return user.name;
@@ -2084,7 +2080,7 @@ var noty$1 = {exports: {}};
 	      // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
 	      // will be `'default name'`
 	    });
-	  
+
 	    findUser().then(function (user) {
 	      throw new Error('Found user, but still unhappy');
 	    }, function (reason) {
@@ -2097,7 +2093,7 @@ var noty$1 = {exports: {}};
 	    });
 	    ```
 	    If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-	  
+
 	    ```js
 	    findUser().then(function (user) {
 	      throw new PedagogicalException('Upstream error');
@@ -2109,15 +2105,15 @@ var noty$1 = {exports: {}};
 	      // The `PedgagocialException` is propagated all the way down to here
 	    });
 	    ```
-	  
+
 	    Assimilation
 	    ------------
-	  
+
 	    Sometimes the value you want to propagate to a downstream promise can only be
 	    retrieved asynchronously. This can be achieved by returning a promise in the
 	    fulfillment or rejection handler. The downstream promise will then be pending
 	    until the returned promise is settled. This is called *assimilation*.
-	  
+
 	    ```js
 	    findUser().then(function (user) {
 	      return findCommentsByAuthor(user);
@@ -2125,9 +2121,9 @@ var noty$1 = {exports: {}};
 	      // The user's comments are now available
 	    });
 	    ```
-	  
+
 	    If the assimliated promise rejects, then the downstream promise will also reject.
-	  
+
 	    ```js
 	    findUser().then(function (user) {
 	      return findCommentsByAuthor(user);
@@ -2137,15 +2133,15 @@ var noty$1 = {exports: {}};
 	      // If `findCommentsByAuthor` rejects, we'll have the reason here
 	    });
 	    ```
-	  
+
 	    Simple Example
 	    --------------
-	  
+
 	    Synchronous Example
-	  
+
 	    ```javascript
 	    let result;
-	  
+
 	    try {
 	      result = findResult();
 	      // success
@@ -2153,9 +2149,9 @@ var noty$1 = {exports: {}};
 	      // failure
 	    }
 	    ```
-	  
+
 	    Errback Example
-	  
+
 	    ```js
 	    findResult(function(result, err){
 	      if (err) {
@@ -2165,9 +2161,9 @@ var noty$1 = {exports: {}};
 	      }
 	    });
 	    ```
-	  
+
 	    Promise Example;
-	  
+
 	    ```javascript
 	    findResult().then(function(result){
 	      // success
@@ -2175,15 +2171,15 @@ var noty$1 = {exports: {}};
 	      // failure
 	    });
 	    ```
-	  
+
 	    Advanced Example
 	    --------------
-	  
+
 	    Synchronous Example
-	  
+
 	    ```javascript
 	    let author, books;
-	  
+
 	    try {
 	      author = findAuthor();
 	      books  = findBooksByAuthor(author);
@@ -2192,19 +2188,19 @@ var noty$1 = {exports: {}};
 	      // failure
 	    }
 	    ```
-	  
+
 	    Errback Example
-	  
+
 	    ```js
-	  
+
 	    function foundBooks(books) {
-	  
+
 	    }
-	  
+
 	    function failure(reason) {
-	  
+
 	    }
-	  
+
 	    findAuthor(function(author, err){
 	      if (err) {
 	        failure(err);
@@ -2229,9 +2225,9 @@ var noty$1 = {exports: {}};
 	      }
 	    });
 	    ```
-	  
+
 	    Promise Example;
-	  
+
 	    ```javascript
 	    findAuthor().
 	      then(findBooksByAuthor).
@@ -2241,7 +2237,7 @@ var noty$1 = {exports: {}};
 	      // something went wrong
 	    });
 	    ```
-	  
+
 	    @method then
 	    @param {Function} onFulfilled
 	    @param {Function} onRejected
@@ -2253,25 +2249,25 @@ var noty$1 = {exports: {}};
 	  /**
 	    `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
 	    as the catch block of a try/catch statement.
-	  
+
 	    ```js
 	    function findAuthor(){
 	      throw new Error('couldn't find that author');
 	    }
-	  
+
 	    // synchronous
 	    try {
 	      findAuthor();
 	    } catch(reason) {
 	      // something went wrong
 	    }
-	  
+
 	    // async with promises
 	    findAuthor().catch(function(reason){
 	      // something went wrong
 	    });
 	    ```
-	  
+
 	    @method catch
 	    @param {Function} onRejection
 	    Useful for tooling.
@@ -3179,7 +3175,9 @@ var NotyFactory = (function () {
         var notification = envelope.notification;
         notification.type = notification.type || 'info';
         var options = __assign({ text: notification.message, type: notification.type }, notification.options);
-        new Noty(options).show();
+        var noty = new Noty(options);
+        noty.show();
+        noty.layoutDom.dataset.turboCache = 'false';
     };
     NotyFactory.prototype.createNotification = function (type, message, title, options) {
         if (typeof type === 'object') {
@@ -3214,6 +3212,6 @@ var NotyFactory = (function () {
 }());
 
 var noty = new NotyFactory();
-flasher__default["default"].addFactory('noty', noty);
+flasher.addFactory('noty', noty);
 
 module.exports = noty;

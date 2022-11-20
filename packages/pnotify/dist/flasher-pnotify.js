@@ -4,10 +4,6 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.flasher = global.flasher || {}, global.flasher.pnotify = factory(global.flasher)));
 })(this, (function (flasher) { 'use strict';
 
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var flasher__default = /*#__PURE__*/_interopDefaultLegacy(flasher);
-
     /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
@@ -101,21 +97,25 @@
             notification.type = notification.type || 'info';
             var options = __assign({ text: notification.title }, notification.options);
             options = __assign(__assign({}, options), { text: ((options === null || options === void 0 ? void 0 : options.text) || notification.message) });
+            var pnotify;
             switch (notification.type) {
                 case 'success':
-                    PNotify.exports.success(options);
+                    pnotify = PNotify.exports.success(options);
                     break;
                 case 'alert':
-                    PNotify.exports.alert(options);
+                    pnotify = PNotify.exports.alert(options);
                     break;
                 case 'info':
-                    PNotify.exports.info(options);
+                    pnotify = PNotify.exports.info(options);
                     break;
                 case 'error':
-                    PNotify.exports.error(options);
+                    pnotify = PNotify.exports.error(options);
                     break;
                 default:
-                    PNotify.exports.notice(options);
+                    pnotify = PNotify.exports.notice(options);
+            }
+            if (pnotify.refs.container) {
+                pnotify.refs.container.dataset.turboCache = 'false';
             }
         };
         PnotifyFactory.prototype.updateDefaultOptions = function (defaultOptions, options) {
@@ -131,7 +131,7 @@
     }());
 
     var pnotify = new PnotifyFactory();
-    flasher__default["default"].addFactory('pnotify', pnotify);
+    flasher.addFactory('pnotify', pnotify);
 
     return pnotify;
 
