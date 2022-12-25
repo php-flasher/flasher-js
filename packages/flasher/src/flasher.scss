@@ -114,7 +114,9 @@ $types: (success: #059669FF, info: #2563EBFF, warning: #D97706FF, error: #DC2626
   .fl-icon {
     position: relative;
     width: 1em;
+    min-width: 1em;
     height: 1em;
+    min-height: 1em;
     margin: 0;
     border-radius: 50%;
     transition: all 1s;
