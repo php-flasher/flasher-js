@@ -70,7 +70,7 @@ importers:
 
   packages/noty:
     specifiers:
-      '@flasher/flasher': ^1.2.3
+      '@flasher/flasher': ^1.2.4
       noty: ^3.2.0-beta-deprecated
     dependencies:
       '@flasher/flasher': link:../flasher
@@ -78,7 +78,7 @@ importers:
 
   packages/notyf:
     specifiers:
-      '@flasher/flasher': ^1.2.3
+      '@flasher/flasher': ^1.2.4
       notyf: ^3.10.0
     dependencies:
       '@flasher/flasher': link:../flasher
@@ -86,7 +86,7 @@ importers:
 
   packages/pnotify:
     specifiers:
-      '@flasher/flasher': ^1.2.3
+      '@flasher/flasher': ^1.2.4
       '@pnotify/core': ^5.2.0
     dependencies:
       '@flasher/flasher': link:../flasher
@@ -94,7 +94,7 @@ importers:
 
   packages/sweetalert:
     specifiers:
-      '@flasher/flasher': ^1.2.3
+      '@flasher/flasher': ^1.2.4
       sweetalert2: ^11.6.16
     dependencies:
       '@flasher/flasher': link:../flasher
@@ -102,7 +102,7 @@ importers:
 
   packages/toastr:
     specifiers:
-      '@flasher/flasher': ^1.2.3
+      '@flasher/flasher': ^1.2.4
       '@types/toastr': ^2.1.40
       toastr: ^2.1.4
     dependencies:

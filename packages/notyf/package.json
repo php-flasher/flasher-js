@@ -1,6 +1,6 @@
 {
   "name": "@flasher/flasher-notyf",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "javascript integration for php flasher",
   "keywords": [
     "PHPFlasher",
@@ -36,7 +36,7 @@
     "url": "https://github.com/php-flasher/flasher-js.git"
   },
   "dependencies": {
-    "@flasher/flasher": "^1.2.3",
+    "@flasher/flasher": "^1.2.4",
     "notyf": "^3.10.0"
   }
 }

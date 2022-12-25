@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/php-flasher/flasher-js/compare/v1.2.3...v1.2.4) (2022-12-25)
+
+**Note:** Version bump only for package @flasher/flasher-pnotify
+
+
+
+
+
 ## [1.2.3](https://github.com/php-flasher/flasher-js/compare/v1.2.1...v1.2.3) (2022-11-20)
 
 ### Bug Fixes

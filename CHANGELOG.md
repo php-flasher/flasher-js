@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/php-flasher/flasher-js/compare/v1.2.3...v1.2.4) (2022-12-25)
+
+
+### Bug Fixes
+
+* add --conventional-graduate to lerna version command ([37c705a](https://github.com/php-flasher/flasher-js/commit/37c705ab52d50291e05d397b6e61b8cad2126311))
+* add --force-publish to lerna version command ([41faf09](https://github.com/php-flasher/flasher-js/commit/41faf0918287c1d80ba1f7707c60a575ae7f9382))
+* bump dependencies ([7fe8922](https://github.com/php-flasher/flasher-js/commit/7fe8922a25f89e5e967b73bda1fdf62d09d121a9))
+* flasher icon width and height when text message too long ([fba75e4](https://github.com/php-flasher/flasher-js/commit/fba75e4d5b9ce861abe6b3c2759f744460619496))
+* use em instead of rem ([d71c14d](https://github.com/php-flasher/flasher-js/commit/d71c14d9ee394a5e79ce7e14ff53d6f14dd7129e))
+
+
+### Features
+
+* use lerna instead of lerna-lite ([84e30f0](https://github.com/php-flasher/flasher-js/commit/84e30f0b487c77f9c1e21673032c9b1b17d29b85))
+
+
+
+
+
 ## [1.2.3](https://github.com/php-flasher/flasher-js/compare/v1.2.1...v1.2.3) (2022-11-20)
 
 ### Bug Fixes

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.4](https://github.com/php-flasher/flasher-js/compare/v1.2.3...v1.2.4) (2022-12-25)
+
+
+### Bug Fixes
+
+* flasher icon width and height when text message too long ([fba75e4](https://github.com/php-flasher/flasher-js/commit/fba75e4d5b9ce861abe6b3c2759f744460619496))
+* use em instead of rem ([d71c14d](https://github.com/php-flasher/flasher-js/commit/d71c14d9ee394a5e79ce7e14ff53d6f14dd7129e))
+
+
+
+
+
 ## [1.2.3](https://github.com/php-flasher/flasher-js/compare/v1.2.1...v1.2.3) (2022-11-20)
 
 ### Bug Fixes
