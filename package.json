@@ -29,7 +29,7 @@
     "watch": "NODE_ENV=development lerna exec --parallel -- rollup -c ../../rollup.config.js --watch",
     "clean": "lerna run clean",
     "publish": "lerna publish from-package",
-    "version": "lerna version --no-private --conventional-commits --conventional-graduate --create-release github --yes",
+    "version": "lerna version --no-private --conventional-commits --conventional-graduate --create-release github --force-publish --yes",
     "lint": "eslint . --ext .ts --fix"
   },
   "bugs": {
