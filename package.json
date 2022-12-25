@@ -28,7 +28,7 @@
     "dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",
     "watch": "NODE_ENV=development lerna exec --parallel -- rollup -c ../../rollup.config.js --watch",
     "clean": "lerna run clean",
-    "publish": "lerna publish from-package",
+    "publish": "lerna publish from-package --yes",
     "version": "lerna version --no-private --conventional-commits --conventional-graduate --create-release github --force-publish --yes",
     "lint": "eslint . --ext .ts --fix"
   },
