@@ -26,7 +26,7 @@
   "scripts": {
     "build": "NODE_ENV=production lerna exec -- rollup -c ../../rollup.config.js",
     "dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",
-    "watch": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js --watch",
+    "watch": "NODE_ENV=development lerna exec --parallel -- rollup -c ../../rollup.config.js --watch",
     "clean": "lerna run clean",
     "publish": "lerna publish from-package",
     "version": "lerna version --no-private --conventional-commits --create-release github --yes",
@@ -41,9 +41,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.7",
-    "@lerna-lite/cli": "^1.13.0",
-    "@lerna-lite/exec": "^1.13.0",
-    "@lerna-lite/run": "^1.13.0",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
@@ -59,6 +56,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "lerna": "^6.1.0",
     "node-sass": "^8.0.0",
     "postcss-discard-comments": "^5.1.2",
     "rollup": "^3.8.1",
