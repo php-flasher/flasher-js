@@ -9,33 +9,30 @@ import {
   ResponseContext,
   Theme,
 } from './common';
-
 import FlasherFactory from './flasherFactory';
 
 export default class Flasher {
   private defaultHandler = 'theme.flasher';
-
   private factories: Map<string, NotificationFactoryInterface> = new Map<string, NotificationFactoryInterface>();
-
   private themes: Map<string, Theme> = new Map<string, Theme>();
 
-  success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     const notification = this.createNotification(type, message, title, options);
     const factory = this.create(this.defaultHandler);
 
@@ -43,7 +40,7 @@ export default class Flasher {
     factory.render({ notification });
   }
 
-  createNotification(
+  public createNotification(
     type: string | FlasherOptions,
     message?: string | FlasherOptions,
     title?: string | FlasherOptions,
@@ -75,7 +72,7 @@ export default class Flasher {
     };
   }
 
-  create(alias: string): NotificationFactoryInterface {
+  public create(alias: string): NotificationFactoryInterface {
     alias = this.resolveHandler(alias);
     this.resolveThemeHandler(alias);
 
@@ -87,13 +84,13 @@ export default class Flasher {
     return factory;
   }
 
-  renderOptions(options: FlasherResponseOptions): void {
+  public renderOptions(options: FlasherResponseOptions): void {
     Object.entries(options).forEach(([handler, option]) => {
       this.create(handler).renderOptions(option);
     });
   }
 
-  render(response: FlasherResponse): void {
+  public render(response: FlasherResponse): void {
     response = this.resolveResponse(response);
 
     this.addStyles(response.styles, () => {
@@ -104,21 +101,21 @@ export default class Flasher {
     });
   }
 
-  addFactory(name: string, factory: NotificationFactoryInterface): void {
+  public addFactory(name: string, factory: NotificationFactoryInterface): void {
     this.factories.set(name, factory);
   }
 
-  addTheme(name: string, theme: Theme): void {
+  public addTheme(name: string, theme: Theme): void {
     this.themes.set(name, theme);
   }
 
-  using(name: string): Flasher {
+  public using(name: string): Flasher {
     this.defaultHandler = name;
 
     return this;
   }
 
-  addStyles(urls: string[], callback: CallableFunction): void {
+  public addStyles(urls: string[], callback: () => void): void {
     if (urls.length === 0) {
       if (typeof callback === 'function') {
         callback();
@@ -141,7 +138,7 @@ export default class Flasher {
     document.head.appendChild(tag);
   }
 
-  addScripts(urls: string[], callback: CallableFunction): void {
+  public addScripts(urls: string[], callback: () => void): void {
     if (urls.length === 0) {
       if (typeof callback === 'function') {
         callback();
@@ -163,11 +160,11 @@ export default class Flasher {
     document.head.appendChild(tag);
   }
 
-  renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {
+  public renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {
     const queues = new Map<string, QueueableInterface>();
 
     envelopes.forEach((envelope) => {
-      envelope.context = Object.assign({}, envelope.context || {}, context);
+      envelope.context = { ...envelope.context, ...context };
       envelope.handler = this.resolveHandler(envelope.handler);
 
       const factory = this.create(envelope.handler);
@@ -184,15 +181,16 @@ export default class Flasher {
       queues.set(envelope.handler, factory);
     });
 
-    queues.forEach(factory => factory.renderQueue());
+    queues.forEach((factory) => factory.renderQueue());
   }
 
-  isQueueable(object: any): object is QueueableInterface {
-    return typeof object.addEnvelope === 'function'
-      && typeof object.renderQueue === 'function';
+  private isQueueable(object: any): object is QueueableInterface {
+    return (
+      typeof object.addEnvelope === 'function' && typeof object.renderQueue === 'function'
+    );
   }
 
-  resolveResponse(response: FlasherResponse): FlasherResponse {
+  private resolveResponse(response: FlasherResponse): FlasherResponse {
     response.envelopes = response.envelopes || [];
     response.options = response.options || {};
     response.scripts = response.scripts || [];
@@ -203,7 +201,7 @@ export default class Flasher {
       response.options[handler] = this.parseOptions(options);
     });
 
-    response.envelopes.forEach(envelope => {
+    response.envelopes.forEach((envelope) => {
       envelope.handler = this.resolveHandler(envelope.handler);
       envelope.notification.options = this.parseOptions(envelope.notification.options || {});
       this.pushStyles(response, envelope.handler);
@@ -212,7 +210,7 @@ export default class Flasher {
     return response;
   }
 
-  parseOptions(options: FlasherOptions): FlasherOptions {
+  private parseOptions(options: FlasherOptions): FlasherOptions {
     Object.entries(options).forEach(([key, value]) => {
       options[key] = this.parseFunction(value);
     });
@@ -220,35 +218,34 @@ export default class Flasher {
     return options;
   }
 
-  parseFunction(func: any): any {
+  private parseFunction(func: any): any {
     if (typeof func !== 'string') {
       return func;
     }
 
-    const match = func.match(/^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m);
+    const match = func.match(
+      /^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m
+    );
 
     if (!match) {
       return func;
     }
 
-    const args = match[1]?.split(',').map(arg => arg.trim()) ?? [];
+    const args = match[1]?.split(',').map((arg) => arg.trim()) ?? [];
     const body = match[2];
 
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
+    // eslint-disable-next-line no-new-func
     return new Function(...args, body);
   }
 
-  pushStyles(response: FlasherResponse, handler: string): void {
+  private pushStyles(response: FlasherResponse, handler: string): void {
     handler = handler.replace('theme.', '');
     const styles = this.themes.get(handler)?.styles || [];
 
-    response.styles = response.styles
-      .concat(styles)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    response.styles = Array.from(new Set([...response.styles, ...styles]));
   }
 
-  resolveHandler(handler?: string): string {
+  private resolveHandler(handler?: string): string {
     handler = handler || this.defaultHandler;
 
     if (['flasher', 'theme', 'template'].includes(handler)) {
@@ -260,7 +257,7 @@ export default class Flasher {
     return handler;
   }
 
-  resolveThemeHandler(alias: string): void {
+  private resolveThemeHandler(alias: string): void {
     const factory = this.factories.get(alias);
     if (factory) {
       return;

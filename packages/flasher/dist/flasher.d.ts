@@ -1,4 +1,4 @@
-import { Envelope, FlasherNotification, FlasherOptions, FlasherResponse, FlasherResponseOptions, NotificationFactoryInterface, QueueableInterface, ResponseContext, Theme } from './common';
+import { Envelope, FlasherNotification, FlasherOptions, FlasherResponse, FlasherResponseOptions, NotificationFactoryInterface, ResponseContext, Theme } from './common';
 export default class Flasher {
     private defaultHandler;
     private factories;
@@ -15,15 +15,15 @@ export default class Flasher {
     addFactory(name: string, factory: NotificationFactoryInterface): void;
     addTheme(name: string, theme: Theme): void;
     using(name: string): Flasher;
-    addStyles(urls: string[], callback: CallableFunction): void;
-    addScripts(urls: string[], callback: CallableFunction): void;
+    addStyles(urls: string[], callback: () => void): void;
+    addScripts(urls: string[], callback: () => void): void;
     renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void;
-    isQueueable(object: any): object is QueueableInterface;
-    resolveResponse(response: FlasherResponse): FlasherResponse;
-    parseOptions(options: FlasherOptions): FlasherOptions;
-    parseFunction(func: any): any;
-    pushStyles(response: FlasherResponse, handler: string): void;
-    resolveHandler(handler?: string): string;
-    resolveThemeHandler(alias: string): void;
+    private isQueueable;
+    private resolveResponse;
+    private parseOptions;
+    private parseFunction;
+    private pushStyles;
+    private resolveHandler;
+    private resolveThemeHandler;
 }
 //# sourceMappingURL=flasher.d.ts.map

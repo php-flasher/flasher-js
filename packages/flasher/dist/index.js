@@ -350,7 +350,7 @@ class Flasher {
     renderEnvelopes(envelopes, context) {
         const queues = new Map();
         envelopes.forEach((envelope) => {
-            envelope.context = Object.assign({}, envelope.context || {}, context);
+            envelope.context = { ...envelope.context, ...context };
             envelope.handler = this.resolveHandler(envelope.handler);
             const factory = this.create(envelope.handler);
             if (!this.isQueueable(factory)) {
@@ -363,11 +363,10 @@ class Flasher {
             factory.addEnvelope(envelope);
             queues.set(envelope.handler, factory);
         });
-        queues.forEach(factory => factory.renderQueue());
+        queues.forEach((factory) => factory.renderQueue());
     }
     isQueueable(object) {
-        return typeof object.addEnvelope === 'function'
-            && typeof object.renderQueue === 'function';
+        return (typeof object.addEnvelope === 'function' && typeof object.renderQueue === 'function');
     }
     resolveResponse(response) {
         response.envelopes = response.envelopes || [];
@@ -378,7 +377,7 @@ class Flasher {
         Object.entries(response.options).forEach(([handler, options]) => {
             response.options[handler] = this.parseOptions(options);
         });
-        response.envelopes.forEach(envelope => {
+        response.envelopes.forEach((envelope) => {
             envelope.handler = this.resolveHandler(envelope.handler);
             envelope.notification.options = this.parseOptions(envelope.notification.options || {});
             this.pushStyles(response, envelope.handler);
@@ -399,16 +398,14 @@ class Flasher {
         if (!match) {
             return func;
         }
-        const args = match[1]?.split(',').map(arg => arg.trim()) ?? [];
+        const args = match[1]?.split(',').map((arg) => arg.trim()) ?? [];
         const body = match[2];
         return new Function(...args, body);
     }
     pushStyles(response, handler) {
         handler = handler.replace('theme.', '');
         const styles = this.themes.get(handler)?.styles || [];
-        response.styles = response.styles
-            .concat(styles)
-            .filter((value, index, self) => self.indexOf(value) === index);
+        response.styles = Array.from(new Set([...response.styles, ...styles]));
     }
     resolveHandler(handler) {
         handler = handler || this.defaultHandler;

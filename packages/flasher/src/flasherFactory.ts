@@ -1,15 +1,8 @@
-import {
-  Envelope,
-  FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
-  Theme,
-} from './common';
+import { Envelope, FlasherNotification, FlasherOptions, NotificationFactoryInterface, Theme} from './common';
 import { Properties } from 'csstype';
 
 export default class FlasherFactory implements NotificationFactoryInterface {
   private viewFactory: Theme;
-
   private options = {
     timeout: 5000,
     fps: 30,
@@ -47,12 +40,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.render({ notification });
   }
 
-  createNotification(
-    type: string | FlasherOptions,
-    message?: string | FlasherOptions,
-    title?: string | FlasherOptions,
-    options?: FlasherOptions,
-  ): FlasherNotification {
+  createNotification(type: string | FlasherOptions, message?: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
       type = options.type as unknown as string;
