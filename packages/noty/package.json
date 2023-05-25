@@ -25,6 +25,9 @@
   "browser": "dist/flasher-noty.min.js",
   "main": "dist/index",
   "types": "dist/index",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "files": [
     "dist"
   ],

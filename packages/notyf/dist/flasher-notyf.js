@@ -21,6 +21,7 @@
     /* global Reflect, Promise */
 
 
+<<<<<<< HEAD
     var __assign$1 = function() {
         __assign$1 = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -31,6 +32,18 @@
         };
         return __assign$1.apply(this, arguments);
     };
+=======
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+  ***************************************************************************** */
+  /* global Reflect, Promise */
+
+>>>>>>> 0a7a739 (Wip)
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -556,6 +569,94 @@
     var notyf = new NotyfFactory();
     flasher.addFactory('notyf', notyf);
 
+<<<<<<< HEAD
     return notyf;
+=======
+  var NotyfFactory = (function () {
+      function NotyfFactory() {
+      }
+      NotyfFactory.prototype.success = function (message, title, options) {
+          this.flash('success', message, title, options);
+      };
+      NotyfFactory.prototype.info = function (message, title, options) {
+          this.flash('info', message, title, options);
+      };
+      NotyfFactory.prototype.warning = function (message, title, options) {
+          this.flash('warning', message, title, options);
+      };
+      NotyfFactory.prototype.error = function (message, title, options) {
+          this.flash('error', message, title, options);
+      };
+      NotyfFactory.prototype.flash = function (type, message, title, options) {
+          var notification = this.createNotification(type, message, title, options);
+          this.renderOptions({});
+          this.render({ notification: notification });
+      };
+      NotyfFactory.prototype.createNotification = function (type, message, title, options) {
+          if (typeof type === 'object') {
+              options = type;
+              type = options.type;
+              message = options.message;
+              title = options.title;
+          }
+          else if (typeof message === 'object') {
+              options = message;
+              message = options.message;
+              title = options.title;
+          }
+          else if (typeof title === 'object') {
+              options = title;
+              title = options.title;
+          }
+          if (undefined === message) {
+              throw new Error('message option is required');
+          }
+          return {
+              type: type || 'info',
+              message: message,
+              title: title,
+              options: options
+          };
+      };
+      NotyfFactory.prototype.render = function (envelope) {
+          var notification = envelope.notification;
+          notification.type = notification.type || 'info';
+          var options = __assign$1(__assign$1({}, notification), notification.options);
+          this.notyf = this.notyf || new Notyf();
+          this.notyf.open(options);
+          this.notyf.view.container.dataset.turboCache = 'false';
+          this.notyf.view.a11yContainer.dataset.turboCache = 'false';
+      };
+      NotyfFactory.prototype.renderOptions = function (options) {
+          var nOptions = __assign$1({ duration: options.duration || 5000 }, options);
+          nOptions.types = nOptions.types || [];
+          nOptions.types.push({
+              type: 'info',
+              className: 'notyf__toast--info',
+              background: '#5784E5',
+              icon: {
+                  className: 'notyf__icon--info',
+                  tagName: 'i',
+              },
+          });
+          nOptions.types.push({
+              type: 'warning',
+              className: 'notyf__toast--warning',
+              background: '#E3A008',
+              icon: {
+                  className: 'notyf__icon--warning',
+                  tagName: 'i',
+              },
+          });
+          this.notyf = this.notyf || new Notyf(nOptions);
+      };
+      return NotyfFactory;
+  }());
+
+  var notyf = new NotyfFactory();
+  flasher.addFactory('notyf', notyf);
+
+  return notyf;
+>>>>>>> 0a7a739 (Wip)
 
 }));

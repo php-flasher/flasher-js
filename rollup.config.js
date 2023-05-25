@@ -4,8 +4,8 @@ import cssnano from 'cssnano';
 import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
 import styles from 'rollup-plugin-styles';
+import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
 
 const modules = {
   '@flasher/flasher': { name: 'flasher', output: 'dist/flasher.js' },
@@ -18,6 +18,7 @@ const modules = {
 
 const packageName = process.env.LERNA_PACKAGE_NAME;
 const module = modules[packageName];
+const isProduction = 'production' === process.env.NODE_ENV;
 
 if ('@flasher/flasher' !== packageName) {
   module.globals = { '@flasher/flasher': 'flasher' };
@@ -28,8 +29,6 @@ if ('@flasher/flasher' !== packageName) {
     module.globals.jquery = 'jQuery';
   }
 }
-
-const isProduction = 'production' === process.env.NODE_ENV;
 
 export default {
   input: 'src/index.ts',
