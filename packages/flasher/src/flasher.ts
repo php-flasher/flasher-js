@@ -13,7 +13,7 @@ import {
 import FlasherFactory from './flasherFactory';
 
 export default class Flasher {
-  private defaultHandler: string = 'theme.flasher';
+  private defaultHandler = 'theme.flasher';
 
   private factories: Map<string, NotificationFactoryInterface> = new Map<string, NotificationFactoryInterface>();
 
@@ -270,7 +270,7 @@ export default class Flasher {
       return;
     }
 
-    let viewFactory = this.themes.get(alias.replace('theme.', ''));
+    const viewFactory = this.themes.get(alias.replace('theme.', ''));
     if (!viewFactory) {
       return;
     }

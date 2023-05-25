@@ -206,7 +206,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
       return;
     }
 
-    let [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
+    const [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
     let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
 
     css = 'media' === mode

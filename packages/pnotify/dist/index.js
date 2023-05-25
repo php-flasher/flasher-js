@@ -2,34 +2,6 @@
 
 var flasher = require('@flasher/flasher');
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 var PNotify = {exports: {}};
@@ -45,27 +17,25 @@ var PNotifyExports = PNotify.exports;
 
 var PNotifyExports = PNotify.exports;
 
-var PnotifyFactory = (function () {
-    function PnotifyFactory() {
-    }
-    PnotifyFactory.prototype.success = function (message, title, options) {
+class PnotifyFactory {
+    success(message, title, options) {
         this.flash('success', message, title, options);
-    };
-    PnotifyFactory.prototype.info = function (message, title, options) {
+    }
+    info(message, title, options) {
         this.flash('info', message, title, options);
-    };
-    PnotifyFactory.prototype.warning = function (message, title, options) {
+    }
+    warning(message, title, options) {
         this.flash('warning', message, title, options);
-    };
-    PnotifyFactory.prototype.error = function (message, title, options) {
+    }
+    error(message, title, options) {
         this.flash('error', message, title, options);
-    };
-    PnotifyFactory.prototype.flash = function (type, message, title, options) {
-        var notification = this.createNotification(type, message, title, options);
+    }
+    flash(type, message, title, options) {
+        const notification = this.createNotification(type, message, title, options);
         this.renderOptions({});
-        this.render({ notification: notification });
-    };
-    PnotifyFactory.prototype.createNotification = function (type, message, title, options) {
+        this.render({ notification });
+    }
+    createNotification(type, message, title, options) {
         if (typeof type === 'object') {
             options = type;
             type = options.type;
@@ -86,17 +56,23 @@ var PnotifyFactory = (function () {
         }
         return {
             type: type || 'info',
-            message: message,
-            title: title,
-            options: options
+            message,
+            title,
+            options
         };
-    };
-    PnotifyFactory.prototype.render = function (envelope) {
-        var notification = envelope.notification;
+    }
+    render(envelope) {
+        const { notification } = envelope;
         notification.type = notification.type || 'info';
-        var options = __assign({ text: notification.title }, notification.options);
-        options = __assign(__assign({}, options), { text: ((options === null || options === void 0 ? void 0 : options.text) || notification.message) });
-        var pnotify;
+        let options = {
+            text: notification.title,
+            ...notification.options,
+        };
+        options = {
+            ...options,
+            text: (options?.text || notification.message),
+        };
+        let pnotify;
         switch (notification.type) {
             case 'success':
                 pnotify = PNotifyExports.success(options);
@@ -116,20 +92,21 @@ var PnotifyFactory = (function () {
         if (pnotify.refs.container) {
             pnotify.refs.container.dataset.turboCache = 'false';
         }
-    };
-    PnotifyFactory.prototype.updateDefaultOptions = function (defaultOptions, options) {
-        Object.entries(options).forEach(function (_a) {
-            var option = _a[0], value = _a[1];
+    }
+    updateDefaultOptions(defaultOptions, options) {
+        Object.entries(options).forEach(([option, value]) => {
             defaultOptions[option] = value;
         });
-    };
-    PnotifyFactory.prototype.renderOptions = function (options) {
-        this.updateDefaultOptions(PNotifyExports.defaults, __assign({ delay: options.delay || 5000 }, options));
-    };
-    return PnotifyFactory;
-}());
+    }
+    renderOptions(options) {
+        this.updateDefaultOptions(PNotifyExports.defaults, {
+            delay: options.delay || 5000,
+            ...options,
+        });
+    }
+}
 
-var pnotify = new PnotifyFactory();
+const pnotify = new PnotifyFactory();
 flasher.addFactory('pnotify', pnotify);
 
 module.exports = pnotify;

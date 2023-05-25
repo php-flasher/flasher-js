@@ -10,6 +10,7 @@
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted.
 
+<<<<<<< HEAD
     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
     REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
     AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
@@ -50,6 +51,10 @@
 
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted.
+=======
+  /*! *****************************************************************************
+  Copyright (c) Microsoft Corporation.
+>>>>>>> 37c201a (Wip)
 
     THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
     REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -570,29 +575,34 @@
     flasher.addFactory('notyf', notyf);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     return notyf;
 =======
   var NotyfFactory = (function () {
       function NotyfFactory() {
       }
       NotyfFactory.prototype.success = function (message, title, options) {
+=======
+  class NotyfFactory {
+      success(message, title, options) {
+>>>>>>> 37c201a (Wip)
           this.flash('success', message, title, options);
-      };
-      NotyfFactory.prototype.info = function (message, title, options) {
+      }
+      info(message, title, options) {
           this.flash('info', message, title, options);
-      };
-      NotyfFactory.prototype.warning = function (message, title, options) {
+      }
+      warning(message, title, options) {
           this.flash('warning', message, title, options);
-      };
-      NotyfFactory.prototype.error = function (message, title, options) {
+      }
+      error(message, title, options) {
           this.flash('error', message, title, options);
-      };
-      NotyfFactory.prototype.flash = function (type, message, title, options) {
-          var notification = this.createNotification(type, message, title, options);
+      }
+      flash(type, message, title, options) {
+          const notification = this.createNotification(type, message, title, options);
           this.renderOptions({});
-          this.render({ notification: notification });
-      };
-      NotyfFactory.prototype.createNotification = function (type, message, title, options) {
+          this.render({ notification });
+      }
+      createNotification(type, message, title, options) {
           if (typeof type === 'object') {
               options = type;
               type = options.type;
@@ -613,22 +623,25 @@
           }
           return {
               type: type || 'info',
-              message: message,
-              title: title,
-              options: options
+              message,
+              title,
+              options
           };
-      };
-      NotyfFactory.prototype.render = function (envelope) {
-          var notification = envelope.notification;
+      }
+      render(envelope) {
+          const { notification } = envelope;
           notification.type = notification.type || 'info';
-          var options = __assign$1(__assign$1({}, notification), notification.options);
+          const options = { ...notification, ...notification.options };
           this.notyf = this.notyf || new Notyf();
           this.notyf.open(options);
           this.notyf.view.container.dataset.turboCache = 'false';
           this.notyf.view.a11yContainer.dataset.turboCache = 'false';
-      };
-      NotyfFactory.prototype.renderOptions = function (options) {
-          var nOptions = __assign$1({ duration: options.duration || 5000 }, options);
+      }
+      renderOptions(options) {
+          const nOptions = {
+              duration: options.duration || 5000,
+              ...options,
+          };
           nOptions.types = nOptions.types || [];
           nOptions.types.push({
               type: 'info',
@@ -649,11 +662,10 @@
               },
           });
           this.notyf = this.notyf || new Notyf(nOptions);
-      };
-      return NotyfFactory;
-  }());
+      }
+  }
 
-  var notyf = new NotyfFactory();
+  const notyf = new NotyfFactory();
   flasher.addFactory('notyf', notyf);
 
   return notyf;

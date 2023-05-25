@@ -2,34 +2,6 @@
 
 var flasher = require('@flasher/flasher');
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function getDefaultExportFromCjs (x) {
@@ -3146,35 +3118,52 @@ var noty$1 = {exports: {}};
 var notyExports = noty$1.exports;
 var Noty = /*@__PURE__*/getDefaultExportFromCjs(notyExports);
 
+<<<<<<< HEAD
 var NotyFactory = (function () {
     function NotyFactory() {
     }
     NotyFactory.prototype.success = function (message, title, options) {
+=======
+var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
+
+var css$1 = "#noty_layout__bottom,#noty_layout__bottomCenter,#noty_layout__bottomLeft,#noty_layout__bottomRight,#noty_layout__center,#noty_layout__centerLeft,#noty_layout__centerRight,#noty_layout__top,#noty_layout__topCenter,#noty_layout__topLeft,#noty_layout__topRight,.noty_layout_mixin{-webkit-font-smoothing:subpixel-antialiased;-webkit-backface-visibility:hidden;backface-visibility:hidden;filter:blur(0);-webkit-filter:blur(0);margin:0;max-width:90%;padding:0;position:fixed;-webkit-transform:translateZ(0) scale(1);transform:translateZ(0) scale(1);z-index:9999999}#noty_layout__top{left:5%;top:0;width:90%}#noty_layout__topLeft{left:20px;top:20px;width:325px}#noty_layout__topCenter{left:50%;top:5%;-webkit-transform:translate(-webkit-calc(-50% - .5px)) translateZ(0) scale(1);transform:translate(calc(-50% - .5px)) translateZ(0) scale(1);width:325px}#noty_layout__topRight{right:20px;top:20px;width:325px}#noty_layout__bottom{bottom:0;left:5%;width:90%}#noty_layout__bottomLeft{bottom:20px;left:20px;width:325px}#noty_layout__bottomCenter{bottom:5%;left:50%;-webkit-transform:translate(-webkit-calc(-50% - .5px)) translateZ(0) scale(1);transform:translate(calc(-50% - .5px)) translateZ(0) scale(1);width:325px}#noty_layout__bottomRight{bottom:20px;right:20px;width:325px}#noty_layout__center{left:50%;top:50%;-webkit-transform:translate(-webkit-calc(-50% - .5px),-webkit-calc(-50% - .5px)) translateZ(0) scale(1);transform:translate(calc(-50% - .5px),calc(-50% - .5px)) translateZ(0) scale(1);width:325px}#noty_layout__centerLeft{left:20px}#noty_layout__centerLeft,#noty_layout__centerRight{top:50%;-webkit-transform:translateY(-webkit-calc(-50% - .5px)) translateZ(0) scale(1);transform:translateY(calc(-50% - .5px)) translateZ(0) scale(1);width:325px}#noty_layout__centerRight{right:20px}.noty_progressbar{display:none}.noty_has_timeout.noty_has_progressbar .noty_progressbar{background-color:#646464;bottom:0;display:block;filter:alpha(opacity=10);height:3px;left:0;opacity:.2;position:absolute;width:100%}.noty_bar{-webkit-font-smoothing:subpixel-antialiased;-webkit-backface-visibility:hidden;overflow:hidden;-webkit-transform:translate(0) translateZ(0) scale(1);-ms-transform:translate(0) scale(1);transform:translate(0) scale(1)}.noty_effects_open{-webkit-animation:noty_anim_in .5s cubic-bezier(.68,-.55,.265,1.55);animation:noty_anim_in .5s cubic-bezier(.68,-.55,.265,1.55);-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards;opacity:0;-webkit-transform:translate(50%);-ms-transform:translate(50%);transform:translate(50%)}.noty_effects_close{-webkit-animation:noty_anim_out .5s cubic-bezier(.68,-.55,.265,1.55);animation:noty_anim_out .5s cubic-bezier(.68,-.55,.265,1.55);-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}.noty_fix_effects_height{-webkit-animation:noty_anim_height 75ms ease-out;animation:noty_anim_height 75ms ease-out}.noty_close_with_click{cursor:pointer}.noty_close_button{background-color:rgba(0,0,0,.05);border-radius:2px;cursor:pointer;font-weight:700;height:20px;line-height:20px;position:absolute;right:2px;text-align:center;top:2px;-webkit-transition:all .2s ease-out;transition:all .2s ease-out;width:20px}.noty_close_button:hover{background-color:rgba(0,0,0,.1)}.noty_modal{background-color:#000;height:100%;left:0;opacity:.3;position:fixed;top:0;width:100%;z-index:10000}.noty_modal.noty_modal_open{-webkit-animation:noty_modal_in .3s ease-out;animation:noty_modal_in .3s ease-out;opacity:0}.noty_modal.noty_modal_close{-webkit-animation:noty_modal_out .3s ease-out;animation:noty_modal_out .3s ease-out;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}@-webkit-keyframes noty_modal_in{to{opacity:.3}}@keyframes noty_modal_in{to{opacity:.3}}@-webkit-keyframes noty_modal_out{to{opacity:0}}@keyframes noty_modal_out{to{opacity:0}}@-webkit-keyframes noty_anim_in{to{opacity:1;-webkit-transform:translate(0);transform:translate(0)}}@keyframes noty_anim_in{to{opacity:1;-webkit-transform:translate(0);transform:translate(0)}}@-webkit-keyframes noty_anim_out{to{opacity:0;-webkit-transform:translate(50%);transform:translate(50%)}}@keyframes noty_anim_out{to{opacity:0;-webkit-transform:translate(50%);transform:translate(50%)}}@-webkit-keyframes noty_anim_height{to{height:0}}@keyframes noty_anim_height{to{height:0}}";
+n(css$1,{});
+
+var css = ".noty_theme__mint.noty_bar{border-radius:2px;margin:4px 0;overflow:hidden;position:relative}.noty_theme__mint.noty_bar .noty_body{font-size:14px;padding:10px}.noty_theme__mint.noty_bar .noty_buttons{padding:10px}.noty_theme__mint.noty_type__alert,.noty_theme__mint.noty_type__notification{background-color:#fff;border-bottom:1px solid #d1d1d1;color:#2f2f2f}.noty_theme__mint.noty_type__warning{background-color:#ffae42;border-bottom:1px solid #e89f3c;color:#fff}.noty_theme__mint.noty_type__error{background-color:#de636f;border-bottom:1px solid #ca5a65;color:#fff}.noty_theme__mint.noty_type__info,.noty_theme__mint.noty_type__information{background-color:#7f7eff;border-bottom:1px solid #7473e8;color:#fff}.noty_theme__mint.noty_type__success{background-color:#afc765;border-bottom:1px solid #a0b55c;color:#fff}";
+n(css,{});
+
+class NotyFactory {
+    success(message, title, options) {
+>>>>>>> 37c201a (Wip)
         this.flash('success', message, title, options);
-    };
-    NotyFactory.prototype.info = function (message, title, options) {
+    }
+    info(message, title, options) {
         this.flash('info', message, title, options);
-    };
-    NotyFactory.prototype.warning = function (message, title, options) {
+    }
+    warning(message, title, options) {
         this.flash('warning', message, title, options);
-    };
-    NotyFactory.prototype.error = function (message, title, options) {
+    }
+    error(message, title, options) {
         this.flash('error', message, title, options);
-    };
-    NotyFactory.prototype.flash = function (type, message, title, options) {
-        var notification = this.createNotification(type, message, title, options);
+    }
+    flash(type, message, title, options) {
+        const notification = this.createNotification(type, message, title, options);
         this.renderOptions({});
-        this.render({ notification: notification });
-    };
-    NotyFactory.prototype.render = function (envelope) {
-        var notification = envelope.notification;
+        this.render({ notification });
+    }
+    render(envelope) {
+        const { notification } = envelope;
         notification.type = notification.type || 'info';
-        var options = __assign({ text: notification.message, type: notification.type }, notification.options);
-        var noty = new Noty(options);
+        const options = {
+            text: notification.message,
+            type: notification.type,
+            ...notification.options,
+        };
+        const noty = new Noty(options);
         noty.show();
         noty.layoutDom.dataset.turboCache = 'false';
-    };
-    NotyFactory.prototype.createNotification = function (type, message, title, options) {
+    }
+    createNotification(type, message, title, options) {
         if (typeof type === 'object') {
             options = type;
             type = options.type;
@@ -3195,18 +3184,20 @@ var NotyFactory = (function () {
         }
         return {
             type: type || 'info',
-            message: message,
-            title: title,
-            options: options
+            message,
+            title,
+            options
         };
-    };
-    NotyFactory.prototype.renderOptions = function (options) {
-        Noty.overrideDefaults(__assign({ timeout: options.timeout || 5000 }, options));
-    };
-    return NotyFactory;
-}());
+    }
+    renderOptions(options) {
+        Noty.overrideDefaults({
+            timeout: options.timeout || 5000,
+            ...options,
+        });
+    }
+}
 
-var noty = new NotyFactory();
+const noty = new NotyFactory();
 flasher.addFactory('noty', noty);
 
 module.exports = noty;
