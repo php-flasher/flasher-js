@@ -1135,7 +1135,7 @@
 	    render(envelope) {
 	        const { notification } = envelope;
 	        const { message, title, options } = notification;
-	        let type = notification.type || 'info';
+	        const type = notification.type || 'info';
 	        const instance = toastr$1[type](message, title, options);
 	        instance.parent().attr('data-turbo-cache', 'false');
 	    }

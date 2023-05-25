@@ -639,7 +639,7 @@
           if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
               return;
           }
-          let [mode, className = '.dark'] = [].concat(this.options.darkMode);
+          const [mode, className = '.dark'] = [].concat(this.options.darkMode);
           let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
           css = 'media' === mode
               ? `@media (prefers-color-scheme: dark) {${css}}`
@@ -873,7 +873,7 @@
           if (0 !== alias.indexOf('theme.')) {
               return;
           }
-          let viewFactory = this.themes.get(alias.replace('theme.', ''));
+          const viewFactory = this.themes.get(alias.replace('theme.', ''));
           if (!viewFactory) {
               return;
           }
