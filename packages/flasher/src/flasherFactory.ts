@@ -17,30 +17,30 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.viewFactory = viewFactory;
   }
 
-  success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
     this.render({ notification });
   }
 
-  createNotification(type: string | FlasherOptions, message?: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): FlasherNotification {
+  public createNotification(type: string | FlasherOptions, message?: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
       type = options.type as unknown as string;
@@ -67,11 +67,11 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     };
   }
 
-  render(envelope: Envelope): void {
+  public render(envelope: Envelope): void {
     const { notification } = envelope;
 
     const nOptions = notification.options || {};
-    const options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
+    const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions };
 
     const onContainerReady = () => {
       const container = this.createContainer(options);
@@ -86,13 +86,13 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     document.addEventListener('DOMContentLoaded', onContainerReady);
   }
 
-  renderOptions(options: FlasherOptions): void {
-    this.options = Object.assign({}, this.options, options);
+  public renderOptions(options: FlasherOptions): void {
+    this.options = { ...this.options, ...options };
 
     this.applyDarkMode();
   }
 
-  createContainer(options: { position: string; style: Properties }): HTMLDivElement {
+  public createContainer(options: { position: string; style: Properties }): HTMLDivElement {
     const containerSelector = `.fl-main-container[data-position="${options.position}"]`;
     let container = document.querySelector(containerSelector) as HTMLDivElement;
     if (container) {
@@ -114,7 +114,11 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     return container;
   }
 
-  addToContainer(container: HTMLDivElement, envelope: Envelope, options: { direction: string, timeout: number, fps: number, rtl: boolean }): void {
+  public addToContainer(
+    container: HTMLDivElement,
+    envelope: Envelope,
+    options: { direction: string; timeout: number; fps: number; rtl: boolean }
+  ): void {
     const template = this.stringToHTML(envelope.template || this.viewFactory.render(envelope));
     template.classList.add('fl-container');
 
@@ -123,7 +127,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.handleClick(template);
   }
 
-  appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string, rtl: boolean }): void {
+  public appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string; rtl: boolean }): void {
     if (options.direction === 'bottom') {
       container.append(template);
     } else {
@@ -139,7 +143,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     }, 100);
   }
 
-  removeNotification(template: HTMLElement) {
+  public removeNotification(template: HTMLElement) {
     const container = template.parentElement as HTMLDivElement;
 
     template.classList.remove('fl-show');
@@ -154,11 +158,11 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     });
   }
 
-  handleClick(template: HTMLElement) {
+  public handleClick(template: HTMLElement) {
     template.addEventListener('click', () => this.removeNotification(template));
   }
 
-  renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
+  public renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
     if (!options.timeout || options.timeout <= 0) {
       return;
     }
@@ -185,11 +189,11 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     };
 
     let progressInterval = window.setInterval(showProgress, lapse);
-    template.addEventListener('mouseout', () => progressInterval = window.setInterval(showProgress, lapse));
+    template.addEventListener('mouseout', () => (progressInterval = window.setInterval(showProgress, lapse)));
     template.addEventListener('mouseover', () => clearInterval(progressInterval));
   }
 
-  applyDarkMode(): void {
+  public applyDarkMode(): void {
     if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
       return;
     }
@@ -197,9 +201,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     const [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
     let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
 
-    css = 'media' === mode
-      ? `@media (prefers-color-scheme: dark) {${css}}`
-      : `${className} ${css}`;
+    css = mode === 'media' ? `@media (prefers-color-scheme: dark) {${css}}` : `${className} ${css}`;
 
     const style = document.createElement('style');
     style.type = 'text/css';
@@ -210,7 +212,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     document.body.classList.add('fl-dark-mode');
   }
 
-  stringToHTML(str: string): HTMLElement {
+  public stringToHTML(str: string): HTMLElement {
     const support = (() => {
       if (!DOMParser) {
         return false;

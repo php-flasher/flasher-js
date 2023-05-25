@@ -543,7 +543,7 @@
       render(envelope) {
           const { notification } = envelope;
           const nOptions = notification.options || {};
-          const options = Array.isArray(nOptions) ? this.options : Object.assign({}, this.options, nOptions);
+          const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions };
           const onContainerReady = () => {
               const container = this.createContainer(options);
               this.addToContainer(container, envelope, options);
@@ -555,7 +555,7 @@
           document.addEventListener('DOMContentLoaded', onContainerReady);
       }
       renderOptions(options) {
-          this.options = Object.assign({}, this.options, options);
+          this.options = { ...this.options, ...options };
           this.applyDarkMode();
       }
       createContainer(options) {
@@ -632,7 +632,7 @@
               }
           };
           let progressInterval = window.setInterval(showProgress, lapse);
-          template.addEventListener('mouseout', () => progressInterval = window.setInterval(showProgress, lapse));
+          template.addEventListener('mouseout', () => (progressInterval = window.setInterval(showProgress, lapse)));
           template.addEventListener('mouseover', () => clearInterval(progressInterval));
       }
       applyDarkMode() {
@@ -641,9 +641,7 @@
           }
           const [mode, className = '.dark'] = [].concat(this.options.darkMode);
           let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
-          css = 'media' === mode
-              ? `@media (prefers-color-scheme: dark) {${css}}`
-              : `${className} ${css}`;
+          css = mode === 'media' ? `@media (prefers-color-scheme: dark) {${css}}` : `${className} ${css}`;
           const style = document.createElement('style');
           style.type = 'text/css';
           style.classList.add('flasher-js');
