@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/php-flasher/flasher-js/compare/v1.2.4...v1.3.0) (2023-06-05)
+
+
+### Bug Fixes
+
+* add --yes to lerna publish command ([c128320](https://github.com/php-flasher/flasher-js/commit/c128320b28cf8e3c05ce4480d8fd1e3ae3a94f47))
+* rollup and typescript deprecations ([5b55f67](https://github.com/php-flasher/flasher-js/commit/5b55f67d1494ea423236c53994a92b62b9e04903))
+
+
+### Features
+
+* extract css into there own files ([9be34fa](https://github.com/php-flasher/flasher-js/commit/9be34faf458a7d3092ca8cdd3707a152306202c8))
+
+
+
+
+
 ## [1.2.4](https://github.com/php-flasher/flasher-js/compare/v1.2.3...v1.2.4) (2022-12-25)
 
 
