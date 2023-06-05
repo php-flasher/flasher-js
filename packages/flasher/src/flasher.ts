@@ -96,6 +96,9 @@ export default class Flasher {
   render(response: FlasherResponse): void {
     response = this.resolveResponse(response);
 
+    console.log(response);
+    console.log('==========================');
+
     this.addStyles(response.styles, () => {
       this.addScripts(response.scripts, () => {
         this.renderOptions(response.options);
