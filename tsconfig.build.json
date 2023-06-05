@@ -18,7 +18,7 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
-    "target": "ES3",
+    "target": "ES5",
     "typeRoots": [
       "node_modules/@types"
     ],

@@ -89,11 +89,4 @@ export default {
       ],
     },
   ],
-  onwarn(warning, warn) {
-    const filename = warning.importer || warning.loc?.file;
-    if (filename && /node_modules/.test(filename)) {
-      return;
-    }
-    warn(warning);
-  },
 };
