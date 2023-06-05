@@ -38,6 +38,7 @@ export default {
       targets: ['dist'],
     }),
     styles({
+      mode: 'extract',
       plugins: {
         cssnano,
         "postcss-discard-comments": {
@@ -58,12 +59,14 @@ export default {
       format: 'cjs',
       exports: 'auto',
       sourcemap: !isProduction,
+      assetFileNames: '[name][extname]',
     },
     {
       file: module.output,
       format: 'umd',
       exports: 'auto',
       sourcemap: !isProduction,
+      assetFileNames: '[name][extname]',
       name: module.name,
       globals: module.globals || {},
     },
@@ -72,6 +75,7 @@ export default {
       format: 'umd',
       exports: 'auto',
       sourcemap: !isProduction,
+      assetFileNames: '[name][extname]',
       name: module.name,
       globals: module.globals || {},
       plugins: [
@@ -85,11 +89,4 @@ export default {
       ],
     },
   ],
-  onwarn(warning, warn) {
-    const filename = warning.importer || warning.loc?.file;
-    if (filename && /node_modules/.test(filename)) {
-      return;
-    }
-    warn(warning);
-  },
 };

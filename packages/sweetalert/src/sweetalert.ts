@@ -6,7 +6,8 @@ import {
   QueueableInterface,
 } from '@flasher/flasher';
 
-import Swal, { SweetAlertOptions } from 'sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { SweetAlertOptions } from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 type SwalType = typeof Swal;
