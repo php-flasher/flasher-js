@@ -292,8 +292,6 @@ var Flasher = (function () {
     Flasher.prototype.render = function (response) {
         var _this = this;
         response = this.resolveResponse(response);
-        console.log(response);
-        console.log('==========================');
         this.addStyles(response.styles, function () {
             _this.addScripts(response.scripts, function () {
                 _this.renderOptions(response.options);
