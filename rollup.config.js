@@ -24,7 +24,7 @@ if ('@flasher/flasher' !== packageName) {
   module.globals = { '@flasher/flasher': 'flasher' };
   module.external = ['@flasher/flasher'];
 
-  if (-1 === ['@flasher/flasher-notyf', '@flasher/flasher-noty'].indexOf(packageName)) {
+  if (['@flasher/flasher-notyf', '@flasher/flasher-noty'].includes(packageName)) {
     module.external.push('jquery');
     module.globals.jquery = 'jQuery';
   }
