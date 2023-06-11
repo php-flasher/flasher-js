@@ -17,75 +17,74 @@ const modules = {
 };
 
 const packageName = process.env.LERNA_PACKAGE_NAME;
-const module = modules[packageName];
 const isProduction = 'production' === process.env.NODE_ENV;
 
-if ('@flasher/flasher' !== packageName) {
-  module.globals = { '@flasher/flasher': 'flasher' };
-  module.external = ['@flasher/flasher'];
-
-  if (['@flasher/flasher-notyf', '@flasher/flasher-noty'].includes(packageName)) {
-    module.external.push('jquery');
-    module.globals.jquery = 'jQuery';
+const addFlasherExternal = (config) => {
+  if (packageName === '@flasher/flasher') {
+    return config;
   }
+
+  config.globals = { '@flasher/flasher': 'flasher' };
+  config.external = ['@flasher/flasher'];
+
+  return config;
 }
+
+const addJQueryExternal = (config) => {
+  if (!['@flasher/flasher-notyf', '@flasher/flasher-noty'].includes(packageName)) {
+    return config;
+  }
+
+  config.external.push('jquery');
+  config.globals.jquery = 'jQuery';
+
+  return config;
+}
+
+const config = addJQueryExternal(
+  addFlasherExternal(modules[packageName])
+);
+
+const plugins = [
+  clear({
+    targets: ['dist'],
+  }),
+  styles({
+    mode: 'extract',
+    plugins: {cssnano, "postcss-discard-comments": { removeAll: true } },
+  }),
+  resolve(),
+  commonjs(),
+  typescript({ tsconfig: 'tsconfig.build.json' }),
+];
+
+const outputOptions = (options = {}) => ({
+  exports: 'auto',
+  sourcemap: !isProduction,
+  assetFileNames: '[name][extname]',
+  ...options,
+});
 
 export default {
   input: 'src/index.ts',
-  plugins: [
-    clear({
-      targets: ['dist'],
-    }),
-    styles({
-      mode: 'extract',
-      plugins: {
-        cssnano,
-        "postcss-discard-comments": {
-          removeAll: true,
-        },
-      },
-    }),
-    resolve(),
-    commonjs(),
-    typescript({
-      tsconfig: 'tsconfig.build.json',
-    }),
-  ],
-  external: module.external || [],
+  plugins: plugins,
+  external: config.external || [],
   output: [
-    {
-      dir: 'dist',
-      format: 'cjs',
-      exports: 'auto',
-      sourcemap: !isProduction,
-      assetFileNames: '[name][extname]',
-    },
-    {
-      file: module.output,
+    outputOptions({
+      file: config.output,
       format: 'umd',
-      exports: 'auto',
-      sourcemap: !isProduction,
-      assetFileNames: '[name][extname]',
-      name: module.name,
-      globals: module.globals || {},
-    },
-    {
-      file: module.output.replace('.js', '.min.js'),
+      name: config.name,
+      globals: config.globals || {},
+    }),
+    outputOptions({
+      file: config.output.replace('.js', '.min.js'),
       format: 'umd',
-      exports: 'auto',
-      sourcemap: !isProduction,
-      assetFileNames: '[name][extname]',
-      name: module.name,
-      globals: module.globals || {},
+      name: config.name,
+      globals: config.globals || {},
       plugins: [
-        isProduction &&
-          terser({
-            format: {
-              comments: false,
-            },
-          }),
+        isProduction && terser({ format: { comments: false } }),
         filesize(),
       ],
-    },
+    }),
   ],
 };
