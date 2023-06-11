@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@flasher/flasher')) :
     typeof define === 'function' && define.amd ? define(['@flasher/flasher'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.flasher = global.flasher || {}, global.flasher.notyf = factory(global.flasher)));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.notyf = factory(global.flasher));
 })(this, (function (flasher) { 'use strict';
 
     /*! *****************************************************************************

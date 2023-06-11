@@ -6,49 +6,45 @@ import resolve from '@rollup/plugin-node-resolve';
 import styles from 'rollup-plugin-styles';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import { defineConfig } from 'rollup';
 
 const modules = {
-  '@flasher/flasher': { name: 'flasher', output: 'dist/flasher.js' },
-  '@flasher/flasher-noty': { name: 'flasher.noty', output: 'dist/flasher-noty.js' },
-  '@flasher/flasher-notyf': { name: 'flasher.notyf', output: 'dist/flasher-notyf.js' },
-  '@flasher/flasher-pnotify': { name: 'flasher.pnotify', output: 'dist/flasher-pnotify.js' },
-  '@flasher/flasher-sweetalert': { name: 'flasher.sweetalert', output: 'dist/flasher-sweetalert.js' },
-  '@flasher/flasher-toastr': { name: 'flasher.toastr', output: 'dist/flasher-toastr.js' },
+  '@flasher/flasher': { name: 'flasher' },
+  '@flasher/flasher-noty': { name: 'noty' },
+  '@flasher/flasher-notyf': { name: 'notyf' },
+  '@flasher/flasher-pnotify': { name: 'pnotify' },
+  '@flasher/flasher-sweetalert': { name: 'sweetalert' },
+  '@flasher/flasher-toastr': { name: 'toastr' },
 };
 
 const packageName = process.env.LERNA_PACKAGE_NAME;
+const packageConfig = modules[packageName];
 const isProduction = 'production' === process.env.NODE_ENV;
 
 const addFlasherExternal = (config) => {
-  if (packageName === '@flasher/flasher') {
-    return config;
-  }
+  const { name } = config;
 
-  config.globals = { '@flasher/flasher': 'flasher' };
-  config.external = ['@flasher/flasher'];
+  if (name !== 'flasher') {
+    config.globals = { ...config.globals, '@flasher/flasher': 'flasher' };
+    config.external = [...config.external || [], '@flasher/flasher'];
+  }
 
   return config;
 }
 
 const addJQueryExternal = (config) => {
-  if (!['@flasher/flasher-notyf', '@flasher/flasher-noty'].includes(packageName)) {
-    return config;
-  }
+  const { name } = config;
 
-  config.external.push('jquery');
-  config.globals.jquery = 'jQuery';
+  if (name.includes('notyf') || name.includes('noty')) {
+    config.external = [...config.external || [], 'jquery'];
+    config.globals = { ...config.globals, 'jquery': 'jQuery' };
+  }
 
   return config;
 }
 
-const config = addJQueryExternal(
-  addFlasherExternal(modules[packageName])
-);
-
-const plugins = [
-  clear({
-    targets: ['dist'],
-  }),
+const plugins = (name) => [
+  clear({ targets: ['dist'] }),
   styles({
     mode: 'extract',
     plugins: {cssnano, "postcss-discard-comments": { removeAll: true } },
@@ -65,19 +61,21 @@ const outputOptions = (options = {}) => ({
   ...options,
 });
 
-export default {
+const config = addJQueryExternal(addFlasherExternal(packageConfig));
+
+export default defineConfig({
   input: 'src/index.ts',
-  plugins: plugins,
+  plugins: plugins(config.name),
   external: config.external || [],
   output: [
     outputOptions({
-      file: config.output,
+      file: `dist/flasher-${config.name}.js`,
       format: 'umd',
       name: config.name,
       globals: config.globals || {},
     }),
     outputOptions({
-      file: config.output.replace('.js', '.min.js'),
+      file: `dist/flasher-${config.name}.min.js`,
       format: 'umd',
       name: config.name,
       globals: config.globals || {},
@@ -87,4 +85,4 @@ export default {
       ],
     }),
   ],
-};
+})

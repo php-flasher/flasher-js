@@ -4,7 +4,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@flasher/*": ["packages/*/src"]
+      "@flasher/flasher": ["packages/flasher/src"],
+      "@flasher/flasher-noty": ["packages/flasher-noty/src"],
+      "@flasher/flasher-notyf": ["packages/flasher-notyf/src"],
+      "@flasher/flasher-pnotify": ["packages/flasher-pnotify/src"],
+      "@flasher/flasher-sweetalert": ["packages/flasher-sweetalert/src"],
+      "@flasher/flasher-toastr": ["packages/flasher-toastr/src"]
     },
     "noEmit": true
   }

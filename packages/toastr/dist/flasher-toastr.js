@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@flasher/flasher')) :
 	typeof define === 'function' && define.amd ? define(['@flasher/flasher'], factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, (global.flasher = global.flasher || {}, global.flasher.toastr = factory(global.flasher)));
+	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.toastr = factory(global.flasher));
 })(this, (function (flasher) { 'use strict';
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
