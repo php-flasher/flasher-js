@@ -19,53 +19,48 @@ class FlasherPlugin implements PluginInterface {
   }
 
   public renderEnvelopes(envelopes: Envelope[]): void {
-    envelopes.forEach(envelope => {
-      const nOptions = envelope.options || {}
-      const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions }
+    const onContainerReady = (envelopes: Envelope[]) => {
+      envelopes.forEach(envelope => {
+        const options = { ...this.options, ...envelope.options }
 
-      const onContainerReady = () => {
         const container = this.createContainer(options)
         this.addToContainer(container, envelope, options)
-      }
+      })
+    }
 
-      if ('loading' !== document.readyState) {
-        onContainerReady()
-        return
-      }
-
-      document.addEventListener('DOMContentLoaded', onContainerReady)
-    })
+    if (['interactive', 'complete'].includes(document.readyState)) {
+      onContainerReady(envelopes)
+    } else {
+      document.addEventListener('DOMContentLoaded', () => onContainerReady(envelopes))
+    }
   }
 
   public renderOptions(options: Options): void {
-    this.options = { ...this.options, ...options };
-
     this.applyDarkMode();
   }
 
-  public createContainer(options: { position: string; style: Properties }): HTMLDivElement {
-    const containerSelector = `.fl-main-container[data-position="${options.position}"]`;
-    let container = document.querySelector(containerSelector) as HTMLDivElement;
+  private createContainer(options: { position: string; style: Properties }): HTMLDivElement {
+    let container = document.querySelector(`.fl-main-container[data-position="${options.position}"]`) as HTMLDivElement;
     if (container) {
-      container.dataset.turboCache = 'false';
+      container.dataset.turboCache = 'false'
       return container;
     }
 
     container = document.createElement('div');
-    container.classList.add('fl-main-container');
-    container.dataset.position = options.position;
-    container.dataset.turboCache = 'false';
+    container.classList.add('fl-main-container')
+    container.dataset.position = options.position
+    container.dataset.turboCache = 'false'
 
     Object.keys(options.style).forEach((key: string) => {
-      container?.style.setProperty(key, options.style[key as keyof Properties] as string);
-    });
+      container?.style.setProperty(key, options.style[key as keyof Properties] as string)
+    })
 
-    document.body.append(container);
+    document.body.append(container)
 
-    return container;
+    return container
   }
 
-  public addToContainer(
+  private addToContainer(
     container: HTMLDivElement,
     envelope: Envelope,
     options: { direction: string; timeout: number; fps: number; rtl: boolean }
@@ -78,7 +73,7 @@ class FlasherPlugin implements PluginInterface {
     this.handleClick(template);
   }
 
-  public appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string; rtl: boolean }): void {
+  private appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string; rtl: boolean }): void {
     if (options.direction === 'bottom') {
       container.append(template);
     } else {
@@ -89,12 +84,10 @@ class FlasherPlugin implements PluginInterface {
       template.classList.add('fl-rtl');
     }
 
-    setTimeout(() => {
-      template.classList.add('fl-show');
-    }, 100);
+    requestAnimationFrame(() => template.classList.add('fl-show'));
   }
 
-  public removeNotification(template: HTMLElement) {
+  private removeNotification(template: HTMLElement) {
     const container = template.parentElement as HTMLDivElement;
 
     template.classList.remove('fl-show');
@@ -109,11 +102,11 @@ class FlasherPlugin implements PluginInterface {
     });
   }
 
-  public handleClick(template: HTMLElement) {
+  private handleClick(template: HTMLElement) {
     template.addEventListener('click', () => this.removeNotification(template));
   }
 
-  public renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
+  private renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
     if (!options.timeout || options.timeout <= 0) {
       return;
     }
@@ -144,7 +137,7 @@ class FlasherPlugin implements PluginInterface {
     template.addEventListener('mouseover', () => clearInterval(progressInterval));
   }
 
-  public applyDarkMode(): void {
+  private applyDarkMode(): void {
     if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
       return;
     }
@@ -163,7 +156,7 @@ class FlasherPlugin implements PluginInterface {
     document.body.classList.add('fl-dark-mode');
   }
 
-  public stringToHTML(str: string): HTMLElement {
+  private stringToHTML(str: string): HTMLElement {
     const dom = document.createElement('div');
     dom.innerHTML = str.trim();
     return dom.firstElementChild as HTMLElement;
