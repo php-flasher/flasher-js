@@ -36,6 +36,7 @@ class FlasherPlugin implements PluginInterface {
   }
 
   public renderOptions(options: Options): void {
+    this.options = {...this.options, ...options};
     this.applyDarkMode();
   }
 
@@ -52,7 +53,7 @@ class FlasherPlugin implements PluginInterface {
     container.dataset.turboCache = 'false'
 
     Object.keys(options.style).forEach((key: string) => {
-      container?.style.setProperty(key, options.style[key as keyof Properties] as string)
+      container.style.setProperty(key, options.style[key as keyof Properties] as string)
     })
 
     document.body.append(container)
@@ -94,11 +95,9 @@ class FlasherPlugin implements PluginInterface {
     template.addEventListener('transitionend', () => {
       template.remove();
 
-      if (container.hasChildNodes()) {
-        return;
+      if (!container.hasChildNodes()) {
+        container.remove();
       }
-
-      container.remove();
     });
   }
 
@@ -147,8 +146,8 @@ class FlasherPlugin implements PluginInterface {
 
     css = mode === 'media' ? `@media (prefers-color-scheme: dark) {${css}}` : `${className} ${css}`;
 
-    const style = document.createElement('style');
-    style.type = 'text/css';
+    const style = document.createElement('style') as HTMLLinkElement;
+    style.rel = 'text/css';
     style.classList.add('flasher-js');
     style.appendChild(document.createTextNode(css));
     document.head.appendChild(style);
