@@ -1,31 +1,31 @@
 import {
   Envelope,
   FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
+  Options,
+  FactoryInterface,
 } from '@flasher/flasher';
 
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 
-export default class ToastrFactory implements NotificationFactoryInterface {
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+export default class ToastrFactory implements FactoryInterface {
+  success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string|Options, message: string|Options, title?: string|Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -33,10 +33,10 @@ export default class ToastrFactory implements NotificationFactoryInterface {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string|Options,
+    message?: string|Options,
+    title?: string|Options,
+    options?: Options
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -73,7 +73,7 @@ export default class ToastrFactory implements NotificationFactoryInterface {
     instance.parent().attr('data-turbo-cache', 'false');
   }
 
-  renderOptions(options: FlasherOptions): void {
+  renderOptions(options: Options): void {
     toastr.options = {
       timeOut: (options.timeOut || 5000) as any,
       progressBar: (options.progressBar || 5000) as any,

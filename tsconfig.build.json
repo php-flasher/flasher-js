@@ -1,31 +1,16 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist",
-    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
-    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es2020",
-      "dom"
-    ],
-    "moduleResolution": "node",
-    "noEmit": false,
-    "noImplicitAny": true,
+    "noEmit": true,
     "removeComments": true,
-    "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
-    "target": "ES2020",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ]
+    "target": "ES2015",
+    "downlevelIteration": true,
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules",

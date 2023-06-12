@@ -61,14 +61,8 @@
 	    render(envelope) {
 	        const { notification } = envelope;
 	        notification.type = notification.type || 'info';
-	        let options = {
-	            text: notification.title,
-	            ...notification.options,
-	        };
-	        options = {
-	            ...options,
-	            text: (options?.text || notification.message),
-	        };
+	        let options = Object.assign({ text: notification.title }, notification.options);
+	        options = Object.assign(Object.assign({}, options), { text: ((options === null || options === void 0 ? void 0 : options.text) || notification.message) });
 	        let pnotify;
 	        switch (notification.type) {
 	            case 'success':
@@ -96,10 +90,7 @@
 	        });
 	    }
 	    renderOptions(options) {
-	        this.updateDefaultOptions(PNotifyExports.defaults, {
-	            delay: options.delay || 5000,
-	            ...options,
-	        });
+	        this.updateDefaultOptions(PNotifyExports.defaults, Object.assign({ delay: options.delay || 5000 }, options));
 	    }
 	}
 

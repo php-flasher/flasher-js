@@ -1,18 +1,18 @@
-import { Envelope, FlasherNotification, FlasherOptions, NotificationFactoryInterface, QueueableInterface } from '@flasher/flasher';
+import { Envelope, FlasherNotification, Options, FactoryInterface, QueueableInterface } from '@flasher/flasher';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/dist/sweetalert2.min.css';
 type SwalType = typeof Swal;
-export default class SweetAlertFactory implements NotificationFactoryInterface, QueueableInterface {
+export default class SweetAlertFactory implements FactoryInterface, QueueableInterface {
     swalToastr?: SwalType;
     queue: Envelope[];
-    success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void;
-    info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void;
-    warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void;
-    error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void;
-    flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void;
-    createNotification(type: string | FlasherOptions, message?: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): FlasherNotification;
+    success(message: string | Options, title?: string | Options, options?: Options): void;
+    info(message: string | Options, title?: string | Options, options?: Options): void;
+    warning(message: string | Options, title?: string | Options, options?: Options): void;
+    error(message: string | Options, title?: string | Options, options?: Options): void;
+    flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void;
+    createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification;
     render(envelope: Envelope): Promise<void> | undefined;
-    renderOptions(options: FlasherOptions): void;
+    renderOptions(options: Options): void;
     addEnvelope(envelope: Envelope): void;
     resetQueue(): void;
     renderQueue(): Promise<void>;

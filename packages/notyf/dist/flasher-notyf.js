@@ -491,17 +491,14 @@
         render(envelope) {
             const { notification } = envelope;
             notification.type = notification.type || 'info';
-            const options = { ...notification, ...notification.options };
+            const options = Object.assign(Object.assign({}, notification), notification.options);
             this.notyf = this.notyf || new Notyf();
             this.notyf.open(options);
             this.notyf.view.container.dataset.turboCache = 'false';
             this.notyf.view.a11yContainer.dataset.turboCache = 'false';
         }
         renderOptions(options) {
-            const nOptions = {
-                duration: options.duration || 5000,
-                ...options,
-            };
+            const nOptions = Object.assign({ duration: options.duration || 5000 }, options);
             nOptions.types = nOptions.types || [];
             nOptions.types.push({
                 type: 'info',

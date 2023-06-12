@@ -63,7 +63,7 @@
         render(envelope) {
             const { notification } = envelope;
             const nOptions = notification.options || {};
-            const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions };
+            const options = Array.isArray(nOptions) ? this.options : Object.assign(Object.assign({}, this.options), nOptions);
             const onContainerReady = () => {
                 const container = this.createContainer(options);
                 this.addToContainer(container, envelope, options);
@@ -75,7 +75,7 @@
             document.addEventListener('DOMContentLoaded', onContainerReady);
         }
         renderOptions(options) {
-            this.options = { ...this.options, ...options };
+            this.options = Object.assign(Object.assign({}, this.options), options);
             this.applyDarkMode();
         }
         createContainer(options) {
@@ -90,7 +90,7 @@
             container.dataset.position = options.position;
             container.dataset.turboCache = 'false';
             Object.keys(options.style).forEach((key) => {
-                container?.style.setProperty(key, options.style[key]);
+                container === null || container === void 0 ? void 0 : container.style.setProperty(key, options.style[key]);
             });
             document.body.append(container);
             return container;
@@ -315,7 +315,7 @@
         renderEnvelopes(envelopes, context) {
             const queues = new Map();
             envelopes.forEach((envelope) => {
-                envelope.context = { ...envelope.context, ...context };
+                envelope.context = Object.assign(Object.assign({}, envelope.context), context);
                 envelope.handler = this.resolveHandler(envelope.handler);
                 const factory = this.create(envelope.handler);
                 if (!this.isQueueable(factory)) {
@@ -356,6 +356,7 @@
             return options;
         }
         parseFunction(func) {
+            var _a, _b;
             if (typeof func !== 'string') {
                 return func;
             }
@@ -363,13 +364,14 @@
             if (!match) {
                 return func;
             }
-            const args = match[1]?.split(',').map((arg) => arg.trim()) ?? [];
+            const args = (_b = (_a = match[1]) === null || _a === void 0 ? void 0 : _a.split(',').map((arg) => arg.trim())) !== null && _b !== void 0 ? _b : [];
             const body = match[2];
             return new Function(...args, body);
         }
         pushStyles(response, handler) {
+            var _a;
             handler = handler.replace('theme.', '');
-            const styles = this.themes.get(handler)?.styles || [];
+            const styles = ((_a = this.themes.get(handler)) === null || _a === void 0 ? void 0 : _a.styles) || [];
             response.styles = Array.from(new Set([...response.styles, ...styles]));
         }
         resolveHandler(handler) {
@@ -399,12 +401,13 @@
     const flasher = new Flasher();
     flasher.addTheme('flasher', {
         render: (envelope) => {
+            var _a;
             const notification = envelope.notification;
             return '<div class="fl-flasher fl-' + notification.type + '">' +
                 '<div class="fl-content">' +
                 '<div class="fl-icon"></div>' +
                 '<div>' +
-                '<strong class="fl-title">' + (notification.title ?? notification.type) + '</strong>' +
+                '<strong class="fl-title">' + ((_a = notification.title) !== null && _a !== void 0 ? _a : notification.type) + '</strong>' +
                 '<span class="fl-message">' + notification.message + '</span>' +
                 '</div>' +
                 '</div>' +

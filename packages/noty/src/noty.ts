@@ -1,32 +1,32 @@
 import {
   Envelope,
   FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
+  Options,
+  FactoryInterface,
 } from '@flasher/flasher';
 
 import Noty from 'noty';
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/mint.css';
 
-export default class NotyFactory implements NotificationFactoryInterface {
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+export default class NotyFactory implements FactoryInterface {
+  success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string|Options, message: string|Options, title?: string|Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -50,10 +50,10 @@ export default class NotyFactory implements NotificationFactoryInterface {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string|Options,
+    message?: string|Options,
+    title?: string|Options,
+    options?: Options
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -81,7 +81,7 @@ export default class NotyFactory implements NotificationFactoryInterface {
     };
   }
 
-  renderOptions(options: FlasherOptions): void {
+  renderOptions(options: Options): void {
     Noty.overrideDefaults({
       timeout: options.timeout || 5000,
       ...options,

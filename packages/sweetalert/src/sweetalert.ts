@@ -1,8 +1,8 @@
 import {
   Envelope,
   FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
+  Options,
+  FactoryInterface,
   QueueableInterface,
 } from '@flasher/flasher';
 
@@ -12,28 +12,28 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 type SwalType = typeof Swal;
 
-export default class SweetAlertFactory implements NotificationFactoryInterface, QueueableInterface {
+export default class SweetAlertFactory implements FactoryInterface, QueueableInterface {
   swalToastr?: SwalType;
 
   queue: Envelope[] = [];
 
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string|Options, message: string|Options, title?: string|Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -41,10 +41,10 @@ export default class SweetAlertFactory implements NotificationFactoryInterface, 
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string|Options,
+    message?: string|Options,
+    title?: string|Options,
+    options?: Options
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -94,7 +94,7 @@ export default class SweetAlertFactory implements NotificationFactoryInterface, 
     });
   }
 
-  renderOptions(options: FlasherOptions): void {
+  renderOptions(options: Options): void {
     this.swalToastr = this.swalToastr || Swal.mixin({
       timer: (options.timer || 5000) as any,
       timerProgressBar: (options.timerProgressBar || true) as any,

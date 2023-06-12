@@ -1,7 +1,7 @@
-import { Envelope, FlasherNotification, FlasherOptions, NotificationFactoryInterface, Theme} from './common';
+import { Envelope, FactoryInterface, Options, Theme } from './types';
 import { Properties } from 'csstype';
 
-export default class FlasherFactory implements NotificationFactoryInterface {
+export default class FlasherFactory implements FactoryInterface {
   private viewFactory: Theme;
   private options = {
     timeout: 5000,
@@ -17,30 +17,30 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     this.viewFactory = viewFactory;
   }
 
-  public success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public success(message: string | Options, title?: string | Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  public info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public info(message: string | Options, title?: string | Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  public warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public warning(message: string | Options, title?: string | Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  public error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public error(message: string | Options, title?: string | Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  public flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
     this.render({ notification });
   }
 
-  public createNotification(type: string | FlasherOptions, message?: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): FlasherNotification {
+  public createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
       type = options.type as unknown as string;
@@ -86,7 +86,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     document.addEventListener('DOMContentLoaded', onContainerReady);
   }
 
-  public renderOptions(options: FlasherOptions): void {
+  public renderOptions(options: Options): void {
     this.options = { ...this.options, ...options };
 
     this.applyDarkMode();

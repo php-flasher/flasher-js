@@ -1,78 +1,35 @@
-import {
-  Envelope,
-  FlasherNotification,
-  FlasherOptions,
-  FlasherResponse,
-  FlasherResponseOptions,
-  NotificationFactoryInterface,
-  QueueableInterface,
-  ResponseContext,
-  Theme,
-} from './common';
+import { Envelope, FactoryInterface, Options, QueueableInterface, Response, Theme } from './types';
 import FlasherFactory from './flasherFactory';
 
 export default class Flasher {
   private defaultHandler = 'theme.flasher';
-  private factories: Map<string, NotificationFactoryInterface> = new Map<string, NotificationFactoryInterface>();
+  private factories: Map<string, FactoryInterface> = new Map<string, FactoryInterface>();
   private themes: Map<string, Theme> = new Map<string, Theme>();
 
-  public success(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public success(message: string, title: string, options: Options): void {
     this.flash('success', message, title, options);
   }
 
-  public info(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public info(message: string, title: string, options: Options): void {
     this.flash('info', message, title, options);
   }
 
-  public warning(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public warning(message: string, title: string, options: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  public error(message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
+  public error(message: string, title: string, options: Options): void {
     this.flash('error', message, title, options);
   }
 
-  public flash(type: string | FlasherOptions, message: string | FlasherOptions, title?: string | FlasherOptions, options?: FlasherOptions): void {
-    const notification = this.createNotification(type, message, title, options);
+  public flash(type: string, message: string, title: string, options: Options): void {
     const factory = this.create(this.defaultHandler);
 
     factory.renderOptions({});
-    factory.render({ notification });
+    factory.render([{ message, title, type, options }]);
   }
 
-  public createNotification(
-    type: string | FlasherOptions,
-    message?: string | FlasherOptions,
-    title?: string | FlasherOptions,
-    options?: FlasherOptions,
-  ): FlasherNotification {
-    if (typeof type === 'object') {
-      options = type;
-      type = options.type as unknown as string;
-      message = options.message as unknown as string;
-      title = options.title as unknown as string;
-    } else if (typeof message === 'object') {
-      options = message;
-      message = options.message as unknown as string;
-      title = options.title as unknown as string;
-    } else if (typeof title === 'object') {
-      options = title;
-      title = options.title as unknown as string;
-    }
-
-    if (undefined === message) {
-      throw new Error('message option is required');
-    }
-
-    return {
-      type: type || 'info',
-      message,
-      title,
-      options,
-    };
-  }
-
-  public create(alias: string): NotificationFactoryInterface {
+  public create(alias: string): FactoryInterface {
     alias = this.resolveHandler(alias);
     this.resolveThemeHandler(alias);
 
@@ -84,24 +41,24 @@ export default class Flasher {
     return factory;
   }
 
-  public renderOptions(options: FlasherResponseOptions): void {
+  public renderOptions(options: Options): void {
     Object.entries(options).forEach(([handler, option]) => {
       this.create(handler).renderOptions(option);
     });
   }
 
-  public render(response: FlasherResponse): void {
+  public render(response: Response): void {
     response = this.resolveResponse(response);
 
-    this.addStyles(response.styles, () => {
-      this.addScripts(response.scripts, () => {
-        this.renderOptions(response.options);
+    this.addStyles(response.styles || [], () => {
+      this.addScripts(response.scripts || [], () => {
+        this.renderOptions(response.options || {});
         this.renderEnvelopes(response.envelopes, response.context);
       });
     });
   }
 
-  public addFactory(name: string, factory: NotificationFactoryInterface): void {
+  public addFactory(name: string, factory: FactoryInterface): void {
     this.factories.set(name, factory);
   }
 
@@ -165,7 +122,7 @@ export default class Flasher {
 
     envelopes.forEach((envelope) => {
       envelope.context = { ...envelope.context, ...context };
-      envelope.handler = this.resolveHandler(envelope.handler);
+      envelope.metadata.handler = this.resolveHandler(envelope.metadata.handler);
 
       const factory = this.create(envelope.handler);
       if (!this.isQueueable(factory)) {
@@ -190,7 +147,7 @@ export default class Flasher {
     );
   }
 
-  private resolveResponse(response: FlasherResponse): FlasherResponse {
+  private resolveResponse(response: Response): Response {
     response.envelopes = response.envelopes || [];
     response.options = response.options || {};
     response.scripts = response.scripts || [];
@@ -202,15 +159,15 @@ export default class Flasher {
     });
 
     response.envelopes.forEach((envelope) => {
-      envelope.handler = this.resolveHandler(envelope.handler);
-      envelope.notification.options = this.parseOptions(envelope.notification.options || {});
-      this.pushStyles(response, envelope.handler);
+      envelope.metadata.handler = this.resolveHandler(envelope.metadata.handler);
+      envelope.options = this.parseOptions(envelope.options || {});
+      this.pushStyles(response, envelope.metadata.handler);
     });
 
     return response;
   }
 
-  private parseOptions(options: FlasherOptions): FlasherOptions {
+  private parseOptions(options: Options): Options {
     Object.entries(options).forEach(([key, value]) => {
       options[key] = this.parseFunction(value);
     });
@@ -238,7 +195,7 @@ export default class Flasher {
     return new Function(...args, body);
   }
 
-  private pushStyles(response: FlasherResponse, handler: string): void {
+  private pushStyles(response: Response, handler: string): void {
     handler = handler.replace('theme.', '');
     const styles = this.themes.get(handler)?.styles || [];
 
@@ -248,13 +205,7 @@ export default class Flasher {
   private resolveHandler(handler?: string): string {
     handler = handler || this.defaultHandler;
 
-    if (['flasher', 'theme', 'template'].includes(handler)) {
-      handler = 'theme.flasher';
-    }
-
-    handler = handler.replace('template.', 'theme.');
-
-    return handler;
+    return 'flasher' === handler ? 'theme.flasher' : handler;
   }
 
   private resolveThemeHandler(alias: string): void {
@@ -263,11 +214,11 @@ export default class Flasher {
       return;
     }
 
-    if (0 !== alias.indexOf('theme.')) {
+    if (alias.includes('theme.')) {
       return;
     }
 
-    const viewFactory = this.themes.get(alias.replace('theme.', ''));
+    const viewFactory = this.themes.get(alias.replace('theme.', ''))
     if (!viewFactory) {
       return;
     }

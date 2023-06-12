@@ -3141,11 +3141,7 @@
 	    render(envelope) {
 	        const { notification } = envelope;
 	        notification.type = notification.type || 'info';
-	        const options = {
-	            text: notification.message,
-	            type: notification.type,
-	            ...notification.options,
-	        };
+	        const options = Object.assign({ text: notification.message, type: notification.type }, notification.options);
 	        const noty = new Noty(options);
 	        noty.show();
 	        noty.layoutDom.dataset.turboCache = 'false';
@@ -3177,10 +3173,7 @@
 	        };
 	    }
 	    renderOptions(options) {
-	        Noty.overrideDefaults({
-	            timeout: options.timeout || 5000,
-	            ...options,
-	        });
+	        Noty.overrideDefaults(Object.assign({ timeout: options.timeout || 5000 }, options));
 	    }
 	}
 

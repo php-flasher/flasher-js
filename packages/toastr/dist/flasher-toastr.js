@@ -11233,11 +11233,7 @@
 	        instance.parent().attr('data-turbo-cache', 'false');
 	    }
 	    renderOptions(options) {
-	        toastr$1.options = {
-	            timeOut: (options.timeOut || 5000),
-	            progressBar: (options.progressBar || 5000),
-	            ...options,
-	        };
+	        toastr$1.options = Object.assign({ timeOut: (options.timeOut || 5000), progressBar: (options.progressBar || 5000) }, options);
 	    }
 	}
 

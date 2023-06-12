@@ -1,8 +1,8 @@
 import {
   Envelope,
   FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
+  Options,
+  FactoryInterface,
 } from '@flasher/flasher';
 
 import {
@@ -18,24 +18,24 @@ import {
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
-export default class PnotifyFactory implements NotificationFactoryInterface {
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+export default class PnotifyFactory implements FactoryInterface {
+  success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string|Options, message: string|Options, title?: string|Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -43,10 +43,10 @@ export default class PnotifyFactory implements NotificationFactoryInterface {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string|Options,
+    message?: string|Options,
+    title?: string|Options,
+    options?: Options
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -113,14 +113,14 @@ export default class PnotifyFactory implements NotificationFactoryInterface {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  updateDefaultOptions(defaultOptions: any, options: FlasherOptions) {
+  updateDefaultOptions(defaultOptions: any, options: Options) {
     Object.entries(options).forEach(([option, value]) => {
       // eslint-disable-next-line no-param-reassign
       defaultOptions[option] = value;
     });
   }
 
-  renderOptions(options: FlasherOptions): void {
+  renderOptions(options: Options): void {
     this.updateDefaultOptions(defaults, {
       delay: options.delay || 5000,
       ...options,

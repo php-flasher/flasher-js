@@ -1,34 +1,34 @@
 import {
   Envelope,
   FlasherNotification,
-  FlasherOptions,
-  NotificationFactoryInterface,
+  Options,
+  FactoryInterface,
 } from '@flasher/flasher';
 
 import { Notyf } from 'notyf';
 import { INotyfOptions } from 'notyf/notyf.options';
 import 'notyf/notyf.min.css';
 
-export default class NotyfFactory implements NotificationFactoryInterface {
+export default class NotyfFactory implements FactoryInterface {
   private notyf?: Notyf;
 
-  success(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }
 
-  info(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  info(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('info', message, title, options);
   }
 
-  warning(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  warning(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('warning', message, title, options);
   }
 
-  error(message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  error(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('error', message, title, options);
   }
 
-  flash(type: string|FlasherOptions, message: string|FlasherOptions, title?: string|FlasherOptions, options?: FlasherOptions): void {
+  flash(type: string|Options, message: string|Options, title?: string|Options, options?: Options): void {
     const notification = this.createNotification(type, message, title, options);
 
     this.renderOptions({});
@@ -36,10 +36,10 @@ export default class NotyfFactory implements NotificationFactoryInterface {
   }
 
   createNotification(
-    type: string|FlasherOptions,
-    message?: string|FlasherOptions,
-    title?: string|FlasherOptions,
-    options?: FlasherOptions
+    type: string|Options,
+    message?: string|Options,
+    title?: string|Options,
+    options?: Options
   ): FlasherNotification {
     if (typeof type === 'object') {
       options = type;
@@ -82,7 +82,7 @@ export default class NotyfFactory implements NotificationFactoryInterface {
     this.notyf.view.a11yContainer.dataset.turboCache = 'false';
   }
 
-  renderOptions(options: FlasherOptions): void {
+  renderOptions(options: Options): void {
     const nOptions = {
       duration: options.duration || 5000,
       ...options,
