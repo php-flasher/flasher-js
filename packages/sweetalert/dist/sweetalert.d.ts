@@ -1,8 +1,8 @@
-import { Envelope, FlasherNotification, Options, FactoryInterface, QueueableInterface } from '@flasher/flasher';
+import { Envelope, FlasherNotification, Options, PluginInterface, QueueableInterface } from '@flasher/flasher';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import 'sweetalert2/dist/sweetalert2.min.css';
 type SwalType = typeof Swal;
-export default class SweetAlertFactory implements FactoryInterface, QueueableInterface {
+export default class SweetAlertFactory implements PluginInterface, QueueableInterface {
     swalToastr?: SwalType;
     queue: Envelope[];
     success(message: string | Options, title?: string | Options, options?: Options): void;

@@ -1,8 +1,9 @@
-import { Envelope, FactoryInterface, Options, Theme } from './types';
+import { Envelope, PluginInterface, Options, Theme } from './types';
+import { NotificationMixin } from './mixin'
 import { Properties } from 'csstype';
 
-export default class FlasherFactory implements FactoryInterface {
-  private viewFactory: Theme;
+class FlasherPlugin implements PluginInterface {
+  private theme: Theme;
   private options = {
     timeout: 5000,
     fps: 30,
@@ -13,77 +14,27 @@ export default class FlasherFactory implements FactoryInterface {
     darkMode: 'media',
   };
 
-  constructor(viewFactory: Theme) {
-    this.viewFactory = viewFactory;
+  constructor(theme: Theme) {
+    this.theme = theme;
   }
 
-  public success(message: string | Options, title?: string | Options, options?: Options): void {
-    this.flash('success', message, title, options);
-  }
+  public renderEnvelopes(envelopes: Envelope[]): void {
+    envelopes.forEach(envelope => {
+      const nOptions = envelope.options || {}
+      const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions }
 
-  public info(message: string | Options, title?: string | Options, options?: Options): void {
-    this.flash('info', message, title, options);
-  }
+      const onContainerReady = () => {
+        const container = this.createContainer(options)
+        this.addToContainer(container, envelope, options)
+      }
 
-  public warning(message: string | Options, title?: string | Options, options?: Options): void {
-    this.flash('warning', message, title, options);
-  }
+      if ('loading' !== document.readyState) {
+        onContainerReady()
+        return
+      }
 
-  public error(message: string | Options, title?: string | Options, options?: Options): void {
-    this.flash('error', message, title, options);
-  }
-
-  public flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void {
-    const notification = this.createNotification(type, message, title, options);
-
-    this.renderOptions({});
-    this.render({ notification });
-  }
-
-  public createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification {
-    if (typeof type === 'object') {
-      options = type;
-      type = options.type as unknown as string;
-      message = options.message as unknown as string;
-      title = options.title as unknown as string;
-    } else if (typeof message === 'object') {
-      options = message;
-      message = options.message as unknown as string;
-      title = options.title as unknown as string;
-    } else if (typeof title === 'object') {
-      options = title;
-      title = options.title as unknown as string;
-    }
-
-    if (undefined === message) {
-      throw new Error('message option is required');
-    }
-
-    return {
-      type: type || 'info',
-      message,
-      title,
-      options,
-    };
-  }
-
-  public render(envelope: Envelope): void {
-    const { notification } = envelope;
-
-    const nOptions = notification.options || {};
-    const options = Array.isArray(nOptions) ? this.options : { ...this.options, ...nOptions };
-
-    const onContainerReady = () => {
-      const container = this.createContainer(options);
-      this.addToContainer(container, envelope, options);
-    };
-
-    if ('loading' !== document.readyState) {
-      onContainerReady();
-      return;
-    }
-
-    document.addEventListener('DOMContentLoaded', onContainerReady);
+      document.addEventListener('DOMContentLoaded', onContainerReady)
+    })
   }
 
   public renderOptions(options: Options): void {
@@ -119,7 +70,7 @@ export default class FlasherFactory implements FactoryInterface {
     envelope: Envelope,
     options: { direction: string; timeout: number; fps: number; rtl: boolean }
   ): void {
-    const template = this.stringToHTML(envelope.template || this.viewFactory.render(envelope));
+    const template = this.stringToHTML(this.theme.render(envelope));
     template.classList.add('fl-container');
 
     this.appendNotification(container, template, options);
@@ -213,27 +164,10 @@ export default class FlasherFactory implements FactoryInterface {
   }
 
   public stringToHTML(str: string): HTMLElement {
-    const support = (() => {
-      if (!DOMParser) {
-        return false;
-      }
-      const parser = new DOMParser();
-      try {
-        parser.parseFromString('x', 'text/html');
-      } catch (err) {
-        return false;
-      }
-      return true;
-    })();
-
-    if (support) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(str, 'text/html');
-      return doc.body.firstChild as HTMLElement;
-    }
-
     const dom = document.createElement('div');
-    dom.innerHTML = str;
+    dom.innerHTML = str.trim();
     return dom.firstElementChild as HTMLElement;
   }
 }
+
+export default NotificationMixin(FlasherPlugin);

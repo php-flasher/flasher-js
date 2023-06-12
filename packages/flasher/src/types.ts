@@ -3,44 +3,34 @@ export interface Envelope {
   title: string;
   type: string;
   options: Options;
-  metadata?: {
-    id: string;
-    handler: string;
-    priority: number;
-    created_at: string;
+  metadata: {
+    plugin: string;
   }
 }
 
 export interface Options {
-  [index: string]: any[];
+  [plugin: string]: PluginOptions;
+}
+
+export interface PluginOptions {
+  [option: string]: any;
 }
 
 export interface Context {
-  [index: string]: any[];
+  [index: string]: any;
 }
 
 export interface Response {
   envelopes: Envelope[];
-  options?: Options;
-  scripts?: string[];
-  styles?: string[];
-  context?: Context;
+  options: Options;
+  scripts: string[];
+  styles: string[];
+  context: Context;
 }
 
-export interface FactoryInterface {
-  success(message: string, title?: string, options?: Options): void;
-  info(message: string, title?: string, options?: Options): void;
-  warning(message: string, title?: string, options?: Options): void;
-  error(message: string, title?: string, options?: Options): void;
-  flash(type: string, message: string, title?: string, options?: Options): void;
-  render(envelopes: Envelope[]): void;
+export interface PluginInterface {
+  renderEnvelopes(envelopes: Envelope[]): void;
   renderOptions(options: Options): void;
-}
-
-export interface QueueableInterface {
-  addEnvelope(envelope: Envelope): void;
-  renderQueue(): void;
-  resetQueue(): void;
 }
 
 export interface Theme {

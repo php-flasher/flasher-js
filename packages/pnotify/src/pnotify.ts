@@ -2,7 +2,7 @@ import {
   Envelope,
   FlasherNotification,
   Options,
-  FactoryInterface,
+  PluginInterface,
 } from '@flasher/flasher';
 
 import {
@@ -18,7 +18,7 @@ import {
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
-export default class PnotifyFactory implements FactoryInterface {
+export default class PnotifyFactory implements PluginInterface {
   success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }

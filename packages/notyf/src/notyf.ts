@@ -2,14 +2,14 @@ import {
   Envelope,
   FlasherNotification,
   Options,
-  FactoryInterface,
+  PluginInterface,
 } from '@flasher/flasher';
 
 import { Notyf } from 'notyf';
 import { INotyfOptions } from 'notyf/notyf.options';
 import 'notyf/notyf.min.css';
 
-export default class NotyfFactory implements FactoryInterface {
+export default class NotyfFactory implements PluginInterface {
   private notyf?: Notyf;
 
   success(message: string|Options, title?: string|Options, options?: Options): void {

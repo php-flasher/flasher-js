@@ -1,65 +1,54 @@
-import { Envelope, FactoryInterface, Options, QueueableInterface, Response, Theme } from './types';
-import FlasherFactory from './flasherFactory';
+import {
+  Envelope,
+  PluginInterface,
+  PluginOptions,
+  Options,
+  Response,
+  Theme,
+} from './types'
+import { NotificationMixin } from './mixin'
+import FlasherPlugin from './plugin';
 
-export default class Flasher {
-  private defaultHandler = 'theme.flasher';
-  private factories: Map<string, FactoryInterface> = new Map<string, FactoryInterface>();
+class Flasher implements PluginInterface {
+  private defaultPlugin = 'flasher';
+  private plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
   private themes: Map<string, Theme> = new Map<string, Theme>();
 
-  public success(message: string, title: string, options: Options): void {
-    this.flash('success', message, title, options);
-  }
+  public async render(response: Partial<Response>): Promise<void> {
+    const resolved = this.resolveResponse(response);
 
-  public info(message: string, title: string, options: Options): void {
-    this.flash('info', message, title, options);
-  }
+    await Promise.all([
+      this.addStyles(resolved.styles),
+      this.addScripts(resolved.scripts),
+    ])
 
-  public warning(message: string, title: string, options: Options): void {
-    this.flash('warning', message, title, options);
-  }
-
-  public error(message: string, title: string, options: Options): void {
-    this.flash('error', message, title, options);
-  }
-
-  public flash(type: string, message: string, title: string, options: Options): void {
-    const factory = this.create(this.defaultHandler);
-
-    factory.renderOptions({});
-    factory.render([{ message, title, type, options }]);
-  }
-
-  public create(alias: string): FactoryInterface {
-    alias = this.resolveHandler(alias);
-    this.resolveThemeHandler(alias);
-
-    const factory = this.factories.get(alias);
-    if (!factory) {
-      throw new Error(`Unable to resolve "${alias}" notification factory, did you forget to register it?`);
-    }
-
-    return factory;
+    this.renderOptions(resolved.options)
+    this.renderEnvelopes(resolved.envelopes)
   }
 
   public renderOptions(options: Options): void {
-    Object.entries(options).forEach(([handler, option]) => {
-      this.create(handler).renderOptions(option);
+    Object.entries(options).forEach(([plugin, option]) => {
+      this.create(plugin).renderOptions(options);
     });
   }
 
-  public render(response: Response): void {
-    response = this.resolveResponse(response);
+  public renderEnvelopes(envelopes: Envelope[]): void {
+    const map: Record<string, Envelope[]> = {};
 
-    this.addStyles(response.styles || [], () => {
-      this.addScripts(response.scripts || [], () => {
-        this.renderOptions(response.options || {});
-        this.renderEnvelopes(response.envelopes, response.context);
-      });
+    envelopes.forEach((envelope) => {
+      const plugin = this.resolvePlugin(envelope.metadata.plugin);
+
+      map[plugin] = map[plugin] || [];
+      map[plugin].push(envelope);
+    });
+
+    Object.entries(map).forEach(([plugin, envelopes]) => {
+      this.create(plugin).renderEnvelopes(envelopes);
     });
   }
 
-  public addFactory(name: string, factory: FactoryInterface): void {
-    this.factories.set(name, factory);
+  public addPlugin(name: string, plugin: PluginInterface): void {
+    this.plugins.set(name, plugin);
   }
 
   public addTheme(name: string, theme: Theme): void {
@@ -67,115 +56,57 @@ export default class Flasher {
   }
 
   public using(name: string): Flasher {
-    this.defaultHandler = name;
+    this.defaultPlugin = name;
 
     return this;
   }
 
-  public addStyles(urls: string[], callback: () => void): void {
-    if (urls.length === 0) {
-      if (typeof callback === 'function') {
-        callback();
-      }
-      return;
+  public create(name: string): PluginInterface {
+    name = this.resolvePlugin(name);
+    this.resolveTheme(name);
+
+    const plugin = this.plugins.get(name);
+    if (!plugin) {
+      throw new Error(`Unable to resolve "${name}" plugin, did you forget to register it?`);
     }
 
-    if (document.querySelector(`link[href="${urls[0]}"]`) !== null) {
-      this.addStyles(urls.slice(1), callback);
-      return;
-    }
-
-    const tag = document.createElement('link');
-
-    tag.setAttribute('href', urls[0]);
-    tag.setAttribute('type', 'text/css');
-    tag.setAttribute('rel', 'stylesheet');
-    tag.onload = () => this.addStyles(urls.slice(1), callback);
-
-    document.head.appendChild(tag);
+    return plugin;
   }
 
-  public addScripts(urls: string[], callback: () => void): void {
-    if (urls.length === 0) {
-      if (typeof callback === 'function') {
-        callback();
-      }
-      return;
-    }
-
-    if (document.querySelector(`script[src="${urls[0]}"]`) !== null) {
-      this.addScripts(urls.slice(1), callback);
-      return;
-    }
-
-    const tag = document.createElement('script');
-
-    tag.setAttribute('src', urls[0]);
-    tag.setAttribute('type', 'text/javascript');
-    tag.onload = () => this.addScripts(urls.slice(1), callback);
-
-    document.head.appendChild(tag);
+  public async addStyles(urls: string[]): Promise<void> {
+    await this.addAssets(urls, 'link', 'href', 'stylesheet')
   }
 
-  public renderEnvelopes(envelopes: Envelope[], context: ResponseContext): void {
-    const queues = new Map<string, QueueableInterface>();
+  public async addScripts(urls: string[]): Promise<void> {
+    await this.addAssets(urls, 'script', 'src', 'text/javascript')
+  }
 
-    envelopes.forEach((envelope) => {
-      envelope.context = { ...envelope.context, ...context };
-      envelope.metadata.handler = this.resolveHandler(envelope.metadata.handler);
+  private resolveResponse(response: Partial<Response>): Response {
+    const resolved = {...response, ... { envelopes: [], options: {  }, scripts: [], styles: [], context: {}}} as Response;
 
-      const factory = this.create(envelope.handler);
-      if (!this.isQueueable(factory)) {
-        factory.render(envelope);
-        return;
-      }
-
-      if (!queues.get(envelope.handler)) {
-        factory.resetQueue();
-      }
-
-      factory.addEnvelope(envelope);
-      queues.set(envelope.handler, factory);
+    Object.entries(resolved.options).forEach(([plugin, options]) => {
+      resolved.options[plugin] = this.resolveOptions(options);
     });
 
-    queues.forEach((factory) => factory.renderQueue());
-  }
-
-  private isQueueable(object: any): object is QueueableInterface {
-    return (
-      typeof object.addEnvelope === 'function' && typeof object.renderQueue === 'function'
-    );
-  }
-
-  private resolveResponse(response: Response): Response {
-    response.envelopes = response.envelopes || [];
-    response.options = response.options || {};
-    response.scripts = response.scripts || [];
-    response.styles = response.styles || [];
-    response.context = response.context || {};
-
-    Object.entries(response.options).forEach(([handler, options]) => {
-      response.options[handler] = this.parseOptions(options);
+    resolved.envelopes.forEach((envelope) => {
+      envelope.metadata = envelope.metadata || {};
+      envelope.metadata.plugin = this.resolvePlugin(envelope.metadata.plugin);
+      this.addThemeStyles(resolved, envelope.metadata.plugin);
+      envelope.options = this.resolveOptions(envelope.options);
     });
 
-    response.envelopes.forEach((envelope) => {
-      envelope.metadata.handler = this.resolveHandler(envelope.metadata.handler);
-      envelope.options = this.parseOptions(envelope.options || {});
-      this.pushStyles(response, envelope.metadata.handler);
-    });
-
-    return response;
+    return resolved;
   }
 
-  private parseOptions(options: Options): Options {
+  private resolveOptions(options: PluginOptions): PluginOptions {
     Object.entries(options).forEach(([key, value]) => {
-      options[key] = this.parseFunction(value);
+      options[key] = this.resolveFunction(value);
     });
 
     return options;
   }
 
-  private parseFunction(func: any): any {
+  private resolveFunction(func: any): any {
     if (typeof func !== 'string') {
       return func;
     }
@@ -195,21 +126,14 @@ export default class Flasher {
     return new Function(...args, body);
   }
 
-  private pushStyles(response: Response, handler: string): void {
-    handler = handler.replace('theme.', '');
-    const styles = this.themes.get(handler)?.styles || [];
+  private resolvePlugin(plugin?: string): string {
+    plugin = plugin || this.defaultPlugin;
 
-    response.styles = Array.from(new Set([...response.styles, ...styles]));
+    return 'flasher' === plugin ? 'theme.flasher' : plugin;
   }
 
-  private resolveHandler(handler?: string): string {
-    handler = handler || this.defaultHandler;
-
-    return 'flasher' === handler ? 'theme.flasher' : handler;
-  }
-
-  private resolveThemeHandler(alias: string): void {
-    const factory = this.factories.get(alias);
+  private resolveTheme(alias: string): void {
+    const factory = this.plugins.get(alias);
     if (factory) {
       return;
     }
@@ -218,11 +142,49 @@ export default class Flasher {
       return;
     }
 
-    const viewFactory = this.themes.get(alias.replace('theme.', ''))
-    if (!viewFactory) {
+    const view = this.themes.get(alias.replace('theme.', ''))
+    if (!view) {
       return;
     }
 
-    this.addFactory(alias, new FlasherFactory(viewFactory));
+    this.addPlugin(alias, new FlasherPlugin(view));
+  }
+
+  private async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
+    const assetsPromise = urls.map((url) => {
+      return new Promise<void>((resolve) => {
+        if (document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null) {
+          resolve()
+          return
+        }
+
+        const tag = document.createElement(tagName) as HTMLLinkElement & HTMLScriptElement;
+        (tag as any)[attrName] = url
+
+        if (tagName === 'link') {
+          tag.rel = attrValue
+        } else if (tagName === 'script') {
+          tag.type = attrValue
+        }
+        tag.onload = () => resolve()
+
+        document.head.appendChild(tag)
+      })
+    })
+
+    await Promise.all(assetsPromise)
+  }
+
+  private addThemeStyles(response: Response, plugin: string): void {
+    if ('flasher' !== plugin && !plugin.includes('theme.')) {
+      return;
+    }
+
+    plugin = plugin.replace('theme.', '');
+    const styles = this.themes.get(plugin)?.styles || [];
+
+    response.styles = Array.from(new Set([...response.styles, ...styles]));
   }
 }
+
+export default NotificationMixin(Flasher);

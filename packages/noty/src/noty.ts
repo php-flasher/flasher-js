@@ -2,14 +2,14 @@ import {
   Envelope,
   FlasherNotification,
   Options,
-  FactoryInterface,
+  PluginInterface,
 } from '@flasher/flasher';
 
 import Noty from 'noty';
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/mint.css';
 
-export default class NotyFactory implements FactoryInterface {
+export default class NotyFactory implements PluginInterface {
   success(message: string|Options, title?: string|Options, options?: Options): void {
     this.flash('success', message, title, options);
   }

@@ -1,6 +1,6 @@
-import { Envelope, FlasherNotification, Options, FactoryInterface } from '@flasher/flasher';
+import { Envelope, FlasherNotification, Options, PluginInterface } from '@flasher/flasher';
 import 'toastr/build/toastr.min.css';
-export default class ToastrFactory implements FactoryInterface {
+export default class ToastrFactory implements PluginInterface {
     success(message: string | Options, title?: string | Options, options?: Options): void;
     info(message: string | Options, title?: string | Options, options?: Options): void;
     warning(message: string | Options, title?: string | Options, options?: Options): void;

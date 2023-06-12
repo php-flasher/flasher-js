@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+   "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
