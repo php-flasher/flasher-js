@@ -444,56 +444,13 @@
         return Notyf;
     }());
 
-    class NotyfFactory {
-        success(message, title, options) {
-            this.flash('success', message, title, options);
-        }
-        info(message, title, options) {
-            this.flash('info', message, title, options);
-        }
-        warning(message, title, options) {
-            this.flash('warning', message, title, options);
-        }
-        error(message, title, options) {
-            this.flash('error', message, title, options);
-        }
-        flash(type, message, title, options) {
-            const notification = this.createNotification(type, message, title, options);
-            this.renderOptions({});
-            this.render({ notification });
-        }
-        createNotification(type, message, title, options) {
-            if (typeof type === 'object') {
-                options = type;
-                type = options.type;
-                message = options.message;
-                title = options.title;
-            }
-            else if (typeof message === 'object') {
-                options = message;
-                message = options.message;
-                title = options.title;
-            }
-            else if (typeof title === 'object') {
-                options = title;
-                title = options.title;
-            }
-            if (undefined === message) {
-                throw new Error('message option is required');
-            }
-            return {
-                type: type || 'info',
-                message,
-                title,
-                options
-            };
-        }
-        render(envelope) {
-            const { notification } = envelope;
-            notification.type = notification.type || 'info';
-            const options = Object.assign(Object.assign({}, notification), notification.options);
-            this.notyf = this.notyf || new Notyf();
-            this.notyf.open(options);
+    class NotyfPlugin {
+        renderEnvelopes(envelopes) {
+            envelopes.forEach((envelope) => {
+                var _a;
+                const options = Object.assign(Object.assign({}, envelope), envelope.options);
+                (_a = this.notyf) === null || _a === void 0 ? void 0 : _a.open(options);
+            });
             this.notyf.view.container.dataset.turboCache = 'false';
             this.notyf.view.a11yContainer.dataset.turboCache = 'false';
         }
@@ -521,9 +478,10 @@
             this.notyf = this.notyf || new Notyf(nOptions);
         }
     }
+    var NotyfFactory = flasher.NotifyMixin(NotyfPlugin);
 
     const notyf = new NotyfFactory();
-    flasher.addFactory('notyf', notyf);
+    flasher.addPlugin('notyf', notyf);
 
     return notyf;
 

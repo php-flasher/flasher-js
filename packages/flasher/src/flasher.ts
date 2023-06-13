@@ -6,15 +6,15 @@ import {
   Response,
   Theme,
 } from './types'
-import { NotificationMixin } from './mixin'
+import { NotifyMixin } from './mixin'
 import FlasherPlugin from './plugin';
 
 class Flasher implements PluginInterface {
-  private defaultPlugin = 'flasher';
-  private plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
-  private themes: Map<string, Theme> = new Map<string, Theme>();
+  defaultPlugin = 'flasher';
+  plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
+  themes: Map<string, Theme> = new Map<string, Theme>();
 
-  public async render(response: Partial<Response>): Promise<void> {
+  async render(response: Partial<Response>): Promise<void> {
     const resolved = this.resolveResponse(response);
 
     await Promise.all([
@@ -26,13 +26,13 @@ class Flasher implements PluginInterface {
     this.renderEnvelopes(resolved.envelopes)
   }
 
-  public renderOptions(options: Options): void {
+  renderOptions(options: Options): void {
     Object.entries(options).forEach(([plugin, option]) => {
       this.create(plugin).renderOptions(options);
     });
   }
 
-  public renderEnvelopes(envelopes: Envelope[]): void {
+  renderEnvelopes(envelopes: Envelope[]): void {
     const map: Record<string, Envelope[]> = {};
 
     envelopes.forEach((envelope) => {
@@ -47,21 +47,21 @@ class Flasher implements PluginInterface {
     });
   }
 
-  public addPlugin(name: string, plugin: PluginInterface): void {
+  addPlugin(name: string, plugin: PluginInterface): void {
     this.plugins.set(name, plugin);
   }
 
-  public addTheme(name: string, theme: Theme): void {
+  addTheme(name: string, theme: Theme): void {
     this.themes.set(name, theme);
   }
 
-  public using(name: string): Flasher {
+  using(name: string): Flasher {
     this.defaultPlugin = name;
 
     return this;
   }
 
-  public create(name: string): PluginInterface {
+  create(name: string): PluginInterface {
     name = this.resolvePlugin(name);
     this.resolveTheme(name);
 
@@ -73,15 +73,15 @@ class Flasher implements PluginInterface {
     return plugin;
   }
 
-  public async addStyles(urls: string[]): Promise<void> {
+  async addStyles(urls: string[]): Promise<void> {
     await this.addAssets(urls, 'link', 'href', 'stylesheet')
   }
 
-  public async addScripts(urls: string[]): Promise<void> {
+  async addScripts(urls: string[]): Promise<void> {
     await this.addAssets(urls, 'script', 'src', 'text/javascript')
   }
 
-  private resolveResponse(response: Partial<Response>): Response {
+  resolveResponse(response: Partial<Response>): Response {
     const resolved = {...response, ... { envelopes: [], options: {  }, scripts: [], styles: [], context: {}}} as Response;
 
     Object.entries(resolved.options).forEach(([plugin, options]) => {
@@ -98,7 +98,7 @@ class Flasher implements PluginInterface {
     return resolved;
   }
 
-  private resolveOptions(options: PluginOptions): PluginOptions {
+  resolveOptions(options: PluginOptions): PluginOptions {
     Object.entries(options).forEach(([key, value]) => {
       options[key] = this.resolveFunction(value);
     });
@@ -106,7 +106,7 @@ class Flasher implements PluginInterface {
     return options;
   }
 
-  private resolveFunction(func: any): any {
+  resolveFunction(func: any): any {
     if (typeof func !== 'string') {
       return func;
     }
@@ -126,13 +126,13 @@ class Flasher implements PluginInterface {
     return new Function(...args, body);
   }
 
-  private resolvePlugin(plugin?: string): string {
+  resolvePlugin(plugin?: string): string {
     plugin = plugin || this.defaultPlugin;
 
     return 'flasher' === plugin ? 'theme.flasher' : plugin;
   }
 
-  private resolveTheme(alias: string): void {
+  resolveTheme(alias: string): void {
     const factory = this.plugins.get(alias);
     if (factory) {
       return;
@@ -150,7 +150,7 @@ class Flasher implements PluginInterface {
     this.addPlugin(alias, new FlasherPlugin(view));
   }
 
-  private async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
+  async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
     const assetsPromise = urls.map((url) => {
       return new Promise<void>((resolve) => {
         if (document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null) {
@@ -175,7 +175,7 @@ class Flasher implements PluginInterface {
     await Promise.all(assetsPromise)
   }
 
-  private addThemeStyles(response: Response, plugin: string): void {
+  addThemeStyles(response: Response, plugin: string): void {
     if ('flasher' !== plugin && !plugin.includes('theme.')) {
       return;
     }
@@ -187,4 +187,4 @@ class Flasher implements PluginInterface {
   }
 }
 
-export default NotificationMixin(Flasher);
+export default NotifyMixin(Flasher);

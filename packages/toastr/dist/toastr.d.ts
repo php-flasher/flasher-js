@@ -1,13 +1,18 @@
-import { Envelope, FlasherNotification, Options, PluginInterface } from '@flasher/flasher';
+import { Envelope, Options, PluginInterface } from '@flasher/flasher';
 import 'toastr/build/toastr.min.css';
-export default class ToastrFactory implements PluginInterface {
-    success(message: string | Options, title?: string | Options, options?: Options): void;
-    info(message: string | Options, title?: string | Options, options?: Options): void;
-    warning(message: string | Options, title?: string | Options, options?: Options): void;
-    error(message: string | Options, title?: string | Options, options?: Options): void;
-    flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void;
-    createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification;
-    render(envelope: Envelope): void;
+declare class ToastrPlugin implements PluginInterface {
+    renderEnvelopes(envelopes: Envelope[]): void;
     renderOptions(options: Options): void;
 }
+declare const _default: (new (...args: any[]) => {
+    [key: string]: any;
+    success(message: string, title?: string | undefined, options?: Options | undefined): void;
+    info(message: string, title?: string | undefined, options?: Options | undefined): void;
+    warning(message: string, title?: string | undefined, options?: Options | undefined): void;
+    error(message: string, title?: string | undefined, options?: Options | undefined): void;
+    flash(type: string, message: string, title?: string | undefined, options?: Options | undefined): void;
+    renderEnvelopes(envelopes: Envelope[]): void;
+    renderOptions(options: Options): void;
+}) & typeof ToastrPlugin;
+export default _default;
 //# sourceMappingURL=toastr.d.ts.map

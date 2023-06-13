@@ -25,9 +25,10 @@ const resolveConfig = (config) => {
 }
 
 const outputOptions = (options = {}) => ({
-  exports: 'auto',
+  exports: 'default',
   sourcemap: !isProduction,
   assetFileNames: '[name][extname]',
+  inlineDynamicImports: true,
   ...options,
 });
 
@@ -48,7 +49,7 @@ const plugins = [
   clear({ targets: ['dist'] }),
   styles({
     mode: 'extract',
-    plugins: [cssnano(), {'postcss-discard-comments': { removeAll: true }}],
+    plugins: { cssnano, "postcss-discard-comments": { removeAll: true } },
   }),
   resolve(),
   commonjs(),
@@ -61,7 +62,6 @@ export default defineConfig({
   input: 'src/index.ts',
   plugins,
   external: config.external || [],
-  inlineDynamicImports: true,
   output: [
     outputOptions({
       file: `dist/flasher-${config.name}.js`,

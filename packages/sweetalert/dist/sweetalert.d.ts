@@ -1,21 +1,19 @@
-import { Envelope, FlasherNotification, Options, PluginInterface, QueueableInterface } from '@flasher/flasher';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Envelope, Options, PluginInterface } from '@flasher/flasher';
 import 'sweetalert2/dist/sweetalert2.min.css';
-type SwalType = typeof Swal;
-export default class SweetAlertFactory implements PluginInterface, QueueableInterface {
-    swalToastr?: SwalType;
-    queue: Envelope[];
-    success(message: string | Options, title?: string | Options, options?: Options): void;
-    info(message: string | Options, title?: string | Options, options?: Options): void;
-    warning(message: string | Options, title?: string | Options, options?: Options): void;
-    error(message: string | Options, title?: string | Options, options?: Options): void;
-    flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void;
-    createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification;
-    render(envelope: Envelope): Promise<void> | undefined;
+declare class SweetAlertPlugin implements PluginInterface {
+    sweetalert: any;
+    renderEnvelopes(envelopes: Envelope[]): void;
     renderOptions(options: Options): void;
-    addEnvelope(envelope: Envelope): void;
-    resetQueue(): void;
-    renderQueue(): Promise<void>;
 }
-export {};
+declare const _default: (new (...args: any[]) => {
+    [key: string]: any;
+    success(message: string, title?: string | undefined, options?: Options | undefined): void;
+    info(message: string, title?: string | undefined, options?: Options | undefined): void;
+    warning(message: string, title?: string | undefined, options?: Options | undefined): void;
+    error(message: string, title?: string | undefined, options?: Options | undefined): void;
+    flash(type: string, message: string, title?: string | undefined, options?: Options | undefined): void;
+    renderEnvelopes(envelopes: Envelope[]): void;
+    renderOptions(options: Options): void;
+}) & typeof SweetAlertPlugin;
+export default _default;
 //# sourceMappingURL=sweetalert.d.ts.map

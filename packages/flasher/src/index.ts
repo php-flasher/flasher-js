@@ -1,28 +1,12 @@
-import './flasher.scss';
+import '../styles/index.scss'
 
-import Flasher from './flasher';
-import { Envelope } from './types';
+import Flasher from './flasher'
+import { theme } from './theme'
 
-const flasher = new Flasher();
+const flasher = new Flasher()
+flasher.addTheme('flasher', theme)
 
-flasher.addTheme('flasher', {
-  render: (envelope: Envelope): string => {
-    const { type, title, message } = envelope;
+export * from './types'
+export * from './mixin'
 
-    return `
-      <div class="fl-flasher fl-${type}">
-        <div class="fl-content">
-          <div class="fl-icon"></div>
-          <div>
-            <strong class="fl-title">${title}</strong>
-            <span class="fl-message">${message}</span>
-          </div>
-        </div>
-        <span class="fl-progress-bar"></span>
-      </div>`;
-  },
-});
-
-export * from './types';
-export * from './mixin';
-export default flasher;
+export default flasher

@@ -11181,64 +11181,22 @@
 	var toastrExports = toastr$2.exports;
 	var toastr$1 = /*@__PURE__*/getDefaultExportFromCjs(toastrExports);
 
-	class ToastrFactory {
-	    success(message, title, options) {
-	        this.flash('success', message, title, options);
-	    }
-	    info(message, title, options) {
-	        this.flash('info', message, title, options);
-	    }
-	    warning(message, title, options) {
-	        this.flash('warning', message, title, options);
-	    }
-	    error(message, title, options) {
-	        this.flash('error', message, title, options);
-	    }
-	    flash(type, message, title, options) {
-	        const notification = this.createNotification(type, message, title, options);
-	        this.renderOptions({});
-	        this.render({ notification });
-	    }
-	    createNotification(type, message, title, options) {
-	        if (typeof type === 'object') {
-	            options = type;
-	            type = options.type;
-	            message = options.message;
-	            title = options.title;
-	        }
-	        else if (typeof message === 'object') {
-	            options = message;
-	            message = options.message;
-	            title = options.title;
-	        }
-	        else if (typeof title === 'object') {
-	            options = title;
-	            title = options.title;
-	        }
-	        if (undefined === message) {
-	            throw new Error('message option is required');
-	        }
-	        return {
-	            type: type || 'info',
-	            message,
-	            title,
-	            options
-	        };
-	    }
-	    render(envelope) {
-	        const { notification } = envelope;
-	        const { message, title, options } = notification;
-	        const type = notification.type || 'info';
-	        const instance = toastr$1[type](message, title, options);
-	        instance.parent().attr('data-turbo-cache', 'false');
+	class ToastrPlugin {
+	    renderEnvelopes(envelopes) {
+	        envelopes.forEach(envelope => {
+	            const { message, title, type, options } = envelope;
+	            const instance = toastr$1[type](message, title, options);
+	            instance && instance.parent().attr('data-turbo-cache', 'false');
+	        });
 	    }
 	    renderOptions(options) {
-	        toastr$1.options = Object.assign({ timeOut: (options.timeOut || 5000), progressBar: (options.progressBar || 5000) }, options);
+	        toastr$1.options = Object.assign({ timeOut: (options.timeOut || 5000), progressBar: (options.progressBar || true) }, options);
 	    }
 	}
+	var ToastrFactory = flasher.NotifyMixin(ToastrPlugin);
 
 	const toastr = new ToastrFactory();
-	flasher.addFactory('toastr', toastr);
+	flasher.addPlugin('toastr', toastr);
 
 	return toastr;
 

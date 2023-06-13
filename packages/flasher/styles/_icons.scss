@@ -1,0 +1,103 @@
+.fl-icon {
+  position: relative;
+  width: 1em;
+  min-width: 1em;
+  height: 1em;
+  min-height: 1em;
+  margin: 0;
+  border-radius: 50%;
+  transition: all 1s;
+  box-sizing: border-box;
+  display: inline-block;
+  color: white;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    transition: all 1s;
+    border-width: 0;
+    box-sizing: border-box;
+  }
+}
+
+.fl-success .fl-icon {
+  &:before,
+  &:after {
+    width: 0.16em;
+    height: 0.6em;
+    background-color: currentColor;
+    border-radius: 50%;
+    top: 0.6em;
+    left: 0.35em;
+    transform: rotate(-135deg);
+    transform-origin: calc(0.16em / 2) calc(0.16em / 2);
+  }
+
+  &:after {
+    width: calc(0.6em * 2.5);
+    height: 0.16em;
+  }
+}
+
+.fl-info .fl-icon {
+  &:before,
+  &:after {
+    width: 0.15em;
+    background-color: currentColor;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: calc(0.15em / 5);
+  }
+
+  &:before {
+    height: 0.38em;
+    top: 0.4em;
+  }
+
+  &:after {
+    height: 0.13em;
+    box-shadow: calc(-1 * 0.15em / 2.5) calc(0.38em / 2),
+    calc(-1 * 0.15em / 2.5) 0.38em,
+    calc(0.15em / 2.5) 0.38em;
+    top: 0.21em;
+  }
+}
+
+.fl-warning .fl-icon {
+  &:before,
+  &:after {
+    width: 0.15em;
+    background-color: currentColor;
+    border-radius: calc(0.15em / 5);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &:before {
+    height: 0.38em;
+    top: 0.21em;
+  }
+
+  &:after {
+    height: 0.13em;
+    top: 0.65em;
+  }
+}
+
+.fl-error .fl-icon {
+  &:before,
+  &:after {
+    width: 0.16em;
+    height: 0.7em;
+    background-color: currentColor;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-135deg);
+    top: 50%;
+    left: 50%;
+  }
+
+  &:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}

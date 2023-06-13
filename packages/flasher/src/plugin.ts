@@ -1,5 +1,5 @@
 import { Envelope, PluginInterface, Options, Theme } from './types';
-import { NotificationMixin } from './mixin'
+import { NotifyMixin } from './mixin'
 import { Properties } from 'csstype';
 
 class FlasherPlugin implements PluginInterface {
@@ -105,54 +105,53 @@ class FlasherPlugin implements PluginInterface {
     template.addEventListener('click', () => this.removeNotification(template));
   }
 
-  private renderProgressBar(template: HTMLElement, options: { timeout: number; fps: number }) {
-    if (!options.timeout || options.timeout <= 0) {
+  private renderProgressBar(template: HTMLElement, { timeout, fps }: { timeout: number; fps: number }) {
+    if (!timeout || timeout <= 0) {
       return;
     }
 
     const progressBar = document.createElement('span');
     progressBar.classList.add('fl-progress');
 
-    const progressBarContainer = template.querySelector('.fl-progress-bar');
-    if (progressBarContainer) {
-      progressBarContainer.append(progressBar);
-    }
+    template.querySelector('.fl-progress-bar')?.append(progressBar);
 
-    const lapse = 1000 / options.fps;
+    const increment = 100 / (timeout / (1000 / fps));
     let width = 0;
-    const showProgress = () => {
-      width += 1;
-      const percent = (1 - lapse * (width / options.timeout)) * 100;
-      progressBar.style.width = `${percent}%`;
 
-      if (percent <= 0) {
-        clearInterval(progressInterval); // eslint-disable-line @typescript-eslint/no-use-before-define
+    const showProgress = () => {
+      width += increment;
+      progressBar.style.width = `${width}%`;
+
+      if (width >= 100) {
+        clearInterval(interval);
         this.removeNotification(template);
       }
     };
 
-    let progressInterval = window.setInterval(showProgress, lapse);
-    template.addEventListener('mouseout', () => (progressInterval = window.setInterval(showProgress, lapse)));
-    template.addEventListener('mouseover', () => clearInterval(progressInterval));
+    let interval: number;
+
+    const startProgress = (): void => {
+      interval = window.setInterval(showProgress, 1000 / fps);
+    };
+
+    const stopProgress = (): void => {
+      clearInterval(interval);
+    };
+
+    template.addEventListener('mouseover', stopProgress);
+    template.addEventListener('mouseout', startProgress);
+
+    startProgress();
   }
 
   private applyDarkMode(): void {
-    if (document.body.classList.contains('fl-dark-mode') || document.querySelector('style.flasher-js')) {
-      return;
-    }
+    const [mode, className = 'dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
 
-    const [mode, className = '.dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
-    let css = '.fl-main-container .fl-container.fl-flasher {background-color: rgb(15, 23, 42);color: rgb(255, 255, 255);}';
+    const shouldApplyDarkMode =
+      (mode === 'media' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+      (mode === 'class' && document.body.classList.contains(className));
 
-    css = mode === 'media' ? `@media (prefers-color-scheme: dark) {${css}}` : `${className} ${css}`;
-
-    const style = document.createElement('style') as HTMLLinkElement;
-    style.rel = 'text/css';
-    style.classList.add('flasher-js');
-    style.appendChild(document.createTextNode(css));
-    document.head.appendChild(style);
-
-    document.body.classList.add('fl-dark-mode');
+    document.body.classList.toggle('fl-dark', shouldApplyDarkMode);
   }
 
   private stringToHTML(str: string): HTMLElement {
@@ -162,4 +161,4 @@ class FlasherPlugin implements PluginInterface {
   }
 }
 
-export default NotificationMixin(FlasherPlugin);
+export default NotifyMixin(FlasherPlugin);

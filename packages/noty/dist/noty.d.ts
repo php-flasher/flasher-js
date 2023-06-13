@@ -1,14 +1,19 @@
-import { Envelope, FlasherNotification, Options, PluginInterface } from '@flasher/flasher';
+import { Envelope, Options, PluginInterface } from '@flasher/flasher';
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/mint.css';
-export default class NotyFactory implements PluginInterface {
-    success(message: string | Options, title?: string | Options, options?: Options): void;
-    info(message: string | Options, title?: string | Options, options?: Options): void;
-    warning(message: string | Options, title?: string | Options, options?: Options): void;
-    error(message: string | Options, title?: string | Options, options?: Options): void;
-    flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void;
-    render(envelope: Envelope): void;
-    createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification;
+declare class NotyPlugin implements PluginInterface {
+    renderEnvelopes(envelopes: Envelope[]): void;
     renderOptions(options: Options): void;
 }
+declare const _default: (new (...args: any[]) => {
+    [key: string]: any;
+    success(message: string, title?: string | undefined, options?: Options | undefined): void;
+    info(message: string, title?: string | undefined, options?: Options | undefined): void;
+    warning(message: string, title?: string | undefined, options?: Options | undefined): void;
+    error(message: string, title?: string | undefined, options?: Options | undefined): void;
+    flash(type: string, message: string, title?: string | undefined, options?: Options | undefined): void;
+    renderEnvelopes(envelopes: Envelope[]): void;
+    renderOptions(options: Options): void;
+}) & typeof NotyPlugin;
+export default _default;
 //# sourceMappingURL=noty.d.ts.map

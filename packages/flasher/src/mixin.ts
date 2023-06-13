@@ -2,9 +2,9 @@ import { PluginInterface, Options } from './types'
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export const NotificationMixin = <T extends Constructor<PluginInterface>>(Base: T) => {
+export const NotifyMixin = <T extends Constructor<PluginInterface>>(Base: T) => {
   return class extends Base {
-    success(message: string, title?: string, options?: Options): void {
+    public success(message: string, title?: string, options?: Options): void {
       this.flash('success', message, title, options)
     }
 

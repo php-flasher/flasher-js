@@ -1,9 +1,9 @@
-import { Envelope, PluginInterface, NotificationMixin, Options } from '@flasher/flasher';
+import { Envelope, NotifyMixin, Options, PluginInterface } from '@flasher/flasher'
 
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 
-class ToastrFactory implements PluginInterface {
+class ToastrPlugin implements PluginInterface {
   renderEnvelopes(envelopes: Envelope[]): void {
     envelopes.forEach(envelope => {
       const { message, title, type, options } = envelope;
@@ -21,4 +21,4 @@ class ToastrFactory implements PluginInterface {
   }
 }
 
-export default NotificationMixin(ToastrFactory);
+export default NotifyMixin(ToastrPlugin);

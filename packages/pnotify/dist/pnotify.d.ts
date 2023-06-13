@@ -1,15 +1,20 @@
-import { Envelope, FlasherNotification, Options, PluginInterface } from '@flasher/flasher';
+import { Envelope, Options, PluginInterface } from '@flasher/flasher';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
-export default class PnotifyFactory implements PluginInterface {
-    success(message: string | Options, title?: string | Options, options?: Options): void;
-    info(message: string | Options, title?: string | Options, options?: Options): void;
-    warning(message: string | Options, title?: string | Options, options?: Options): void;
-    error(message: string | Options, title?: string | Options, options?: Options): void;
-    flash(type: string | Options, message: string | Options, title?: string | Options, options?: Options): void;
-    createNotification(type: string | Options, message?: string | Options, title?: string | Options, options?: Options): FlasherNotification;
-    render(envelope: Envelope): void;
-    updateDefaultOptions(defaultOptions: any, options: Options): void;
+declare class PnotifyPlugin implements PluginInterface {
+    renderEnvelopes(envelopes: Envelope[]): void;
     renderOptions(options: Options): void;
+    updateDefaultOptions(defaultOptions: any, options: Options): void;
 }
+declare const _default: (new (...args: any[]) => {
+    [key: string]: any;
+    success(message: string, title?: string | undefined, options?: Options | undefined): void;
+    info(message: string, title?: string | undefined, options?: Options | undefined): void;
+    warning(message: string, title?: string | undefined, options?: Options | undefined): void;
+    error(message: string, title?: string | undefined, options?: Options | undefined): void;
+    flash(type: string, message: string, title?: string | undefined, options?: Options | undefined): void;
+    renderEnvelopes(envelopes: Envelope[]): void;
+    renderOptions(options: Options): void;
+}) & typeof PnotifyPlugin;
+export default _default;
 //# sourceMappingURL=pnotify.d.ts.map

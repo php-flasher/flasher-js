@@ -31,6 +31,8 @@ export interface Response {
 export interface PluginInterface {
   renderEnvelopes(envelopes: Envelope[]): void;
   renderOptions(options: Options): void;
+
+  [key: string]: any;
 }
 
 export interface Theme {

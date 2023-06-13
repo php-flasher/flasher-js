@@ -14,88 +14,46 @@
 
 	var PNotifyExports = PNotify.exports;
 
-	class PnotifyFactory {
-	    success(message, title, options) {
-	        this.flash('success', message, title, options);
+	class PnotifyPlugin {
+	    renderEnvelopes(envelopes) {
+	        envelopes.forEach((envelope) => {
+	            const { type, title, message, options } = envelope;
+	            const pnotifyOptions = Object.assign({ text: title || message }, options);
+	            let pnotify;
+	            switch (type) {
+	                case 'success':
+	                    pnotify = PNotifyExports.success(pnotifyOptions);
+	                    break;
+	                case 'alert':
+	                    pnotify = PNotifyExports.alert(pnotifyOptions);
+	                    break;
+	                case 'info':
+	                    pnotify = PNotifyExports.info(pnotifyOptions);
+	                    break;
+	                case 'error':
+	                    pnotify = PNotifyExports.error(pnotifyOptions);
+	                    break;
+	                default:
+	                    pnotify = PNotifyExports.notice(pnotifyOptions);
+	            }
+	            if (pnotify.refs.container) {
+	                pnotify.refs.container.dataset.turboCache = 'false';
+	            }
+	        });
 	    }
-	    info(message, title, options) {
-	        this.flash('info', message, title, options);
-	    }
-	    warning(message, title, options) {
-	        this.flash('warning', message, title, options);
-	    }
-	    error(message, title, options) {
-	        this.flash('error', message, title, options);
-	    }
-	    flash(type, message, title, options) {
-	        const notification = this.createNotification(type, message, title, options);
-	        this.renderOptions({});
-	        this.render({ notification });
-	    }
-	    createNotification(type, message, title, options) {
-	        if (typeof type === 'object') {
-	            options = type;
-	            type = options.type;
-	            message = options.message;
-	            title = options.title;
-	        }
-	        else if (typeof message === 'object') {
-	            options = message;
-	            message = options.message;
-	            title = options.title;
-	        }
-	        else if (typeof title === 'object') {
-	            options = title;
-	            title = options.title;
-	        }
-	        if (undefined === message) {
-	            throw new Error('message option is required');
-	        }
-	        return {
-	            type: type || 'info',
-	            message,
-	            title,
-	            options
-	        };
-	    }
-	    render(envelope) {
-	        const { notification } = envelope;
-	        notification.type = notification.type || 'info';
-	        let options = Object.assign({ text: notification.title }, notification.options);
-	        options = Object.assign(Object.assign({}, options), { text: ((options === null || options === void 0 ? void 0 : options.text) || notification.message) });
-	        let pnotify;
-	        switch (notification.type) {
-	            case 'success':
-	                pnotify = PNotifyExports.success(options);
-	                break;
-	            case 'alert':
-	                pnotify = PNotifyExports.alert(options);
-	                break;
-	            case 'info':
-	                pnotify = PNotifyExports.info(options);
-	                break;
-	            case 'error':
-	                pnotify = PNotifyExports.error(options);
-	                break;
-	            default:
-	                pnotify = PNotifyExports.notice(options);
-	        }
-	        if (pnotify.refs.container) {
-	            pnotify.refs.container.dataset.turboCache = 'false';
-	        }
+	    renderOptions(options) {
+	        this.updateDefaultOptions(PNotifyExports.defaults, Object.assign({ delay: options.delay || 5000 }, options));
 	    }
 	    updateDefaultOptions(defaultOptions, options) {
 	        Object.entries(options).forEach(([option, value]) => {
 	            defaultOptions[option] = value;
 	        });
 	    }
-	    renderOptions(options) {
-	        this.updateDefaultOptions(PNotifyExports.defaults, Object.assign({ delay: options.delay || 5000 }, options));
-	    }
 	}
+	var PnotifyFactory = flasher.NotifyMixin(PnotifyPlugin);
 
 	const pnotify = new PnotifyFactory();
-	flasher.addFactory('pnotify', pnotify);
+	flasher.addPlugin('pnotify', pnotify);
 
 	return pnotify;
 
