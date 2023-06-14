@@ -13,11 +13,11 @@ export interface Options {
 }
 
 export interface PluginOptions {
-  [option: string]: any;
+  [option: string]: unknown;
 }
 
 export interface Context {
-  [index: string]: any;
+  [index: string]: unknown;
 }
 
 export interface Response {

@@ -20,7 +20,9 @@
   ],
   "author": "younes KHOUBZA <younes.khoubza@gmail.com>",
   "license": "MIT",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build:prod": "NODE_ENV=production lerna exec -- rollup -c ../../rollup.config.js",
     "build:dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",
@@ -51,7 +53,10 @@
     "depcheck": "^1.4.3",
     "eslint": "^8.42.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
     "lerna": "^7.0.1",
     "postcss-discard-comments": "^6.0.0",
     "prettier": "^2.8.8",

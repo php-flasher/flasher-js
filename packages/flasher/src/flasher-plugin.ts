@@ -1,5 +1,5 @@
-import { Envelope, Options, Theme } from './types';
 import { Properties } from 'csstype';
+import { Envelope, Options, Theme } from './types';
 import { AbstractPlugin } from './plugin';
 
 export default class FlasherPlugin extends AbstractPlugin {

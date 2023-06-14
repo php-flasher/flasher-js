@@ -9,6 +9,9 @@ import {
 import { AbstractPlugin } from './plugin';
 import FlasherPlugin from './flasher-plugin';
 
+type AssetTagElement = HTMLLinkElement &
+  HTMLScriptElement & { [attrName: string]: string };
+
 export default class Flasher extends AbstractPlugin {
   private defaultPlugin = 'flasher';
   private plugins: Map<string, PluginInterface> = new Map<
@@ -46,7 +49,7 @@ export default class Flasher extends AbstractPlugin {
 
   public renderOptions(options: Options): void {
     Object.entries(options).forEach(([plugin, option]) => {
-      this.create(plugin).renderOptions(options);
+      this.create(plugin).renderOptions(option);
     });
   }
 
@@ -120,7 +123,7 @@ export default class Flasher extends AbstractPlugin {
     return options;
   }
 
-  private resolveFunction(func: any): any {
+  private resolveFunction(func: unknown): unknown {
     if (typeof func !== 'string') {
       return func;
     }
@@ -136,7 +139,6 @@ export default class Flasher extends AbstractPlugin {
     const args = match[1]?.split(',').map((arg) => arg.trim()) ?? [];
     const body = match[2];
 
-    // eslint-disable-next-line no-new-func
     return new Function(...args, body);
   }
 
@@ -175,9 +177,8 @@ export default class Flasher extends AbstractPlugin {
           return;
         }
 
-        const tag = document.createElement(tagName) as HTMLLinkElement &
-          HTMLScriptElement;
-        (tag as any)[attrName] = url;
+        const tag = document.createElement(tagName) as AssetTagElement;
+        tag[attrName] = url;
 
         if (tagName === 'link') {
           tag.rel = attrValue;
