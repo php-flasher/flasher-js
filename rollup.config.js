@@ -1,6 +1,9 @@
+import browserslist from 'browserslist';
+import cleanup from 'rollup-plugin-cleanup';
 import clear from 'rollup-plugin-clear';
 import commonjs from '@rollup/plugin-commonjs';
 import cssnano from 'cssnano';
+import eslint from '@rollup/plugin-eslint';
 import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
 import styles from 'rollup-plugin-styles';
@@ -60,7 +63,17 @@ const plugins = [
   }),
   resolve(),
   commonjs(),
-  typescript({ tsconfig: 'tsconfig.build.json' }),
+  typescript({
+    clean: true,
+    tsconfig: 'tsconfig.build.json',
+    useTsconfigDeclarationDir: true,
+  }),
+  eslint(),
+  browserslist(),
+  cleanup({
+    comments: 'none',
+    extensions: ['.ts'],
+  }),
 ];
 
 const config = resolveConfig(packageConfig);

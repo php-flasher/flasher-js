@@ -4,15 +4,18 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "removeComments": true,
-    "sourceMap": false,
-    "strict": true,
-    "target": "ES2015",
     "downlevelIteration": true,
+    "esModuleInterop": true,
+    "lib": ["es6"],
+    "module": "es6",
     "moduleResolution": "node",
-    "module": "es6"
+    "noEmit": true,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es6"
   },
   "exclude": ["node_modules", "dist"]
 }
