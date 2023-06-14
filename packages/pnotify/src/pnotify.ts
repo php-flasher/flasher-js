@@ -1,11 +1,11 @@
-import { Envelope, NotifyMixin, Options, PluginInterface } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
 
 import { Notice, Options as PnotifyOptions, alert, defaults, error, info, notice, success } from '@pnotify/core';
 import '@pnotify/core/dist/PNotify.css';
 import '@pnotify/core/dist/BrightTheme.css';
 
-class PnotifyPlugin implements PluginInterface {
-  renderEnvelopes(envelopes: Envelope[]): void {
+export default class PnotifyPlugin extends AbstractPlugin {
+  public renderEnvelopes(envelopes: Envelope[]): void {
     envelopes.forEach((envelope) => {
       const { type, title, message, options } = envelope;
 
@@ -38,7 +38,7 @@ class PnotifyPlugin implements PluginInterface {
     });
   }
 
-  renderOptions(options: Options): void {
+  public renderOptions(options: Options): void {
     this.updateDefaultOptions(defaults, {
       delay: options.delay || 5000,
       ...options,
@@ -46,12 +46,10 @@ class PnotifyPlugin implements PluginInterface {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  updateDefaultOptions(defaultOptions: any, options: Options) {
+  private updateDefaultOptions(defaultOptions: any, options: Options) {
     Object.entries(options).forEach(([option, value]) => {
       // eslint-disable-next-line no-param-reassign
       defaultOptions[option] = value;
     });
   }
 }
-
-export default NotifyMixin(PnotifyPlugin);

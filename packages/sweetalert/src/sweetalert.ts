@@ -1,13 +1,15 @@
-import { Envelope, NotifyMixin, Options, PluginInterface } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { SweetAlertOptions } from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-class SweetAlertPlugin implements PluginInterface {
-  sweetalert: any;
+type SwalType = typeof Swal;
 
-  renderEnvelopes(envelopes: Envelope[]): void {
+export default class SweetAlertPlugin extends AbstractPlugin {
+  sweetalert?: SwalType;
+
+  public renderEnvelopes(envelopes: Envelope[]): void {
     envelopes.forEach((envelope) => {
         let { options } = envelope;
 
@@ -17,7 +19,7 @@ class SweetAlertPlugin implements PluginInterface {
           text: (options?.text || envelope.message) as any[],
         };
 
-        this.sweetalert?.fire(options as SweetAlertOptions).then(function (promise: any) {
+        this.sweetalert?.fire(options as SweetAlertOptions).then(function (promise) {
           window.dispatchEvent(new CustomEvent('flasher:sweetalert:promise', {
             detail: {
               promise,
@@ -28,7 +30,7 @@ class SweetAlertPlugin implements PluginInterface {
     });
   }
 
-  renderOptions(options: Options): void {
+  public renderOptions(options: Options): void {
     this.sweetalert = this.sweetalert || Swal.mixin({
       timer: (options.timer || 5000) as any,
       timerProgressBar: (options.timerProgressBar || true) as any,
@@ -43,5 +45,3 @@ class SweetAlertPlugin implements PluginInterface {
     });
   }
 }
-
-export default NotifyMixin(SweetAlertPlugin);

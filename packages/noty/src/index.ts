@@ -1,7 +1,7 @@
-import flasher from '@flasher/flasher';
-import NotyFactory from './noty';
+import { flasher } from '@flasher/flasher';
+import NotyPlugin from './noty';
 
-const noty = new NotyFactory();
+const noty = new NotyPlugin();
 flasher.addPlugin('noty', noty);
 
 export default noty;

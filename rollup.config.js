@@ -11,21 +11,28 @@ import { defineConfig } from 'rollup';
 const resolveConfig = (config) => {
   const { name } = config;
 
-  if (name !== 'flasher') {
+  if ('flasher' !== name) {
     config.globals = { ...config.globals, '@flasher/flasher': 'flasher' };
     config.external = [...config.external || [], '@flasher/flasher'];
   }
 
-  if (name.includes('notyf') || name.includes('noty')) {
-    config.external = [...config.external || [], 'jquery'];
+  if (['noty', 'notyf'].includes(name)) {
     config.globals = { ...config.globals, 'jquery': 'jQuery' };
+    config.external = [...config.external || [], 'jquery'];
+  }
+
+  config.input = 'src/index.ts';
+  config.file = `dist/flasher-${config.name}.js`;
+
+  if ('flasher' === name) {
+    config.file = `dist/flasher.js`;
   }
 
   return config;
 }
 
 const outputOptions = (options = {}) => ({
-  exports: 'default',
+  exports: 'auto',
   sourcemap: !isProduction,
   assetFileNames: '[name][extname]',
   inlineDynamicImports: true,
@@ -59,18 +66,18 @@ const plugins = [
 const config = resolveConfig(packageConfig);
 
 export default defineConfig({
-  input: 'src/index.ts',
+  input: config.input,
   plugins,
   external: config.external || [],
   output: [
     outputOptions({
-      file: `dist/flasher-${config.name}.js`,
+      file: config.file,
       format: 'umd',
       name: config.name,
       globals: config.globals || {},
     }),
     outputOptions({
-      file: `dist/flasher-${config.name}.min.js`,
+      file: config.file.replace('.js', '.min.js'),
       format: 'umd',
       name: config.name,
       globals: config.globals || {},

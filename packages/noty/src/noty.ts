@@ -1,12 +1,12 @@
-import { Envelope, NotifyMixin, Options, PluginInterface } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
 
 import Noty, { Type } from 'noty'
 import 'noty/lib/noty.css';
 import 'noty/lib/themes/mint.css';
 
-class NotyPlugin implements PluginInterface {
+export default class NotyPlugin extends AbstractPlugin {
 
-  renderEnvelopes(envelopes: Envelope[]): void {
+  public renderEnvelopes(envelopes: Envelope[]): void {
     envelopes.forEach((envelope) => {
       const options: Noty.Options = {
         text: envelope.message,
@@ -21,12 +21,10 @@ class NotyPlugin implements PluginInterface {
     });
   }
 
-  renderOptions(options: Options): void {
+  public renderOptions(options: Options): void {
     Noty.overrideDefaults({
       timeout: options.timeout || 5000,
       ...options,
     });
   }
 }
-
-export default NotifyMixin(NotyPlugin);

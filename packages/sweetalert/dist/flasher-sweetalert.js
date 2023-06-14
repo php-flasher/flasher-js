@@ -4201,7 +4201,7 @@
 	var sweetalert2Exports = sweetalert2.exports;
 	var Swal = /*@__PURE__*/getDefaultExportFromCjs(sweetalert2Exports);
 
-	class SweetAlertPlugin {
+	class SweetAlertPlugin extends flasher.AbstractPlugin {
 	    renderEnvelopes(envelopes) {
 	        envelopes.forEach((envelope) => {
 	            var _a;
@@ -4228,10 +4228,9 @@
 	        });
 	    }
 	}
-	var SweetAlertFactory = flasher.NotifyMixin(SweetAlertPlugin);
 
-	const sweetalert = new SweetAlertFactory();
-	flasher.addPlugin('sweetalert', sweetalert);
+	const sweetalert = new SweetAlertPlugin();
+	flasher.flasher.addPlugin('sweetalert', sweetalert);
 
 	return sweetalert;
 

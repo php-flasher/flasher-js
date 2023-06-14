@@ -1,20 +1,13 @@
-import {
-  Envelope,
-  PluginInterface,
-  PluginOptions,
-  Options,
-  Response,
-  Theme,
-} from './types'
-import { NotifyMixin } from './mixin'
-import FlasherPlugin from './plugin';
+import { Envelope, PluginInterface, PluginOptions, Options, Response, Theme } from './types'
+import { AbstractPlugin } from './plugin'
+import FlasherPlugin from './flasher-plugin';
 
-class Flasher implements PluginInterface {
-  defaultPlugin = 'flasher';
-  plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
-  themes: Map<string, Theme> = new Map<string, Theme>();
+export default class Flasher extends AbstractPlugin {
+  private defaultPlugin = 'flasher';
+  private plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
+  private themes: Map<string, Theme> = new Map<string, Theme>();
 
-  async render(response: Partial<Response>): Promise<void> {
+  public async render(response: Partial<Response>): Promise<void> {
     const resolved = this.resolveResponse(response);
 
     await Promise.all([
@@ -26,17 +19,11 @@ class Flasher implements PluginInterface {
     this.renderEnvelopes(resolved.envelopes)
   }
 
-  renderOptions(options: Options): void {
-    Object.entries(options).forEach(([plugin, option]) => {
-      this.create(plugin).renderOptions(options);
-    });
-  }
-
-  renderEnvelopes(envelopes: Envelope[]): void {
+  public renderEnvelopes(envelopes: Envelope[]): void {
     const map: Record<string, Envelope[]> = {};
 
     envelopes.forEach((envelope) => {
-      const plugin = this.resolvePlugin(envelope.metadata.plugin);
+      const plugin = this.resolvePluginAlias(envelope.metadata.plugin);
 
       map[plugin] = map[plugin] || [];
       map[plugin].push(envelope);
@@ -47,23 +34,29 @@ class Flasher implements PluginInterface {
     });
   }
 
-  addPlugin(name: string, plugin: PluginInterface): void {
+  public renderOptions(options: Options): void {
+    Object.entries(options).forEach(([plugin, option]) => {
+      this.create(plugin).renderOptions(options);
+    });
+  }
+
+  public addPlugin(name: string, plugin: PluginInterface): void {
     this.plugins.set(name, plugin);
   }
 
-  addTheme(name: string, theme: Theme): void {
+  public addTheme(name: string, theme: Theme): void {
     this.themes.set(name, theme);
   }
 
-  using(name: string): Flasher {
+  public setDefault(name: string): Flasher {
     this.defaultPlugin = name;
 
     return this;
   }
 
-  create(name: string): PluginInterface {
-    name = this.resolvePlugin(name);
-    this.resolveTheme(name);
+  public create(name: string): PluginInterface {
+    name = this.resolvePluginAlias(name);
+    this.resolvePlugin(name);
 
     const plugin = this.plugins.get(name);
     if (!plugin) {
@@ -73,16 +66,16 @@ class Flasher implements PluginInterface {
     return plugin;
   }
 
-  async addStyles(urls: string[]): Promise<void> {
+  private async addStyles(urls: string[]): Promise<void> {
     await this.addAssets(urls, 'link', 'href', 'stylesheet')
   }
 
-  async addScripts(urls: string[]): Promise<void> {
+  private async addScripts(urls: string[]): Promise<void> {
     await this.addAssets(urls, 'script', 'src', 'text/javascript')
   }
 
-  resolveResponse(response: Partial<Response>): Response {
-    const resolved = {...response, ... { envelopes: [], options: {  }, scripts: [], styles: [], context: {}}} as Response;
+  private resolveResponse(response: Partial<Response>): Response {
+    const resolved = {envelopes: [], options: {  }, scripts: [], styles: [], context: {}, ...response} as Response;
 
     Object.entries(resolved.options).forEach(([plugin, options]) => {
       resolved.options[plugin] = this.resolveOptions(options);
@@ -90,7 +83,7 @@ class Flasher implements PluginInterface {
 
     resolved.envelopes.forEach((envelope) => {
       envelope.metadata = envelope.metadata || {};
-      envelope.metadata.plugin = this.resolvePlugin(envelope.metadata.plugin);
+      envelope.metadata.plugin = this.resolvePluginAlias(envelope.metadata.plugin);
       this.addThemeStyles(resolved, envelope.metadata.plugin);
       envelope.options = this.resolveOptions(envelope.options);
     });
@@ -98,7 +91,7 @@ class Flasher implements PluginInterface {
     return resolved;
   }
 
-  resolveOptions(options: PluginOptions): PluginOptions {
+  private resolveOptions(options: PluginOptions): PluginOptions {
     Object.entries(options).forEach(([key, value]) => {
       options[key] = this.resolveFunction(value);
     });
@@ -106,7 +99,7 @@ class Flasher implements PluginInterface {
     return options;
   }
 
-  resolveFunction(func: any): any {
+  private resolveFunction(func: any): any {
     if (typeof func !== 'string') {
       return func;
     }
@@ -126,19 +119,9 @@ class Flasher implements PluginInterface {
     return new Function(...args, body);
   }
 
-  resolvePlugin(plugin?: string): string {
-    plugin = plugin || this.defaultPlugin;
-
-    return 'flasher' === plugin ? 'theme.flasher' : plugin;
-  }
-
-  resolveTheme(alias: string): void {
+  private resolvePlugin(alias: string): void {
     const factory = this.plugins.get(alias);
-    if (factory) {
-      return;
-    }
-
-    if (alias.includes('theme.')) {
+    if (factory || !alias.includes('theme.')) {
       return;
     }
 
@@ -150,7 +133,14 @@ class Flasher implements PluginInterface {
     this.addPlugin(alias, new FlasherPlugin(view));
   }
 
-  async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
+  private resolvePluginAlias(alias?: string): string
+  {
+    alias = alias || this.defaultPlugin;
+
+    return 'flasher' === alias ? 'theme.flasher' : alias;
+  }
+
+  private async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
     const assetsPromise = urls.map((url) => {
       return new Promise<void>((resolve) => {
         if (document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null) {
@@ -175,7 +165,7 @@ class Flasher implements PluginInterface {
     await Promise.all(assetsPromise)
   }
 
-  addThemeStyles(response: Response, plugin: string): void {
+  private addThemeStyles(response: Response, plugin: string): void {
     if ('flasher' !== plugin && !plugin.includes('theme.')) {
       return;
     }
@@ -186,5 +176,3 @@ class Flasher implements PluginInterface {
     response.styles = Array.from(new Set([...response.styles, ...styles]));
   }
 }
-
-export default NotifyMixin(Flasher);

@@ -1,7 +1,7 @@
-import flasher from '@flasher/flasher';
-import SweetAlertFactory from './sweetalert';
+import { flasher } from '@flasher/flasher';
+import SweetAlertPlugin from './sweetalert';
 
-const sweetalert = new SweetAlertFactory();
+const sweetalert = new SweetAlertPlugin();
 flasher.addPlugin('sweetalert', sweetalert);
 
 export default sweetalert;

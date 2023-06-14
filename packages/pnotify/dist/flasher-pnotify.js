@@ -14,7 +14,7 @@
 
 	var PNotifyExports = PNotify.exports;
 
-	class PnotifyPlugin {
+	class PnotifyPlugin extends flasher.AbstractPlugin {
 	    renderEnvelopes(envelopes) {
 	        envelopes.forEach((envelope) => {
 	            const { type, title, message, options } = envelope;
@@ -50,10 +50,9 @@
 	        });
 	    }
 	}
-	var PnotifyFactory = flasher.NotifyMixin(PnotifyPlugin);
 
-	const pnotify = new PnotifyFactory();
-	flasher.addPlugin('pnotify', pnotify);
+	const pnotify = new PnotifyPlugin();
+	flasher.flasher.addPlugin('pnotify', pnotify);
 
 	return pnotify;
 

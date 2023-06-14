@@ -27,15 +27,15 @@
     width: 0.16em;
     height: 0.6em;
     background-color: currentColor;
-    border-radius: 50%;
+    border-radius: 0.1em;
     top: 0.6em;
     left: 0.35em;
     transform: rotate(-135deg);
-    transform-origin: calc(0.16em / 2) calc(0.16em / 2);
+    transform-origin: 0.08em 0.08em;
   }
 
   &:after {
-    width: calc(0.6em * 2.5);
+    width: 0.4em;
     height: 0.16em;
   }
 }
@@ -47,7 +47,7 @@
     background-color: currentColor;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: calc(0.15em / 5);
+    border-radius: 0.03em;
   }
 
   &:before {
@@ -57,9 +57,7 @@
 
   &:after {
     height: 0.13em;
-    box-shadow: calc(-1 * 0.15em / 2.5) calc(0.38em / 2),
-    calc(-1 * 0.15em / 2.5) 0.38em,
-    calc(0.15em / 2.5) 0.38em;
+    box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
     top: 0.21em;
   }
 }
@@ -69,7 +67,7 @@
   &:after {
     width: 0.15em;
     background-color: currentColor;
-    border-radius: calc(0.15em / 5);
+    border-radius: 0.03em;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -91,7 +89,7 @@
     width: 0.16em;
     height: 0.7em;
     background-color: currentColor;
-    border-radius: 50%;
+    border-radius: 0.1em;
     transform: translate(-50%, -50%) rotate(-135deg);
     top: 50%;
     left: 50%;

@@ -444,7 +444,7 @@
         return Notyf;
     }());
 
-    class NotyfPlugin {
+    class NotyfPlugin extends flasher.AbstractPlugin {
         renderEnvelopes(envelopes) {
             envelopes.forEach((envelope) => {
                 var _a;
@@ -478,10 +478,9 @@
             this.notyf = this.notyf || new Notyf(nOptions);
         }
     }
-    var NotyfFactory = flasher.NotifyMixin(NotyfPlugin);
 
-    const notyf = new NotyfFactory();
-    flasher.addPlugin('notyf', notyf);
+    const notyf = new NotyfPlugin();
+    flasher.flasher.addPlugin('notyf', notyf);
 
     return notyf;
 

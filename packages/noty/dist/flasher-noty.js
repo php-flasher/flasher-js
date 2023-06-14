@@ -3120,7 +3120,7 @@
 	var notyExports = noty$1.exports;
 	var Noty = /*@__PURE__*/getDefaultExportFromCjs(notyExports);
 
-	class NotyPlugin {
+	class NotyPlugin extends flasher.AbstractPlugin {
 	    renderEnvelopes(envelopes) {
 	        envelopes.forEach((envelope) => {
 	            const options = Object.assign({ text: envelope.message, type: envelope.type }, envelope.options);
@@ -3133,10 +3133,9 @@
 	        Noty.overrideDefaults(Object.assign({ timeout: options.timeout || 5000 }, options));
 	    }
 	}
-	var NotyFactory = flasher.NotifyMixin(NotyPlugin);
 
-	const noty = new NotyFactory();
-	flasher.addPlugin('noty', noty);
+	const noty = new NotyPlugin();
+	flasher.flasher.addPlugin('noty', noty);
 
 	return noty;
 

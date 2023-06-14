@@ -23,8 +23,8 @@
     "access": "public"
   },
   "browser": "dist/flasher.min.js",
-  "main": "dist/index",
-  "types": "dist/index",
+  "main": "dist/flasher.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=14.0.0"
   },

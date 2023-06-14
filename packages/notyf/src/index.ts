@@ -1,9 +1,9 @@
 import './notyf.scss';
 
-import flasher from '@flasher/flasher';
-import NotyfFactory from './notyf';
+import { flasher } from '@flasher/flasher';
+import NotyfPlugin from './notyf';
 
-const notyf = new NotyfFactory();
+const notyf = new NotyfPlugin();
 flasher.addPlugin('notyf', notyf);
 
 export default notyf;

@@ -1,13 +1,13 @@
-import { Envelope, NotifyMixin, Options, PluginInterface } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
 
 import { Notyf } from 'notyf';
 import { INotyfOptions } from 'notyf/notyf.options';
 import 'notyf/notyf.min.css';
 
-class NotyfPlugin implements PluginInterface {
+export default class NotyfPlugin extends AbstractPlugin {
   notyf?: Notyf;
 
-  renderEnvelopes(envelopes: Envelope[]): void {
+  public renderEnvelopes(envelopes: Envelope[]): void {
     envelopes.forEach((envelope) => {
       const options = { ...envelope, ...envelope.options };
       this.notyf?.open(options);
@@ -19,7 +19,7 @@ class NotyfPlugin implements PluginInterface {
     this.notyf.view.a11yContainer.dataset.turboCache = 'false';
   }
 
-  renderOptions(options: Options): void {
+  public renderOptions(options: Options): void {
     const nOptions = {
       duration: options.duration || 5000,
       ...options,
@@ -50,5 +50,3 @@ class NotyfPlugin implements PluginInterface {
     this.notyf = this.notyf || new Notyf(nOptions as Partial<INotyfOptions>);
   }
 }
-
-export default NotifyMixin(NotyfPlugin);

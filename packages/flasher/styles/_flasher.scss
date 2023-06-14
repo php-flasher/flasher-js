@@ -8,11 +8,11 @@
   word-break: break-word;
 
   &.fl-rtl {
-    border-radius: var(--fl-flasher-border-radius-rtl);
+    border-radius: 0 0.375em 0.375em 0;
   }
 
   &:not(.fl-rtl) {
-    border-radius: var(--fl-flasher-border-radius);
+    border-radius: 0.375em 0 0 0.375em;
   }
 
   .fl-content {
@@ -29,7 +29,7 @@
     display: block;
     margin-left: 1em;
     margin-right: 1em;
-    line-height: 1.5;
+    line-height: 1.25em;
 
     &:first-letter {
       text-transform: uppercase;

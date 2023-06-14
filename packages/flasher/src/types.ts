@@ -29,10 +29,13 @@ export interface Response {
 }
 
 export interface PluginInterface {
+  success(message: string, title?: string, options?: Options): void;
+  error(message: string, title?: string, options?: Options): void;
+  info(message: string, title?: string, options?: Options): void;
+  warning(message: string, title?: string, options?: Options): void;
+  flash(type: string, message: string, title?: string, options?: Options): void;
   renderEnvelopes(envelopes: Envelope[]): void;
   renderOptions(options: Options): void;
-
-  [key: string]: any;
 }
 
 export interface Theme {

@@ -23,8 +23,8 @@
     "access": "public"
   },
   "browser": "dist/flasher-pnotify.min.js",
-  "main": "dist/index",
-  "types": "dist/index",
+  "main": "dist/flasher-pnotify.js",
+  "types": "dist/pnotify.d.ts",
   "engines": {
     "node": ">=14.0.0"
   },

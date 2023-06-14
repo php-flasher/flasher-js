@@ -11181,7 +11181,7 @@
 	var toastrExports = toastr$2.exports;
 	var toastr$1 = /*@__PURE__*/getDefaultExportFromCjs(toastrExports);
 
-	class ToastrPlugin {
+	class ToastrPlugin extends flasher.AbstractPlugin {
 	    renderEnvelopes(envelopes) {
 	        envelopes.forEach(envelope => {
 	            const { message, title, type, options } = envelope;
@@ -11193,10 +11193,9 @@
 	        toastr$1.options = Object.assign({ timeOut: (options.timeOut || 5000), progressBar: (options.progressBar || true) }, options);
 	    }
 	}
-	var ToastrFactory = flasher.NotifyMixin(ToastrPlugin);
 
-	const toastr = new ToastrFactory();
-	flasher.addPlugin('toastr', toastr);
+	const toastr = new ToastrPlugin();
+	flasher.flasher.addPlugin('toastr', toastr);
 
 	return toastr;
 

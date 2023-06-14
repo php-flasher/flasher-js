@@ -23,8 +23,8 @@
     "access": "public"
   },
   "browser": "dist/flasher-toastr.min.js",
-  "main": "dist/index",
-  "types": "dist/index",
+  "main": "dist/flasher-toastr.js",
+  "types": "dist/toastr.d.ts",
   "engines": {
     "node": ">=14.0.0"
   },
