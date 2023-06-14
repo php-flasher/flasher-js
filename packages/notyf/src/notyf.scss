@@ -1,67 +1,67 @@
 .notyf {
-    &__icon {
-        &--warning,
-        &--info {
-            position: relative;
-            width: 1em;
-            height: 1em;
-            margin: 0 auto;
-            border-radius: 50%;
-            box-sizing: border-box;
-            display: block;
-            background: white;
+  &__icon {
+    &--warning,
+    &--info {
+      position: relative;
+      width: 1em;
+      height: 1em;
+      margin: 0 auto;
+      border-radius: 50%;
+      box-sizing: border-box;
+      display: block;
+      background: white;
 
-            &:before,
-            &:after {
-                content: "";
-                position: absolute;
-                transition: all 1s;
-                border-width: 0;
-                box-sizing: border-box;
-            }
-        }
-
-        &--info {
-            &:before,
-            &:after {
-                width: 0.15em;
-                background-color: currentColor;
-                left: 50%;
-                transform: translateX(-50%);
-                border-radius: 0.03em;
-            }
-
-            &:before {
-                height: 0.38em;
-                top: 0.4em;
-            }
-
-            &:after {
-                height: 0.13em;
-                box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
-                top: 0.21em;
-            }
-        }
-
-        &--warning {
-            &:before,
-            &:after {
-                width: 0.15em;
-                background-color: currentColor;
-                border-radius: 0.03em;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            &:before {
-                height: 0.38em;
-                top: 0.21em;
-            }
-
-            &:after {
-                height: 0.13em;
-                top: 0.65em;
-            }
-        }
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        transition: all 1s;
+        border-width: 0;
+        box-sizing: border-box;
+      }
     }
+
+    &--info {
+      &:before,
+      &:after {
+        width: 0.15em;
+        background-color: currentColor;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 0.03em;
+      }
+
+      &:before {
+        height: 0.38em;
+        top: 0.4em;
+      }
+
+      &:after {
+        height: 0.13em;
+        box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
+        top: 0.21em;
+      }
+    }
+
+    &--warning {
+      &:before,
+      &:after {
+        width: 0.15em;
+        background-color: currentColor;
+        border-radius: 0.03em;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &:before {
+        height: 0.38em;
+        top: 0.21em;
+      }
+
+      &:after {
+        height: 0.13em;
+        top: 0.65em;
+      }
+    }
+  }
 }

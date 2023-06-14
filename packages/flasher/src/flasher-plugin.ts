@@ -33,7 +33,9 @@ export default class FlasherPlugin extends AbstractPlugin {
     if (['interactive', 'complete'].includes(document.readyState)) {
       onContainerReady(envelopes);
     } else {
-      document.addEventListener('DOMContentLoaded', () => onContainerReady(envelopes));
+      document.addEventListener('DOMContentLoaded', () =>
+        onContainerReady(envelopes),
+      );
     }
   }
 
@@ -42,8 +44,13 @@ export default class FlasherPlugin extends AbstractPlugin {
     this.applyDarkMode();
   }
 
-  private createContainer(options: { position: string; style: Properties }): HTMLDivElement {
-    let container = document.querySelector(`.fl-main-container[data-position="${options.position}"]`) as HTMLDivElement;
+  private createContainer(options: {
+    position: string;
+    style: Properties;
+  }): HTMLDivElement {
+    let container = document.querySelector(
+      `.fl-main-container[data-position="${options.position}"]`,
+    ) as HTMLDivElement;
     if (container) {
       container.dataset.turboCache = 'false';
       return container;
@@ -55,7 +62,10 @@ export default class FlasherPlugin extends AbstractPlugin {
     container.dataset.turboCache = 'false';
 
     Object.keys(options.style).forEach((key: string) => {
-      container.style.setProperty(key, options.style[key as keyof Properties] as string);
+      container.style.setProperty(
+        key,
+        options.style[key as keyof Properties] as string,
+      );
     });
 
     document.body.append(container);
@@ -66,7 +76,7 @@ export default class FlasherPlugin extends AbstractPlugin {
   private addToContainer(
     container: HTMLDivElement,
     envelope: Envelope,
-    options: { direction: string; timeout: number; fps: number; rtl: boolean }
+    options: { direction: string; timeout: number; fps: number; rtl: boolean },
   ): void {
     const template = this.stringToHTML(this.theme.render(envelope));
     template.classList.add('fl-container');
@@ -79,7 +89,7 @@ export default class FlasherPlugin extends AbstractPlugin {
   private appendNotification(
     container: HTMLElement,
     template: HTMLElement,
-    options: { direction: string; rtl: boolean }
+    options: { direction: string; rtl: boolean },
   ): void {
     if (options.direction === 'bottom') {
       container.append(template);
@@ -111,7 +121,10 @@ export default class FlasherPlugin extends AbstractPlugin {
     template.addEventListener('click', () => this.removeNotification(template));
   }
 
-  private renderProgressBar(template: HTMLElement, { timeout, fps }: { timeout: number; fps: number }) {
+  private renderProgressBar(
+    template: HTMLElement,
+    { timeout, fps }: { timeout: number; fps: number },
+  ) {
     if (!timeout || timeout <= 0) {
       return;
     }
@@ -151,10 +164,14 @@ export default class FlasherPlugin extends AbstractPlugin {
   }
 
   private applyDarkMode(): void {
-    const [mode, className = 'dark'] = [].concat(this.options.darkMode as unknown as ConcatArray<never>);
+    const [mode, className = 'dark'] = [].concat(
+      this.options.darkMode as unknown as ConcatArray<never>,
+    );
 
     const shouldApplyDarkMode =
-      (mode === 'media' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+      (mode === 'media' &&
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches) ||
       (mode === 'class' && document.body.classList.contains(className));
 
     document.body.classList.toggle('fl-dark', shouldApplyDarkMode);

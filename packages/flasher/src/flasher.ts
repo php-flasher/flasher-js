@@ -1,16 +1,29 @@
-import { Envelope, PluginInterface, PluginOptions, Options, Response, Theme } from './types';
+import {
+  Envelope,
+  PluginInterface,
+  PluginOptions,
+  Options,
+  Response,
+  Theme,
+} from './types';
 import { AbstractPlugin } from './plugin';
 import FlasherPlugin from './flasher-plugin';
 
 export default class Flasher extends AbstractPlugin {
   private defaultPlugin = 'flasher';
-  private plugins: Map<string, PluginInterface> = new Map<string, PluginInterface>();
+  private plugins: Map<string, PluginInterface> = new Map<
+    string,
+    PluginInterface
+  >();
   private themes: Map<string, Theme> = new Map<string, Theme>();
 
   public async render(response: Partial<Response>): Promise<void> {
     const resolved = this.resolveResponse(response);
 
-    await Promise.all([this.addStyles(resolved.styles), this.addScripts(resolved.scripts)]);
+    await Promise.all([
+      this.addStyles(resolved.styles),
+      this.addScripts(resolved.scripts),
+    ]);
 
     this.renderOptions(resolved.options);
     this.renderEnvelopes(resolved.envelopes);
@@ -57,7 +70,9 @@ export default class Flasher extends AbstractPlugin {
 
     const plugin = this.plugins.get(name);
     if (!plugin) {
-      throw new Error(`Unable to resolve "${name}" plugin, did you forget to register it?`);
+      throw new Error(
+        `Unable to resolve "${name}" plugin, did you forget to register it?`,
+      );
     }
 
     return plugin;
@@ -72,7 +87,14 @@ export default class Flasher extends AbstractPlugin {
   }
 
   private resolveResponse(response: Partial<Response>): Response {
-    const resolved = { envelopes: [], options: {}, scripts: [], styles: [], context: {}, ...response } as Response;
+    const resolved = {
+      envelopes: [],
+      options: {},
+      scripts: [],
+      styles: [],
+      context: {},
+      ...response,
+    } as Response;
 
     Object.entries(resolved.options).forEach(([plugin, options]) => {
       resolved.options[plugin] = this.resolveOptions(options);
@@ -80,7 +102,9 @@ export default class Flasher extends AbstractPlugin {
 
     resolved.envelopes.forEach((envelope) => {
       envelope.metadata = envelope.metadata || {};
-      envelope.metadata.plugin = this.resolvePluginAlias(envelope.metadata.plugin);
+      envelope.metadata.plugin = this.resolvePluginAlias(
+        envelope.metadata.plugin,
+      );
       this.addThemeStyles(resolved, envelope.metadata.plugin);
       envelope.options = this.resolveOptions(envelope.options);
     });
@@ -101,7 +125,9 @@ export default class Flasher extends AbstractPlugin {
       return func;
     }
 
-    const match = func.match(/^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m);
+    const match = func.match(
+      /^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m,
+    );
 
     if (!match) {
       return func;
@@ -134,15 +160,23 @@ export default class Flasher extends AbstractPlugin {
     return 'flasher' === alias ? 'theme.flasher' : alias;
   }
 
-  private async addAssets(urls: string[], tagName: string, attrName: string, attrValue: string): Promise<void> {
+  private async addAssets(
+    urls: string[],
+    tagName: string,
+    attrName: string,
+    attrValue: string,
+  ): Promise<void> {
     const assetsPromise = urls.map((url) => {
       return new Promise<void>((resolve) => {
-        if (document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null) {
+        if (
+          document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null
+        ) {
           resolve();
           return;
         }
 
-        const tag = document.createElement(tagName) as HTMLLinkElement & HTMLScriptElement;
+        const tag = document.createElement(tagName) as HTMLLinkElement &
+          HTMLScriptElement;
         (tag as any)[attrName] = url;
 
         if (tagName === 'link') {

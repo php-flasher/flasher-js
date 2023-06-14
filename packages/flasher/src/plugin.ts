@@ -20,7 +20,12 @@ export abstract class AbstractPlugin implements PluginInterface {
     this.flash('warning', message, title, options);
   }
 
-  public flash(type: string, message: string, title?: string, options?: Options): void {
+  public flash(
+    type: string,
+    message: string,
+    title?: string,
+    options?: Options,
+  ): void {
     const envelope = {
       type,
       message,

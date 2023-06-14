@@ -19,16 +19,18 @@ export default class SweetAlertPlugin extends AbstractPlugin {
         text: (options?.text || envelope.message) as any[],
       };
 
-      this.sweetalert?.fire(options as SweetAlertOptions).then(function (promise) {
-        window.dispatchEvent(
-          new CustomEvent('flasher:sweetalert:promise', {
-            detail: {
-              promise,
-              envelope,
-            },
-          })
-        );
-      });
+      this.sweetalert
+        ?.fire(options as SweetAlertOptions)
+        .then(function (promise) {
+          window.dispatchEvent(
+            new CustomEvent('flasher:sweetalert:promise', {
+              detail: {
+                promise,
+                envelope,
+              },
+            }),
+          );
+        });
     });
   }
 

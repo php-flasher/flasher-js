@@ -81,7 +81,10 @@ export default defineConfig({
       format: 'umd',
       name: config.name,
       globals: config.globals || {},
-      plugins: [isProduction && terser({ format: { comments: false } }), filesize()].filter(Boolean),
+      plugins: [
+        isProduction && terser({ format: { comments: false } }),
+        filesize(),
+      ].filter(Boolean),
     }),
   ],
 });
