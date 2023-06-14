@@ -1,5 +1,5 @@
-import { Envelope, PluginInterface, PluginOptions, Options, Response, Theme } from './types'
-import { AbstractPlugin } from './plugin'
+import { Envelope, PluginInterface, PluginOptions, Options, Response, Theme } from './types';
+import { AbstractPlugin } from './plugin';
 import FlasherPlugin from './flasher-plugin';
 
 export default class Flasher extends AbstractPlugin {
@@ -10,13 +10,10 @@ export default class Flasher extends AbstractPlugin {
   public async render(response: Partial<Response>): Promise<void> {
     const resolved = this.resolveResponse(response);
 
-    await Promise.all([
-      this.addStyles(resolved.styles),
-      this.addScripts(resolved.scripts),
-    ])
+    await Promise.all([this.addStyles(resolved.styles), this.addScripts(resolved.scripts)]);
 
-    this.renderOptions(resolved.options)
-    this.renderEnvelopes(resolved.envelopes)
+    this.renderOptions(resolved.options);
+    this.renderEnvelopes(resolved.envelopes);
   }
 
   public renderEnvelopes(envelopes: Envelope[]): void {
@@ -67,15 +64,15 @@ export default class Flasher extends AbstractPlugin {
   }
 
   private async addStyles(urls: string[]): Promise<void> {
-    await this.addAssets(urls, 'link', 'href', 'stylesheet')
+    await this.addAssets(urls, 'link', 'href', 'stylesheet');
   }
 
   private async addScripts(urls: string[]): Promise<void> {
-    await this.addAssets(urls, 'script', 'src', 'text/javascript')
+    await this.addAssets(urls, 'script', 'src', 'text/javascript');
   }
 
   private resolveResponse(response: Partial<Response>): Response {
-    const resolved = {envelopes: [], options: {  }, scripts: [], styles: [], context: {}, ...response} as Response;
+    const resolved = { envelopes: [], options: {}, scripts: [], styles: [], context: {}, ...response } as Response;
 
     Object.entries(resolved.options).forEach(([plugin, options]) => {
       resolved.options[plugin] = this.resolveOptions(options);
@@ -104,9 +101,7 @@ export default class Flasher extends AbstractPlugin {
       return func;
     }
 
-    const match = func.match(
-      /^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m
-    );
+    const match = func.match(/^function(?:.+)?(?:\s+)?\((.+)?\)(?:\s+|\n+)?{(?:\s+|\n+)?((?:.|\n)+)}$/m);
 
     if (!match) {
       return func;
@@ -125,7 +120,7 @@ export default class Flasher extends AbstractPlugin {
       return;
     }
 
-    const view = this.themes.get(alias.replace('theme.', ''))
+    const view = this.themes.get(alias.replace('theme.', ''));
     if (!view) {
       return;
     }
@@ -133,8 +128,7 @@ export default class Flasher extends AbstractPlugin {
     this.addPlugin(alias, new FlasherPlugin(view));
   }
 
-  private resolvePluginAlias(alias?: string): string
-  {
+  private resolvePluginAlias(alias?: string): string {
     alias = alias || this.defaultPlugin;
 
     return 'flasher' === alias ? 'theme.flasher' : alias;
@@ -144,25 +138,25 @@ export default class Flasher extends AbstractPlugin {
     const assetsPromise = urls.map((url) => {
       return new Promise<void>((resolve) => {
         if (document.querySelector(`${tagName}[${attrName}="${url}"]`) !== null) {
-          resolve()
-          return
+          resolve();
+          return;
         }
 
         const tag = document.createElement(tagName) as HTMLLinkElement & HTMLScriptElement;
-        (tag as any)[attrName] = url
+        (tag as any)[attrName] = url;
 
         if (tagName === 'link') {
-          tag.rel = attrValue
+          tag.rel = attrValue;
         } else if (tagName === 'script') {
-          tag.type = attrValue
+          tag.type = attrValue;
         }
-        tag.onload = () => resolve()
+        tag.onload = () => resolve();
 
-        document.head.appendChild(tag)
-      })
-    })
+        document.head.appendChild(tag);
+      });
+    });
 
-    await Promise.all(assetsPromise)
+    await Promise.all(assetsPromise);
   }
 
   private addThemeStyles(response: Response, plugin: string): void {

@@ -13,12 +13,12 @@ const resolveConfig = (config) => {
 
   if ('flasher' !== name) {
     config.globals = { ...config.globals, '@flasher/flasher': 'flasher' };
-    config.external = [...config.external || [], '@flasher/flasher'];
+    config.external = [...(config.external || []), '@flasher/flasher'];
   }
 
   if (['noty', 'notyf'].includes(name)) {
-    config.globals = { ...config.globals, 'jquery': 'jQuery' };
-    config.external = [...config.external || [], 'jquery'];
+    config.globals = { ...config.globals, jquery: 'jQuery' };
+    config.external = [...(config.external || []), 'jquery'];
   }
 
   config.input = 'src/index.ts';
@@ -29,7 +29,7 @@ const resolveConfig = (config) => {
   }
 
   return config;
-}
+};
 
 const outputOptions = (options = {}) => ({
   exports: 'auto',
@@ -56,7 +56,7 @@ const plugins = [
   clear({ targets: ['dist'] }),
   styles({
     mode: 'extract',
-    plugins: { cssnano, "postcss-discard-comments": { removeAll: true } },
+    plugins: { cssnano, 'postcss-discard-comments': { removeAll: true } },
   }),
   resolve(),
   commonjs(),
@@ -81,10 +81,7 @@ export default defineConfig({
       format: 'umd',
       name: config.name,
       globals: config.globals || {},
-      plugins: [
-        isProduction && terser({ format: { comments: false } }),
-        filesize(),
-      ].filter(Boolean),
+      plugins: [isProduction && terser({ format: { comments: false } }), filesize()].filter(Boolean),
     }),
   ],
-})
+});

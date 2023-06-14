@@ -1,4 +1,4 @@
-import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher';
 
 import { Notice, Options as PnotifyOptions, alert, defaults, error, info, notice, success } from '@pnotify/core';
 import '@pnotify/core/dist/PNotify.css';

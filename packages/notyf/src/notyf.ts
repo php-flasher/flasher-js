@@ -1,4 +1,4 @@
-import { AbstractPlugin, Envelope, Options } from '@flasher/flasher'
+import { AbstractPlugin, Envelope, Options } from '@flasher/flasher';
 
 import { Notyf } from 'notyf';
 import { INotyfOptions } from 'notyf/notyf.options';

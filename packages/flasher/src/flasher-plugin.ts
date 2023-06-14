@@ -1,6 +1,6 @@
 import { Envelope, Options, Theme } from './types';
 import { Properties } from 'csstype';
-import { AbstractPlugin } from './plugin'
+import { AbstractPlugin } from './plugin';
 
 export default class FlasherPlugin extends AbstractPlugin {
   private theme: Theme;
@@ -22,45 +22,45 @@ export default class FlasherPlugin extends AbstractPlugin {
 
   public renderEnvelopes(envelopes: Envelope[]): void {
     const onContainerReady = (envelopes: Envelope[]) => {
-      envelopes.forEach(envelope => {
-        const options = { ...this.options, ...envelope.options }
+      envelopes.forEach((envelope) => {
+        const options = { ...this.options, ...envelope.options };
 
-        const container = this.createContainer(options)
-        this.addToContainer(container, envelope, options)
-      })
-    }
+        const container = this.createContainer(options);
+        this.addToContainer(container, envelope, options);
+      });
+    };
 
     if (['interactive', 'complete'].includes(document.readyState)) {
-      onContainerReady(envelopes)
+      onContainerReady(envelopes);
     } else {
-      document.addEventListener('DOMContentLoaded', () => onContainerReady(envelopes))
+      document.addEventListener('DOMContentLoaded', () => onContainerReady(envelopes));
     }
   }
 
   public renderOptions(options: Options): void {
-    this.options = {...this.options, ...options};
+    this.options = { ...this.options, ...options };
     this.applyDarkMode();
   }
 
   private createContainer(options: { position: string; style: Properties }): HTMLDivElement {
     let container = document.querySelector(`.fl-main-container[data-position="${options.position}"]`) as HTMLDivElement;
     if (container) {
-      container.dataset.turboCache = 'false'
+      container.dataset.turboCache = 'false';
       return container;
     }
 
     container = document.createElement('div');
-    container.classList.add('fl-main-container')
-    container.dataset.position = options.position
-    container.dataset.turboCache = 'false'
+    container.classList.add('fl-main-container');
+    container.dataset.position = options.position;
+    container.dataset.turboCache = 'false';
 
     Object.keys(options.style).forEach((key: string) => {
-      container.style.setProperty(key, options.style[key as keyof Properties] as string)
-    })
+      container.style.setProperty(key, options.style[key as keyof Properties] as string);
+    });
 
-    document.body.append(container)
+    document.body.append(container);
 
-    return container
+    return container;
   }
 
   private addToContainer(
@@ -76,7 +76,11 @@ export default class FlasherPlugin extends AbstractPlugin {
     this.handleClick(template);
   }
 
-  private appendNotification(container: HTMLElement, template: HTMLElement, options: { direction: string; rtl: boolean }): void {
+  private appendNotification(
+    container: HTMLElement,
+    template: HTMLElement,
+    options: { direction: string; rtl: boolean }
+  ): void {
     if (options.direction === 'bottom') {
       container.append(template);
     } else {

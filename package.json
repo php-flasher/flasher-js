@@ -20,9 +20,7 @@
   ],
   "author": "younes KHOUBZA <younes.khoubza@gmail.com>",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "build": "NODE_ENV=production lerna exec -- rollup -c ../../rollup.config.js",
     "dev": "NODE_ENV=development lerna exec -- rollup -c ../../rollup.config.js",

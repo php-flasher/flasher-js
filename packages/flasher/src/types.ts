@@ -5,7 +5,7 @@ export interface Envelope {
   options: Options;
   metadata: {
     plugin: string;
-  }
+  };
 }
 
 export interface Options {
@@ -39,6 +39,6 @@ export interface PluginInterface {
 }
 
 export interface Theme {
-  styles?: string | string[],
-  render: (envelope: Envelope) => string,
+  styles?: string | string[];
+  render: (envelope: Envelope) => string;
 }

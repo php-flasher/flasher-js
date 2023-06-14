@@ -1,4 +1,4 @@
-import { Envelope } from './types'
+import { Envelope } from './types';
 
 export const theme = {
   render: (envelope: Envelope): string => {

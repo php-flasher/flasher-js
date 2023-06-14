@@ -1,101 +1,101 @@
 .fl-icon {
-  position: relative;
-  width: 1em;
-  min-width: 1em;
-  height: 1em;
-  min-height: 1em;
-  margin: 0;
-  border-radius: 50%;
-  transition: all 1s;
-  box-sizing: border-box;
-  display: inline-block;
-  color: white;
-
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
+    position: relative;
+    width: 1em;
+    min-width: 1em;
+    height: 1em;
+    min-height: 1em;
+    margin: 0;
+    border-radius: 50%;
     transition: all 1s;
-    border-width: 0;
     box-sizing: border-box;
-  }
+    display: inline-block;
+    color: white;
+
+    &:before,
+    &:after {
+        content: "";
+        position: absolute;
+        transition: all 1s;
+        border-width: 0;
+        box-sizing: border-box;
+    }
 }
 
 .fl-success .fl-icon {
-  &:before,
-  &:after {
-    width: 0.16em;
-    height: 0.6em;
-    background-color: currentColor;
-    border-radius: 0.1em;
-    top: 0.6em;
-    left: 0.35em;
-    transform: rotate(-135deg);
-    transform-origin: 0.08em 0.08em;
-  }
+    &:before,
+    &:after {
+        width: 0.16em;
+        height: 0.6em;
+        background-color: currentColor;
+        border-radius: 0.1em;
+        top: 0.6em;
+        left: 0.35em;
+        transform: rotate(-135deg);
+        transform-origin: 0.08em 0.08em;
+    }
 
-  &:after {
-    width: 0.4em;
-    height: 0.16em;
-  }
+    &:after {
+        width: 0.4em;
+        height: 0.16em;
+    }
 }
 
 .fl-info .fl-icon {
-  &:before,
-  &:after {
-    width: 0.15em;
-    background-color: currentColor;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 0.03em;
-  }
+    &:before,
+    &:after {
+        width: 0.15em;
+        background-color: currentColor;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 0.03em;
+    }
 
-  &:before {
-    height: 0.38em;
-    top: 0.4em;
-  }
+    &:before {
+        height: 0.38em;
+        top: 0.4em;
+    }
 
-  &:after {
-    height: 0.13em;
-    box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
-    top: 0.21em;
-  }
+    &:after {
+        height: 0.13em;
+        box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
+        top: 0.21em;
+    }
 }
 
 .fl-warning .fl-icon {
-  &:before,
-  &:after {
-    width: 0.15em;
-    background-color: currentColor;
-    border-radius: 0.03em;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+    &:before,
+    &:after {
+        width: 0.15em;
+        background-color: currentColor;
+        border-radius: 0.03em;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 
-  &:before {
-    height: 0.38em;
-    top: 0.21em;
-  }
+    &:before {
+        height: 0.38em;
+        top: 0.21em;
+    }
 
-  &:after {
-    height: 0.13em;
-    top: 0.65em;
-  }
+    &:after {
+        height: 0.13em;
+        top: 0.65em;
+    }
 }
 
 .fl-error .fl-icon {
-  &:before,
-  &:after {
-    width: 0.16em;
-    height: 0.7em;
-    background-color: currentColor;
-    border-radius: 0.1em;
-    transform: translate(-50%, -50%) rotate(-135deg);
-    top: 50%;
-    left: 50%;
-  }
+    &:before,
+    &:after {
+        width: 0.16em;
+        height: 0.7em;
+        background-color: currentColor;
+        border-radius: 0.1em;
+        transform: translate(-50%, -50%) rotate(-135deg);
+        top: 50%;
+        left: 50%;
+    }
 
-  &:after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-  }
+    &:after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
 }
