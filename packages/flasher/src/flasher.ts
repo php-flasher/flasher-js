@@ -1,11 +1,4 @@
-import {
-  Envelope,
-  PluginInterface,
-  PluginOptions,
-  Options,
-  Response,
-  Theme,
-} from './types';
+import { Envelope, PluginInterface, Options, Response, Theme } from './types';
 import { AbstractPlugin } from './plugin';
 import FlasherPlugin from './flasher-plugin';
 
@@ -49,6 +42,7 @@ export default class Flasher extends AbstractPlugin {
 
   public renderOptions(options: Options): void {
     Object.entries(options).forEach(([plugin, option]) => {
+      // @ts-ignore
       this.create(plugin).renderOptions(option);
     });
   }
@@ -115,7 +109,7 @@ export default class Flasher extends AbstractPlugin {
     return resolved;
   }
 
-  private resolveOptions(options: PluginOptions): PluginOptions {
+  private resolveOptions(options: Options): Options {
     Object.entries(options).forEach(([key, value]) => {
       options[key] = this.resolveFunction(value);
     });

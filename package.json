@@ -31,6 +31,7 @@
     "publish": "lerna publish from-package --yes",
     "release": "lerna version --no-private --conventional-commits --conventional-graduate --create-release github --force-publish --yes",
     "lint": "eslint . --ext .ts --fix",
+    "lint:styles": "stylelint '**/*.scss'",
     "format": "prettier --write .",
     "check-deps": "depcheck"
   },
@@ -69,6 +70,9 @@
     "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-styles": "^4.0.0",
     "sass": "^1.63.4",
+    "stylelint": "^15.7.0",
+    "stylelint-config-standard": "^33.0.0",
+    "stylelint-scss": "^5.0.1",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.3",
     "typescript": "^5.1.3"

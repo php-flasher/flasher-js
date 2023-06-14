@@ -15,8 +15,8 @@ export default class SweetAlertPlugin extends AbstractPlugin {
 
       options = {
         ...options,
-        icon: (options?.icon || envelope.type) as any[],
-        text: (options?.text || envelope.message) as any[],
+        icon: (options?.icon || envelope.type) as unknown[],
+        text: (options?.text || envelope.message) as unknown[],
       };
 
       this.sweetalert
@@ -38,8 +38,8 @@ export default class SweetAlertPlugin extends AbstractPlugin {
     this.sweetalert =
       this.sweetalert ||
       Swal.mixin({
-        timer: (options.timer || 5000) as any,
-        timerProgressBar: (options.timerProgressBar || true) as any,
+        timer: (options.timer || 5000) as unknown,
+        timerProgressBar: (options.timerProgressBar || true) as unknown,
         ...options,
       } as SweetAlertOptions);
 

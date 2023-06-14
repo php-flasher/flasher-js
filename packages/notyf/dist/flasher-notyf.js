@@ -485,3 +485,4 @@
     return notyf;
 
 }));
+//# sourceMappingURL=flasher-notyf.js.map

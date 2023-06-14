@@ -4237,3 +4237,4 @@
 	return sweetalert;
 
 }));
+//# sourceMappingURL=flasher-sweetalert.js.map

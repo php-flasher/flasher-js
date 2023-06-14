@@ -8,11 +8,11 @@ export interface Envelope {
   };
 }
 
-export interface Options {
-  [plugin: string]: PluginOptions;
+export interface PluginOptions {
+  [plugin: string]: Options;
 }
 
-export interface PluginOptions {
+export interface Options {
   [option: string]: unknown;
 }
 
@@ -22,7 +22,7 @@ export interface Context {
 
 export interface Response {
   envelopes: Envelope[];
-  options: Options;
+  options: PluginOptions;
   scripts: string[];
   styles: string[];
   context: Context;

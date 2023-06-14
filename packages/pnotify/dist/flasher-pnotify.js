@@ -57,3 +57,4 @@
 	return pnotify;
 
 }));
+//# sourceMappingURL=flasher-pnotify.js.map

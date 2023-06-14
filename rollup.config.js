@@ -1,4 +1,3 @@
-import browserslist from 'browserslist';
 import cleanup from 'rollup-plugin-cleanup';
 import clear from 'rollup-plugin-clear';
 import commonjs from '@rollup/plugin-commonjs';
@@ -36,7 +35,7 @@ const resolveConfig = (config) => {
 
 const outputOptions = (options = {}) => ({
   exports: 'auto',
-  sourcemap: !isProduction,
+  sourcemap: true,
   assetFileNames: '[name][extname]',
   inlineDynamicImports: true,
   ...options,
@@ -59,17 +58,19 @@ const plugins = [
   clear({ targets: ['dist'] }),
   styles({
     mode: 'extract',
-    plugins: { cssnano, 'postcss-discard-comments': { removeAll: true } },
+    plugins: {
+      cssnano,
+      'postcss-discard-comments': { removeAll: true },
+      autoprefixer: { overrideBrowserslist: ['> 0%'] },
+    },
   }),
   resolve(),
   commonjs(),
   typescript({
-    clean: true,
     tsconfig: 'tsconfig.build.json',
-    useTsconfigDeclarationDir: true,
+    sourceMap: true,
   }),
   eslint(),
-  browserslist(),
   cleanup({
     comments: 'none',
     extensions: ['.ts'],

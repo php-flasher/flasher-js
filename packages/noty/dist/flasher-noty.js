@@ -3140,3 +3140,4 @@
 	return noty;
 
 }));
+//# sourceMappingURL=flasher-noty.js.map

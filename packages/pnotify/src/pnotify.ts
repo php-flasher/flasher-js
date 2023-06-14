@@ -54,10 +54,9 @@ export default class PnotifyPlugin extends AbstractPlugin {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  private updateDefaultOptions(defaultOptions: any, options: Options) {
+  private updateDefaultOptions(defaultOptions: unknown, options: Options) {
     Object.entries(options).forEach(([option, value]) => {
-      // eslint-disable-next-line no-param-reassign
+      // @ts-ignore
       defaultOptions[option] = value;
     });
   }
