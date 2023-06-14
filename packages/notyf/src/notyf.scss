@@ -3,64 +3,64 @@
     &--warning,
     &--info {
       position: relative;
+      box-sizing: border-box;
+      display: block;
       width: 1em;
       height: 1em;
       margin: 0 auto;
-      border-radius: 50%;
-      box-sizing: border-box;
-      display: block;
       background: white;
+      border-radius: 50%;
 
-      &:before,
-      &:after {
-        content: "";
+      &::before,
+      &::after {
         position: absolute;
-        transition: all 1s;
-        border-width: 0;
         box-sizing: border-box;
+        content: "";
+        border-width: 0;
+        transition: all 1s;
       }
     }
 
     &--info {
-      &:before,
-      &:after {
-        width: 0.15em;
-        background-color: currentColor;
+      &::before,
+      &::after {
         left: 50%;
-        transform: translateX(-50%);
+        width: 0.15em;
+        background-color: currentcolor;
         border-radius: 0.03em;
+        transform: translateX(-50%);
       }
 
-      &:before {
-        height: 0.38em;
+      &::before {
         top: 0.4em;
+        height: 0.38em;
       }
 
-      &:after {
+      &::after {
+        top: 0.21em;
         height: 0.13em;
         box-shadow: -0.06em 0.19em, -0.06em 0.44em, 0.06em 0.44em;
-        top: 0.21em;
       }
     }
 
     &--warning {
-      &:before,
-      &:after {
-        width: 0.15em;
-        background-color: currentColor;
-        border-radius: 0.03em;
+      &::before,
+      &::after {
         left: 50%;
+        width: 0.15em;
+        background-color: currentcolor;
+        border-radius: 0.03em;
         transform: translateX(-50%);
       }
 
-      &:before {
-        height: 0.38em;
+      &::before {
         top: 0.21em;
+        height: 0.38em;
       }
 
-      &:after {
-        height: 0.13em;
+      &::after {
         top: 0.65em;
+        height: 0.13em;
       }
     }
   }

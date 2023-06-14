@@ -22,8 +22,8 @@
     }
 
     &:not(.fl-rtl) {
-      border-left: 0.8em solid var(--#{$type}-color);
       border-right: none;
+      border-left: 0.8em solid var(--#{$type}-color);
     }
 
     .fl-title {

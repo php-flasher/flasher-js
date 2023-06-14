@@ -1,13 +1,13 @@
 .fl-main-container {
   position: fixed;
-  width: 24em;
   z-index: 99999;
+  width: 24em;
   transition: all 1s ease-in-out;
 
-  @media only screen and (max-width: 480px) {
-    width: auto;
-    left: 0.5em;
+  @media only screen and (width <= 480px) {
     right: 0.5em;
+    left: 0.5em;
+    width: auto;
   }
 
   &[data-position^="top-"] {
@@ -16,6 +16,31 @@
 
   &[data-position^="bottom-"] {
     bottom: 0.5em;
+  }
+
+  .fl-container {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    transition: transform 0.3s ease-in-out;
+
+    &.fl-show {
+      transform: translate(0, 0);
+    }
+
+    .fl-progress-bar {
+      display: flex;
+      height: 0.125em;
+      margin-left: -1px;
+    }
+
+    &.fl-rtl {
+      direction: rtl;
+
+      .fl-progress-bar {
+        margin-right: -1px;
+        margin-left: auto;
+      }
+    }
   }
 
   &[data-position$="-right"] {
@@ -45,30 +70,5 @@
 
   &[data-position="bottom-center"] .fl-container {
     transform: translateY(100vh);
-  }
-
-  .fl-container {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    transition: transform 0.3s ease-in-out;
-
-    &.fl-show {
-      transform: translate(0, 0);
-    }
-
-    .fl-progress-bar {
-      display: flex;
-      height: 0.125em;
-      margin-left: -1px;
-    }
-
-    &.fl-rtl {
-      direction: rtl;
-
-      .fl-progress-bar {
-        margin-right: -1px;
-        margin-left: auto;
-      }
-    }
   }
 }

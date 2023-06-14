@@ -1,12 +1,11 @@
 .fl-flasher {
-  line-height: 1.5;
-  background-color: var(--background-color);
-  color: var(--text-color);
   margin-top: 0.5em;
-  cursor: pointer;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  line-height: 1.5;
+  color: var(--text-color);
   word-break: break-word;
+  cursor: pointer;
+  background-color: var(--background-color);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
 
   &.fl-rtl {
     border-radius: 0 0.375em 0.375em 0;
@@ -18,8 +17,8 @@
 
   .fl-content {
     display: flex;
-    padding: 0.75em;
     align-items: center;
+    padding: 0.75em;
   }
 
   .fl-icon {
@@ -29,11 +28,11 @@
   .fl-title,
   .fl-message {
     display: block;
-    margin-left: 1em;
     margin-right: 1em;
+    margin-left: 1em;
     line-height: 1.25em;
 
-    &:first-letter {
+    &::first-letter {
       text-transform: uppercase;
     }
   }

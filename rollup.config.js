@@ -2,7 +2,6 @@ import cleanup from 'rollup-plugin-cleanup';
 import clear from 'rollup-plugin-clear';
 import commonjs from '@rollup/plugin-commonjs';
 import cssnano from 'cssnano';
-import eslint from '@rollup/plugin-eslint';
 import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
 import styles from 'rollup-plugin-styles';
@@ -70,7 +69,6 @@ const plugins = [
     tsconfig: 'tsconfig.build.json',
     sourceMap: true,
   }),
-  eslint(),
   cleanup({
     comments: 'none',
     extensions: ['.ts'],
