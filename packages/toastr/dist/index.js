@@ -17,7 +17,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
 
 var __assign = function() {
@@ -29,6 +29,11 @@ var __assign = function() {
         return t;
     };
     return __assign.apply(this, arguments);
+};
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
 function getDefaultExportFromCjs (x) {
@@ -572,6 +577,7 @@ var ToastrFactory = (function () {
         var type = notification.type || 'info';
         var instance = toastr$1[type](message, title, options);
         instance.parent().attr('data-turbo-cache', 'false');
+        instance.parent().addClass('fl-no-cache');
     };
     ToastrFactory.prototype.renderOptions = function (options) {
         toastr$1.options = __assign({ timeOut: (options.timeOut || 5000), progressBar: (options.progressBar || 5000) }, options);

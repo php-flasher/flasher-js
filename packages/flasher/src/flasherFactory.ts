@@ -109,6 +109,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     let container = document.querySelector(containerSelector) as HTMLDivElement;
     if (container) {
       container.dataset.turboCache = 'false';
+      container.classList.add('fl-no-cache');
       return container;
     }
 
@@ -116,6 +117,7 @@ export default class FlasherFactory implements NotificationFactoryInterface {
     container.classList.add('fl-main-container');
     container.dataset.position = options.position;
     container.dataset.turboCache = 'false';
+    container.classList.add('fl-no-cache');
 
     Object.keys(options.style).forEach((key: string) => {
       container?.style.setProperty(key, options.style[key as keyof Properties] as string);

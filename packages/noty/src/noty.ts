@@ -47,6 +47,8 @@ export default class NotyFactory implements NotificationFactoryInterface {
     noty.show();
     // @ts-ignore
     noty.layoutDom.dataset.turboCache = 'false';
+    // @ts-ignore
+    noty.layoutDom.classList.add('fl-no-cache');
   }
 
   createNotification(

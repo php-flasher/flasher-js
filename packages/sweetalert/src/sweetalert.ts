@@ -107,6 +107,13 @@ export default class SweetAlertFactory implements NotificationFactoryInterface, 
         Swal.close();
       }
     });
+
+    document.addEventListener('livewire:navigating', function () {
+      if (Swal.isVisible()) {
+        Swal.getPopup()?.style.setProperty('animation-duration', '0ms');
+        Swal.close();
+      }
+    });
   }
 
   addEnvelope(envelope: Envelope): void {
