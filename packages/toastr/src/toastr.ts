@@ -71,6 +71,7 @@ export default class ToastrFactory implements NotificationFactoryInterface {
 
     const instance = toastr[type as ToastrType](message, title, options as ToastrOptions);
     instance.parent().attr('data-turbo-cache', 'false');
+    instance.parent().addClass('fl-no-cache');
   }
 
   renderOptions(options: FlasherOptions): void {

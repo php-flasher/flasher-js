@@ -79,7 +79,12 @@ export default class NotyfFactory implements NotificationFactoryInterface {
     // @ts-ignore
     this.notyf.view.container.dataset.turboCache = 'false';
     // @ts-ignore
+    this.notyf.view.container.classList.add('fl-no-cache');
+
+    // @ts-ignore
     this.notyf.view.a11yContainer.dataset.turboCache = 'false';
+    // @ts-ignore
+    this.notyf.view.a11yContainer.classList.add('fl-no-cache');
   }
 
   renderOptions(options: FlasherOptions): void {
@@ -110,6 +115,9 @@ export default class NotyfFactory implements NotificationFactoryInterface {
       },
     });
 
-    this.notyf = this.notyf || new Notyf(nOptions as Partial<INotyfOptions>);
+    // @ts-ignore
+    if (!this.notyf || (this.notyf.view && !this.notyf.view.container.parentNode)) {
+      this.notyf = new Notyf(nOptions as Partial<INotyfOptions>);
+    }
   }
 }

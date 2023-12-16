@@ -14,7 +14,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
-/* global Reflect, Promise */
+/* global Reflect, Promise, SuppressedError, Symbol */
 
 
 function __spreadArray(to, from, pack) {
@@ -26,6 +26,11 @@ function __spreadArray(to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 }
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
 
 var FlasherFactory = (function () {
     function FlasherFactory(viewFactory) {
@@ -107,12 +112,14 @@ var FlasherFactory = (function () {
         var container = document.querySelector(containerSelector);
         if (container) {
             container.dataset.turboCache = 'false';
+            container.classList.add('fl-no-cache');
             return container;
         }
         container = document.createElement('div');
         container.classList.add('fl-main-container');
         container.dataset.position = options.position;
         container.dataset.turboCache = 'false';
+        container.classList.add('fl-no-cache');
         Object.keys(options.style).forEach(function (key) {
             container === null || container === void 0 ? void 0 : container.style.setProperty(key, options.style[key]);
         });

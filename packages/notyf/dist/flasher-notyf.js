@@ -18,7 +18,7 @@
     OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
     PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
-    /* global Reflect, Promise */
+    /* global Reflect, Promise, SuppressedError, Symbol */
 
 
     var __assign$1 = function() {
@@ -30,6 +30,11 @@
             return t;
         };
         return __assign$1.apply(this, arguments);
+    };
+
+    typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+        var e = new Error(message);
+        return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
     };
 
     /*! *****************************************************************************
@@ -525,7 +530,9 @@
             this.notyf = this.notyf || new Notyf();
             this.notyf.open(options);
             this.notyf.view.container.dataset.turboCache = 'false';
+            this.notyf.view.container.classList.add('fl-no-cache');
             this.notyf.view.a11yContainer.dataset.turboCache = 'false';
+            this.notyf.view.a11yContainer.classList.add('fl-no-cache');
         };
         NotyfFactory.prototype.renderOptions = function (options) {
             var nOptions = __assign$1({ duration: options.duration || 5000 }, options);
@@ -548,7 +555,9 @@
                     tagName: 'i',
                 },
             });
-            this.notyf = this.notyf || new Notyf(nOptions);
+            if (!this.notyf || (this.notyf.view && !this.notyf.view.container.parentNode)) {
+                this.notyf = new Notyf(nOptions);
+            }
         };
         return NotyfFactory;
     }());

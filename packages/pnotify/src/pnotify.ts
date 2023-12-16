@@ -109,6 +109,7 @@ export default class PnotifyFactory implements NotificationFactoryInterface {
 
     if (pnotify.refs.container) {
         pnotify.refs.container.dataset.turboCache = 'false';
+        pnotify.refs.container.classList.add('fl-no-cache');
     }
   }
 
